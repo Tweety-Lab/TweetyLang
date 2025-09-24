@@ -14,10 +14,16 @@ internal class IRBuilder
     public Dictionary<string, (LLVMValueRef Pointer, LLVMTypeRef Type)> FuncLocals { get; set; } = new();
 
     /// <summary>
+    /// Store function pointer and its return type.
+    /// </summary>
+    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef ReturnType)> Funcs { get; set; } = new(); // This is stupid but until #229 gets fixed we have to do it... maybe? Prayers.
+
+    /// <summary>
     /// The LLVM builder.
     /// </summary>
     public LLVMBuilderRef LLVMBuilder { get; }
-
+    
+    private LLVMModuleRef currentModule; // This is dumb
     private readonly LLVMContextRef context;
     private readonly List<BaseStatementHandler> handlers = new List<BaseStatementHandler>();
 
@@ -63,6 +69,13 @@ internal class IRBuilder
                     "/" => LLVMBuilder.BuildSDiv(left, right, "divtmp"),
                     _ => throw new NotImplementedException($"Unknown operator {bin.Operator}")
                 };
+            case FunctionCallNode call:
+                if (!Funcs.TryGetValue(call.Name, out var fnData))
+                    throw new InvalidOperationException($"Unknown function {call.Name}");
+
+                var args = call.Arguments?.Select(EmitExpression).ToArray() ?? Array.Empty<LLVMValueRef>();
+                return LLVMBuilder.BuildCall2(fnData.ReturnType, fnData.Function, args, "calltmp");
+
 
             default:
                 throw new NotImplementedException($"Expression type {expr.GetType().Name} not implemented");
@@ -91,12 +104,16 @@ internal class IRBuilder
 
     private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
     {
+        currentModule = module;
         FuncLocals.Clear();
 
         var retType = Mapping.MapType(fn.ReturnType);
         var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type)).ToArray();
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
+
+        // I dont know how this works
+        Funcs[fn.Name] = (function, fnType);
 
         // Entry block
         var entry = function.AppendBasicBlock("entry");

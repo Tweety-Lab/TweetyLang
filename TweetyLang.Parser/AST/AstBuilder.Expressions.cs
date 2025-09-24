@@ -57,6 +57,26 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         return node;
     }
 
+    public override AstNode VisitFunction_call(TweetyLangParser.Function_callContext context)
+    {
+        var call = new FunctionCallNode
+        {
+            Name = context.identifier().GetText()
+        };
+
+        if (context.arguments() != null)
+        {
+            foreach (var argCtx in context.arguments().expression())
+            {
+                var argNode = Visit(argCtx) as ExpressionNode;
+                if (argNode != null)
+                    call.Arguments.Add(argNode);
+            }
+        }
+
+        return call;
+    }
+
     public override AstNode VisitExpression(TweetyLangParser.ExpressionContext context)
     {
         var node = Visit(context.term(0)) as ExpressionNode;

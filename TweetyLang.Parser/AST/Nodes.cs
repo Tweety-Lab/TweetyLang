@@ -82,3 +82,9 @@ public class BinaryExpressionNode : ExpressionNode
     public ExpressionNode Left { get; set; }
     public ExpressionNode Right { get; set; }
 }
+
+public class FunctionCallNode : ExpressionNode
+{
+    public string Name { get; set; }
+    public List<ExpressionNode> Arguments { get; set; } = new();
+}

@@ -5,12 +5,16 @@ namespace TweetyLang;
 internal class Program
 {
     const string SOURCE = @"
-module MyModule 
+module Program
 {
-    public i32 Main(i32 a, i32 b) 
+    public i32 NumberFunc() 
     {
-        i32 num = 32;
-        return num;
+        return 32;
+    }
+
+    public i32 main() 
+    {
+        return NumberFunc();
     }
 }
 ";
@@ -19,7 +23,7 @@ module MyModule
         // PARSE
         var tree = TweetyLangSyntaxTree.ParseText(SOURCE);
 
-        // Handle errors
+        // Handle parsing errors
         if (tree.Errors.Count() > 0)
         {
             Console.WriteLine("Could not compile!");
