@@ -16,8 +16,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         return new DeclarationNode
         {
-            Type = context.type().GetText(),
             Name = context.identifier().GetText(),
+            Type = BuildTypeReference(context.type()),
             Expression = Visit(context.expression()) as ExpressionNode
         };
     }

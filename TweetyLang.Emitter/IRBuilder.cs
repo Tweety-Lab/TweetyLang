@@ -107,7 +107,7 @@ internal class IRBuilder
             EmitStatement(stmt);
 
         // Return
-        if (fn.ReturnType == "void")
+        if (fn.ReturnType == TypeReference.Void)
             LLVMBuilder.BuildRetVoid();
     }
 

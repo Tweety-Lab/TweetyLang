@@ -37,10 +37,15 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
     public override AstNode VisitFunction_definition(TweetyLangParser.Function_definitionContext context)
     {
+        var returnTypeCtx = context.type();
+        var returnType = returnTypeCtx != null
+            ? BuildTypeReference(returnTypeCtx)
+            : new TypeReference("void");
+
         var fn = new FunctionNode
         {
             Name = context.identifier().GetText(),
-            ReturnType = context.type()?.GetText() ?? "void",
+            ReturnType = returnType,
             AccessModifier = context.access_modifier().GetText()
         };
 
@@ -51,7 +56,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                 fn.Parameters.Add(new ParameterNode
                 {
                     Name = p.identifier().GetText(),
-                    Type = p.type().GetText()
+                    Type = BuildTypeReference(p.type())
                 });
             }
         }
@@ -60,12 +65,18 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         {
             foreach (var stmtCtx in context.function_body().statement())
             {
-                var stmt = Visit(stmtCtx) as StatementNode;
-                if (stmt != null)
+                if (Visit(stmtCtx) is StatementNode stmt)
                     fn.Body.Add(stmt);
             }
         }
 
         return fn;
+    }
+
+    private TypeReference BuildTypeReference(TweetyLangParser.TypeContext ctx)
+    {
+        var baseType = ctx.raw_type().GetText();
+        int pointerLevel = ctx.pointer_suffix()?.GetText().Count(c => c == '*') ?? 0;
+        return new TypeReference(baseType, pointerLevel);
     }
 }

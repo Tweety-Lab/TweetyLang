@@ -7,10 +7,10 @@ internal class Program
     const string SOURCE = @"
 module MyModule 
 {
-    public bool Main(i32 a, i32 b) 
+    public i32 Main(i32 a, i32 b) 
     {
-        bool x = true;
-        return x;
+        i32 num = 32;
+        return num;
     }
 }
 ";
