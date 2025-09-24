@@ -7,6 +7,11 @@ public class SemanticAnalyzer
     private readonly List<string> errors = new List<string>();
     private readonly List<BaseSemanticRule> rules = new List<BaseSemanticRule>();
 
+    /// <summary>
+    /// A List of error messages.
+    /// </summary>
+    public IReadOnlyList<string> Errors => errors;
+
     public SemanticAnalyzer()
     {
         // Setup rules
@@ -17,15 +22,16 @@ public class SemanticAnalyzer
         }
     }
 
-    /// <summary>
-    /// A List of error messages.
-    /// </summary>
-    public IReadOnlyList<string> Errors => errors;
-
     public void Analyze(ProgramNode program)
     {
-        foreach (var rule in rules)
-            rule.AnalyzeProgram(program);
+        try
+        {
+            foreach (var rule in rules)
+                rule.AnalyzeProgram(program);
+        } catch (SemanticException e)
+        {
+            errors.Add(e.Message);
+        }
 
         foreach (var module in program.Modules)
             AnalyzeModule(module);
@@ -33,8 +39,14 @@ public class SemanticAnalyzer
 
     private void AnalyzeModule(ModuleNode module)
     {
-        foreach (var rule in rules)
-            rule.AnalyzeModule(module);
+        try
+        {
+            foreach (var rule in rules)
+                rule.AnalyzeModule(module);
+        } catch (SemanticException e) 
+        {
+            errors.Add(e.Message);
+        }
 
         foreach (var fn in module.Functions)
             AnalyzeFunction(fn);
@@ -42,7 +54,13 @@ public class SemanticAnalyzer
 
     private void AnalyzeFunction(FunctionNode fn)
     {
-        foreach (var rule in rules)
-            rule.AnalyzeFunction(fn);
+        try
+        {
+            foreach (var rule in rules)
+                rule.AnalyzeFunction(fn);
+        } catch (SemanticException e)
+        {
+            errors.Add(e.Message);
+        }
     }
 }

@@ -23,7 +23,7 @@ internal class DuplicateParameterRule : BaseSemanticRule
         foreach (var p in func.Parameters)
         {
             if (!paramNames.Add(p.Name))
-                Console.WriteLine($"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
+                throw new SemanticException($"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
         }
     }
 }
@@ -37,7 +37,7 @@ internal class DuplicateFunctionRule : BaseSemanticRule
         foreach (var fn in module.Functions)
         {
             if (!functionNames.Add(fn.Name))
-                Console.WriteLine($"Duplicate function '{fn.Name}' in module '{module.Name}'.");
+                throw new SemanticException($"Duplicate function '{fn.Name}' in module '{module.Name}'.");
         }
     }
 }
