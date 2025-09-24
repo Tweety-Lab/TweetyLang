@@ -11,12 +11,12 @@ public static class Emitter
     /// <returns>LLVM IR.</returns>
     public static string EmitIR(TweetyLangSyntaxTree tree)
     {
-        var irBuilder = new IRBuilder(tree.Root.Modules.First().Name); // This is moderately dumb
-        irBuilder.EmitProgram(tree.Root);
+        var irBuilder = new IRBuilder();
+        var modules = irBuilder.EmitProgram(tree.Root);
 
-        var module = irBuilder.Module;
+        // Concatenate IR from all modules
+        var irText = string.Join("\n", modules.Select(m => m.PrintToString()));
 
-        string irText = module.PrintToString();
         return irText;
     }
 }

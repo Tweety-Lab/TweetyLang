@@ -1,40 +1,41 @@
 ﻿using LLVMSharp;
 using LLVMSharp.Interop;
-using System.Collections.Generic;
-using System.Reflection;
 using TweetyLang.AST;
-using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Emitter;
 
 internal class IRBuilder
 {
-    private readonly LLVMModuleRef module;
-    private readonly LLVMBuilderRef builder;
     private readonly LLVMContextRef context;
+    private readonly LLVMBuilderRef builder;
 
-    public LLVMModuleRef Module => module;
-
-    public IRBuilder(string moduleName = "TweetyModule")
+    public IRBuilder()
     {
         context = LLVMContextRef.Create();
-        module = LLVMModuleRef.CreateWithName(moduleName);
         builder = LLVMBuilderRef.Create(context);
     }
 
-    public void EmitProgram(ProgramNode program)
+    public IReadOnlyList<LLVMModuleRef> EmitProgram(ProgramNode program)
     {
+        var modules = new List<LLVMModuleRef>();
+
         foreach (var mod in program.Modules)
-            EmitModule(mod);
+            modules.Add(EmitModule(mod));
+
+        return modules;
     }
 
-    private void EmitModule(ModuleNode module)
+    private LLVMModuleRef EmitModule(ModuleNode moduleNode)
     {
-        foreach (var fn in module.Functions)
-            EmitFunction(fn);
+        var module = LLVMModuleRef.CreateWithName(moduleNode.Name);
+
+        foreach (var fn in moduleNode.Functions)
+            EmitFunction(module, fn);
+
+        return module;
     }
 
-    private void EmitFunction(FunctionNode fn)
+    private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
     {
         var retType = Mapping.MapType(fn.ReturnType);
         var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type)).ToArray();

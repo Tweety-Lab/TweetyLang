@@ -5,8 +5,6 @@ namespace TweetyLang;
 internal class Program
 {
     const string SOURCE = @"
-import OtherModule;
-
 module MyModule 
 {
     public bool Main(i32 a, i32 b) 
