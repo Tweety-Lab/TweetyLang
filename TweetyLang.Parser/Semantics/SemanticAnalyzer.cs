@@ -4,13 +4,13 @@ namespace TweetyLang.Parser.Semantics;
 
 public class SemanticAnalyzer
 {
-    private readonly List<string> errors = new List<string>();
+    private readonly List<SemanticException> errors = new List<SemanticException>();
     private readonly List<BaseSemanticRule> rules = new List<BaseSemanticRule>();
 
     /// <summary>
     /// A List of error messages.
     /// </summary>
-    public IReadOnlyList<string> Errors => errors;
+    public IReadOnlyList<SemanticException> Errors => errors;
 
     public SemanticAnalyzer()
     {
@@ -30,7 +30,7 @@ public class SemanticAnalyzer
                 rule.AnalyzeProgram(program);
         } catch (SemanticException e)
         {
-            errors.Add(e.Message);
+            errors.Add(e);
         }
 
         foreach (var module in program.Modules)
@@ -45,7 +45,7 @@ public class SemanticAnalyzer
                 rule.AnalyzeModule(module);
         } catch (SemanticException e) 
         {
-            errors.Add(e.Message);
+            errors.Add(e);
         }
 
         foreach (var fn in module.Functions)
@@ -60,7 +60,7 @@ public class SemanticAnalyzer
                 rule.AnalyzeFunction(fn);
         } catch (SemanticException e)
         {
-            errors.Add(e.Message);
+            errors.Add(e);
         }
     }
 }

@@ -21,12 +21,17 @@ module MyModule
 ";
     static void Main(string[] args)
     {
-        var program = TweetyLangSyntaxTree.ParseText(SOURCE).Root;
+        var tree = TweetyLangSyntaxTree.ParseText(SOURCE);
+        var program = tree.Root;
         var method = program.Modules.FirstOrDefault(m => m.Name == "MyModule")
                         ?.Functions.FirstOrDefault(f => f.Name == "Main");
 
         if (method == null)
             return;
+
+        // Log all errors
+        foreach (var error in tree.Errors)
+            Console.WriteLine(error.Message);
 
         Console.WriteLine($"Found main method '{method.Name}' with return type '{method.ReturnType}' and parameters '{string.Join(", ", method.Parameters.Select(a => a.Type))}'");
     }

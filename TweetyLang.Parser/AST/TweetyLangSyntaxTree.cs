@@ -14,6 +14,11 @@ public class TweetyLangSyntaxTree
     /// </summary>
     public ProgramNode Root { get; set; } = null!;
 
+    /// <summary>
+    /// The errors found during parsing.
+    /// </summary>
+    public IEnumerable<SemanticException> Errors = null!;
+
     private TweetyLangSyntaxTree() { }
 
     /// <summary>
@@ -60,13 +65,7 @@ public class TweetyLangSyntaxTree
         // Run anaylizers
         var analyzer = new SemanticAnalyzer();
         analyzer.Analyze(tree.Root);
-
-        if (analyzer.Errors.Count > 0)
-        {
-            Console.WriteLine("Errors:");
-            foreach (var err in analyzer.Errors)
-                Console.WriteLine(" - " + err);
-        }
+        tree.Errors = analyzer.Errors;
 
         return tree;
     }
