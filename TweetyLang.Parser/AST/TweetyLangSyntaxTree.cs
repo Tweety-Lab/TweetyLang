@@ -1,7 +1,9 @@
 ﻿
 using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
 using TweetyLang.AST;
 using TweetyLang.Parser.Errors;
+using TweetyLang.Parser.Semantics;
 
 namespace TweetyLang.Parser.AST;
 
@@ -17,6 +19,8 @@ public class TweetyLangSyntaxTree
     /// <summary>
     /// Parses TweetyLang source code and returns a syntax tree.
     /// </summary>
+    /// <param name="text">The TweetyLang source code to parse.</param>
+    /// <returns>The syntax tree.</returns>
     public static TweetyLangSyntaxTree ParseText(string text)
     {
         var tree = new TweetyLangSyntaxTree();
@@ -52,6 +56,17 @@ public class TweetyLangSyntaxTree
 
         // Build AST
         tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
+
+        // Run anaylizers
+        var analyzer = new SemanticAnalyzer();
+        analyzer.Analyze(tree.Root);
+
+        if (analyzer.Errors.Count > 0)
+        {
+            Console.WriteLine("Errors:");
+            foreach (var err in analyzer.Errors)
+                Console.WriteLine(" - " + err);
+        }
 
         return tree;
     }

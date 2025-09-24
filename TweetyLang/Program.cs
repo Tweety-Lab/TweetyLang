@@ -12,7 +12,7 @@ import OtherModule;
 
 module MyModule 
 {
-    public bool Main(i32 a, i32 b) 
+    public bool Main(i32 a, i32 a) 
     {
         bool x = true;
         return x;
