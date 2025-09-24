@@ -21,15 +21,10 @@ module MyModule
 ";
     static void Main(string[] args)
     {
+        // PARSE
         var tree = TweetyLangSyntaxTree.ParseText(SOURCE);
-        var program = tree.Root;
-        var method = program.Modules.FirstOrDefault(m => m.Name == "MyModule")
-                        ?.Functions.FirstOrDefault(f => f.Name == "Main");
 
-        if (method == null)
-            return;
-
-        // Log all errors
+        // Handle errors
         if (tree.Errors.Count() > 0)
         {
             Console.WriteLine("Could not compile!");
@@ -40,6 +35,8 @@ module MyModule
             return;
         }
 
-        Console.WriteLine($"Found main method '{method.Name}' with return type '{method.ReturnType}' and parameters '{string.Join(", ", method.Parameters.Select(a => a.Type))}'");
+        // EMIT IR
+        Console.WriteLine(Emitter.Emitter.EmitIR(tree));
+
     }
 }
