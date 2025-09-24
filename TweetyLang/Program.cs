@@ -12,7 +12,7 @@ import OtherModule;
 
 module MyModule 
 {
-    public bool Main(i32 a, i32 a) 
+    public bool Main(i32 a, i32 b) 
     {
         bool x = true;
         return x;
@@ -30,8 +30,15 @@ module MyModule
             return;
 
         // Log all errors
-        foreach (var error in tree.Errors)
-            Console.WriteLine(error.Message);
+        if (tree.Errors.Count() > 0)
+        {
+            Console.WriteLine("Could not compile!");
+
+            foreach (var error in tree.Errors)
+                Console.WriteLine($"Error: {error.Message}");
+
+            return;
+        }
 
         Console.WriteLine($"Found main method '{method.Name}' with return type '{method.ReturnType}' and parameters '{string.Join(", ", method.Parameters.Select(a => a.Type))}'");
     }
