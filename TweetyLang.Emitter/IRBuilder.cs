@@ -16,7 +16,7 @@ internal class IRBuilder
     /// <summary>
     /// Store function pointer and its return type.
     /// </summary>
-    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef ReturnType)> Funcs { get; set; } = new(); // This is stupid but until #229 gets fixed we have to do it... maybe? Prayers.
+    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef FunctionType)> Funcs { get; set; } = new(); // This is stupid but until #229 gets fixed we have to do it... maybe? Prayers.
 
     /// <summary>
     /// The LLVM builder.
@@ -74,7 +74,7 @@ internal class IRBuilder
                     throw new InvalidOperationException($"Unknown function {call.Name}");
 
                 var args = call.Arguments?.Select(EmitExpression).ToArray() ?? Array.Empty<LLVMValueRef>();
-                return LLVMBuilder.BuildCall2(fnData.ReturnType, fnData.Function, args, "calltmp");
+                return LLVMBuilder.BuildCall2(fnData.FunctionType, fnData.Function, args, "calltmp");
 
 
             default:
