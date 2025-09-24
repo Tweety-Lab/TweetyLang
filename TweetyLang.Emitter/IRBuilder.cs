@@ -37,7 +37,8 @@ internal class IRBuilder
     private void EmitFunction(FunctionNode fn)
     {
         var retType = Mapping.MapType(fn.ReturnType);
-        var fnType = LLVMTypeRef.CreateFunction(retType, System.Array.Empty<LLVMTypeRef>(), false);
+        var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type)).ToArray();
+        var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
 
         // Entry block

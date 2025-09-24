@@ -1,7 +1,4 @@
-﻿using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
-using TweetyLang.AST;
-using TweetyLang.Parser.AST;
+﻿using TweetyLang.Parser.AST;
 
 namespace TweetyLang;
 

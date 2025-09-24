@@ -1,6 +1,4 @@
-﻿using LLVMSharp.Interop;
-using System.Runtime.InteropServices;
-using TweetyLang.Parser.AST;
+﻿using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Emitter;
 
@@ -13,7 +11,7 @@ public static class Emitter
     /// <returns>LLVM IR.</returns>
     public static string EmitIR(TweetyLangSyntaxTree tree)
     {
-        var irBuilder = new IRBuilder();
+        var irBuilder = new IRBuilder(tree.Root.Modules.First().Name); // This is moderately dumb
         irBuilder.EmitProgram(tree.Root);
 
         var module = irBuilder.Module;
