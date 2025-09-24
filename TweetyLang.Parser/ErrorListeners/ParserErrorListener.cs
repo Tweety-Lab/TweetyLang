@@ -1,7 +1,7 @@
 ﻿
 using Antlr4.Runtime;
 
-namespace TweetyLang.Parser.Errors;
+namespace TweetyLang.Parser.ErrorListeners;
 
 /// <summary>
 /// Error listener for ANTLR Parser Syntax Errors.

@@ -2,7 +2,7 @@
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using TweetyLang.AST;
-using TweetyLang.Parser.Errors;
+using TweetyLang.Parser.ErrorListeners;
 using TweetyLang.Parser.Semantics;
 
 namespace TweetyLang.Parser.AST;
