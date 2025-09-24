@@ -2,7 +2,9 @@
 using TweetyLang.AST;
 using TweetyLang;
 
-public class AstBuilder : TweetyLangBaseVisitor<AstNode>
+namespace TweetyLang.Parser.AST;
+
+public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 {
     public override AstNode VisitProgram(TweetyLangParser.ProgramContext context)
     {
@@ -51,6 +53,16 @@ public class AstBuilder : TweetyLangBaseVisitor<AstNode>
                     Name = p.identifier().GetText(),
                     Type = p.type().GetText()
                 });
+            }
+        }
+
+        if (context.function_body() != null)
+        {
+            foreach (var stmtCtx in context.function_body().statement())
+            {
+                var stmt = Visit(stmtCtx) as StatementNode;
+                if (stmt != null)
+                    fn.Body.Add(stmt);
             }
         }
 

@@ -11,7 +11,7 @@ internal abstract class BaseSemanticRule
     public virtual void AnalyzeFunction(FunctionNode func) { }
     public virtual void AnalyzeModule(ModuleNode module) { }
     public virtual void AnalyzeProgram(ProgramNode program) { }
-
+    public virtual void AnalyzeStatement(StatementNode expr) { }
 }
 
 [SemanticAnalyzer]

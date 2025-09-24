@@ -1,18 +1,72 @@
 ﻿using LLVMSharp;
 using LLVMSharp.Interop;
+using System.Reflection;
 using TweetyLang.AST;
+using TweetyLang.Emitter.StatementHandlers;
 
 namespace TweetyLang.Emitter;
 
 internal class IRBuilder
 {
+    /// <summary>
+    /// The local variables of the current function. Stores Pointer and Type.
+    /// </summary>
+    public Dictionary<string, (LLVMValueRef Pointer, LLVMTypeRef Type)> FuncLocals { get; set; } = new();
+
+    /// <summary>
+    /// The LLVM builder.
+    /// </summary>
+    public LLVMBuilderRef LLVMBuilder { get; }
+
     private readonly LLVMContextRef context;
-    private readonly LLVMBuilderRef builder;
+    private readonly List<BaseStatementHandler> handlers = new List<BaseStatementHandler>();
 
     public IRBuilder()
     {
         context = LLVMContextRef.Create();
-        builder = LLVMBuilderRef.Create(context);
+        LLVMBuilder = LLVMBuilderRef.Create(context);
+
+        // Reflect all classes with StatementHandlerAttribute and add them to handlers
+        foreach (var type in typeof(BaseStatementHandler).Assembly.GetTypes())
+        {
+            var attr = type.GetCustomAttribute<StatementHandlerAttribute>();
+            if (attr != null)
+                handlers.Add((BaseStatementHandler)Activator.CreateInstance(type)!);
+        }
+    }
+
+    public LLVMValueRef EmitExpression(ExpressionNode expr)
+    {
+        switch (expr)
+        {
+            case IntegerLiteralNode intLit:
+                return LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, (ulong)intLit.Value, false);
+
+            case BooleanLiteralNode boolLit:
+                return LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, boolLit.Value ? 1UL : 0UL, false);
+
+            case IdentifierNode id:
+                if (!FuncLocals.TryGetValue(id.Name, out var value))
+                    throw new InvalidOperationException($"Unknown variable {id.Name}");
+
+                var (pointer, type) = value;
+                return LLVMBuilder.BuildLoad2(type, pointer, id.Name);
+
+            case BinaryExpressionNode bin:
+                var left = EmitExpression(bin.Left);
+                var right = EmitExpression(bin.Right);
+                return bin.Operator switch
+                {
+                    "+" => LLVMBuilder.BuildAdd(left, right, "addtmp"),
+                    "-" => LLVMBuilder.BuildSub(left, right, "subtmp"),
+                    "*" => LLVMBuilder.BuildMul(left, right, "multmp"),
+                    "/" => LLVMBuilder.BuildSDiv(left, right, "divtmp"),
+                    _ => throw new NotImplementedException($"Unknown operator {bin.Operator}")
+                };
+
+            default:
+                throw new NotImplementedException($"Expression type {expr.GetType().Name} not implemented");
+        }
     }
 
     public IReadOnlyList<LLVMModuleRef> EmitProgram(ProgramNode program)
@@ -37,6 +91,8 @@ internal class IRBuilder
 
     private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
     {
+        FuncLocals.Clear();
+
         var retType = Mapping.MapType(fn.ReturnType);
         var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type)).ToArray();
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
@@ -44,7 +100,7 @@ internal class IRBuilder
 
         // Entry block
         var entry = function.AppendBasicBlock("entry");
-        builder.PositionAtEnd(entry);
+        LLVMBuilder.PositionAtEnd(entry);
 
         // Emit statements
         foreach (var stmt in fn.Body)
@@ -52,11 +108,13 @@ internal class IRBuilder
 
         // Return
         if (fn.ReturnType == "void")
-            builder.BuildRetVoid();
+            LLVMBuilder.BuildRetVoid();
     }
 
     private void EmitStatement(StatementNode stmt)
     {
-
+        foreach (var handler in handlers)
+            if (handler.CanHandle(stmt))
+                handler.Handle(stmt, this);
     }
 }

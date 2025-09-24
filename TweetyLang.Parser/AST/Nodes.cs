@@ -53,3 +53,15 @@ public class BooleanLiteralNode : ExpressionNode
 {
     public bool Value { get; set; }
 }
+
+public class IntegerLiteralNode : ExpressionNode
+{
+    public int Value { get; set; }
+}
+
+public class BinaryExpressionNode : ExpressionNode
+{
+    public string Operator { get; set; }
+    public ExpressionNode Left { get; set; }
+    public ExpressionNode Right { get; set; }
+}

@@ -62,5 +62,20 @@ public class SemanticAnalyzer
         {
             errors.Add(e);
         }
+
+        foreach (var stmt in fn.Body)
+            AnalyzeStatement(stmt);
+    }
+
+    private void AnalyzeStatement(StatementNode stmt)
+    {
+        try
+        {
+            foreach (var rule in rules)
+                rule.AnalyzeStatement(stmt);
+        } catch (SemanticException e)
+        {
+            errors.Add(e);
+        }
     }
 }
