@@ -42,7 +42,7 @@ internal class BuildProject : BaseVerb
             // Handle parsing errors
             if (syntaxTree.Errors.Count() > 0)
             {
-                Console.WriteLine("\nCompilation failed!");
+                Console.WriteLine($"\nCompilation failed in {Path.GetFileName(tlFile)}!");
 
                 foreach (var error in syntaxTree.Errors)
                     CompilerOutput.WriteError(error.Message, error.Line, error.Column);
