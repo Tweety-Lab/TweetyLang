@@ -18,4 +18,11 @@ internal static class Serialization
         TomlModelOptions options = new TomlModelOptions { ConvertPropertyName = name => name };
         return Toml.ToModel<Project>(File.ReadAllText(path), options: options);
     }
+
+    /// <summary>
+    /// Serializes a project to a TOML file.
+    /// </summary>
+    /// <param name="project">Project.</param>
+    /// <param name="path">Path to the TOML file.</param>
+    public static void SaveProject(Project project, string path) => File.WriteAllText(path, Toml.FromModel(project));
 }
