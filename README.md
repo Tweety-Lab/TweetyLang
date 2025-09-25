@@ -2,6 +2,8 @@
 TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridges the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
 
 ## Usage
+For help using the compiler, see the compiler breakdown [here](#tweetylang-cli).
+
 TweetyLang is build around the concept of **modules**. A module serves to structure your code and also supports behind-the-scenes compilation processes, everything in TweetyLang exists within a module.
 
 **A Module looks like the following:**
@@ -62,5 +64,5 @@ AwesomeMethod
 ### TweetyLang.Emitter
 The Emitter takes the AST from the previous parser stage and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures (including the web!).
 
-### TweetyLang
+### TweetyLang (CLI)
 This is the main program that brings together all the other components to compile TweetyLang code. It provides a command-line interface for building TweetyLang projects.
