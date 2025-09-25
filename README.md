@@ -60,7 +60,7 @@ AwesomeMethod
 ```
 
 ### TweetyLang.Emitter
-The Emitter takes the AST from the previous parser stage and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures.
+The Emitter takes the AST from the previous parser stage and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures (including the web!).
 
 ### TweetyLang
 This is the main program that brings together all the other components to compile TweetyLang code. It provides a command-line interface for building TweetyLang projects.
