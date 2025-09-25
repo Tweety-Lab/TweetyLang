@@ -1,6 +1,5 @@
 ﻿using LLVMSharp;
 using LLVMSharp.Interop;
-using System;
 using System.Reflection;
 using TweetyLang.AST;
 using TweetyLang.Emitter.StatementHandlers;
@@ -14,8 +13,10 @@ internal class IRBuilder
     /// </summary>
     public Dictionary<string, (LLVMValueRef Pointer, LLVMTypeRef Type)> FuncLocals { get; set; } = new();
 
-    private Dictionary<LLVMModuleRef, Dictionary<string, (LLVMValueRef Function, LLVMTypeRef Type)>> moduleFuncs = new();
-    private Dictionary<string, (LLVMValueRef Function, LLVMTypeRef Type)> publicFuncs = new();
+    /// <summary>
+    /// Store function pointer and its return type.
+    /// </summary>
+    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef FunctionType)> Funcs { get; set; } = new(); // This is stupid but until #229 gets fixed we have to do it... maybe? Prayers.
 
     /// <summary>
     /// The LLVM builder.
@@ -69,15 +70,11 @@ internal class IRBuilder
                     _ => throw new NotImplementedException($"Unknown operator {bin.Operator}")
                 };
             case FunctionCallNode call:
-                if (!moduleFuncs[currentModule].TryGetValue(call.Name, out var fnData))
-                {
-                    // If not found locally, check public functions
-                    if (!publicFuncs.TryGetValue(call.Name, out fnData))
-                        throw new InvalidOperationException($"Cannot access function '{call.Name}' from this module");
-                }
+                if (!Funcs.TryGetValue(call.Name, out var fnData))
+                    throw new InvalidOperationException($"Unknown function {call.Name}");
 
                 var args = call.Arguments?.Select(EmitExpression).ToArray() ?? Array.Empty<LLVMValueRef>();
-                return LLVMBuilder.BuildCall2(fnData.Type, fnData.Function, args, "calltmp");
+                return LLVMBuilder.BuildCall2(fnData.FunctionType, fnData.Function, args, "calltmp");
 
 
             default:
@@ -99,8 +96,6 @@ internal class IRBuilder
     {
         var module = LLVMModuleRef.CreateWithName(moduleNode.Name);
 
-        moduleFuncs[module] = new Dictionary<string, (LLVMValueRef, LLVMTypeRef)>();
-
         foreach (var fn in moduleNode.Functions)
             EmitFunction(module, fn);
 
@@ -117,18 +112,11 @@ internal class IRBuilder
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
 
-        if (fn.AccessModifier == "public")
-        {
-            function.Linkage = LLVMLinkage.LLVMExternalLinkage;
-            publicFuncs[fn.Name] = (function, fnType);
-        } 
-        else if (fn.AccessModifier == "private")
-        {
-            function.Linkage = LLVMLinkage.LLVMPrivateLinkage;
-        }
+        // I dont know how this works
+        Funcs[fn.Name] = (function, fnType);
 
-            // Entry block
-            var entry = function.AppendBasicBlock("entry");
+        // Entry block
+        var entry = function.AppendBasicBlock("entry");
         LLVMBuilder.PositionAtEnd(entry);
 
         // Emit statements

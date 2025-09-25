@@ -77,55 +77,5 @@ public class SemanticAnalyzer
         {
             errors.Add(e);
         }
-
-        // Recursively analyze expressions inside statements
-        switch (stmt)
-        {
-            case DeclarationNode decl:
-                AnalyzeExpression(decl.Expression);
-                break;
-
-            case ReturnNode ret:
-                AnalyzeExpression(ret.Expression);
-                break;
-        }
-    }
-
-    private void AnalyzeExpression(ExpressionNode expr)
-    {
-        if (expr == null)
-            return;
-
-        try
-        {
-            foreach (var rule in rules)
-                rule.AnalyzeExpression(expr);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
-        }
-
-        // Recursively analyze child expressions
-        switch (expr)
-        {
-            case BinaryExpressionNode bin:
-                AnalyzeExpression(bin.Left);
-                AnalyzeExpression(bin.Right);
-                break;
-
-            case FunctionCallNode call:
-                foreach (var arg in call.Arguments)
-                    AnalyzeExpression(arg);
-                break;
-
-            case IdentifierNode:
-            case IntegerLiteralNode:
-            case BooleanLiteralNode:
-                break; // leaf nodes, nothing to recurse into
-
-            default:
-                throw new NotImplementedException($"Expression type {expr.GetType().Name} not implemented in semantic analysis");
-        }
     }
 }

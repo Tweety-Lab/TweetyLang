@@ -1,22 +1,18 @@
-﻿using LLVMSharp.Interop;
-using TweetyLang.Parser.AST;
+﻿using TweetyLang.Parser.AST;
 
 namespace TweetyLang;
 
 internal class Program
 {
     const string SOURCE = @"
-module Methods 
+module Program
 {
-    private i32 NumberFunc() 
+    public i32 NumberFunc() 
     {
         return 32;
     }
-}
 
-module Program
-{
-    public i32 main()
+    public i32 main() 
     {
         return NumberFunc();
     }
@@ -39,10 +35,7 @@ module Program
         }
 
         // EMIT IR
-        LLVMModuleRef module = Emitter.Emitter.EmitModule(tree);
-
-        // PRINT IR
-        Console.WriteLine(module.PrintToString());
+        Console.WriteLine(Emitter.Emitter.EmitIR(tree));
 
     }
 }
