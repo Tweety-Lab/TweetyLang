@@ -8,7 +8,7 @@ internal class Program
     const string SOURCE = @"
 module Methods 
 {
-    public i32 NumberFunc() 
+    private i32 NumberFunc() 
     {
         return 32;
     }
@@ -33,7 +33,7 @@ module Program
             Console.WriteLine("Could not compile!");
 
             foreach (var error in tree.Errors)
-                Console.WriteLine($"Error: {error.Message}");
+                CompilerOutput.WriteError(error.Message, error.Line, error.Column);
 
             return;
         }

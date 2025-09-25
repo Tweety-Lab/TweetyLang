@@ -24,7 +24,7 @@ internal class DuplicateParameterRule : BaseSemanticRule
         foreach (var p in func.Parameters)
         {
             if (!paramNames.Add(p.Name))
-                throw new SemanticException($"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
+                throw new SemanticException(func.Line, func.Column, $"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
         }
     }
 }
@@ -38,7 +38,7 @@ internal class DuplicateFunctionRule : BaseSemanticRule
         foreach (var fn in module.Functions)
         {
             if (!functionNames.Add(fn.Name))
-                throw new SemanticException($"Duplicate function '{fn.Name}' in module '{module.Name}'.");
+                throw new SemanticException(module.Line, module.Column, $"Duplicate function '{fn.Name}' in module '{module.Name}'.");
         }
     }
 }
@@ -60,10 +60,10 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
 
         // If function is not found
         if (!FunctionVisibility.ContainsKey(call.Name))
-            throw new SemanticException($"Tried to call unknown function '{call.Name}'.");
+            throw new SemanticException(expr.Line, expr.Column, $"Tried to call unknown function '{call.Name}'.");
 
         // If function is found but private
         if (FunctionVisibility[call.Name] != "public")
-            throw new SemanticException($"Tried to call private function '{call.Name}'.");
+            throw new SemanticException(expr.Line, expr.Column, $"Tried to call private function '{call.Name}'.");
     }
 }

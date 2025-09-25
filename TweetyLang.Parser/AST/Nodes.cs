@@ -17,7 +17,11 @@ public class TypeReference
     public static TypeReference I32 => new("i32");
 }
 
-public abstract class AstNode { }
+public abstract class AstNode
+{
+    public int Line { get; set; }
+    public int Column { get; set; }
+}
 
 public class ProgramNode : AstNode
 {

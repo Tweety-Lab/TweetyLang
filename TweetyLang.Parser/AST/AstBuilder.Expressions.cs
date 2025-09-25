@@ -9,12 +9,22 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 {
     public override AstNode VisitIdentifier(TweetyLangParser.IdentifierContext context)
     {
-        return new IdentifierNode { Name = context.GetText() };
+        return new IdentifierNode
+        {
+            Name = context.GetText(),
+            Line = context.Start.Line,
+            Column = context.Start.Column
+        };
     }
 
     public override AstNode VisitBoolean_literal(TweetyLangParser.Boolean_literalContext context)
     {
-        return new BooleanLiteralNode { Value = context.GetText() == "true" };
+        return new BooleanLiteralNode
+        {
+            Value = context.GetText() == "true",
+            Line = context.Start.Line,
+            Column = context.Start.Column
+        };
     }
 
     public override AstNode VisitFactor(TweetyLangParser.FactorContext context)
@@ -61,7 +71,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var call = new FunctionCallNode
         {
-            Name = context.identifier().GetText()
+            Name = context.identifier().GetText(),
+            Line = context.Start.Line,
+            Column = context.Start.Column
         };
 
         if (context.arguments() != null)
@@ -90,7 +102,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             {
                 Operator = op,
                 Left = node,
-                Right = right
+                Right = right,
+                Line = context.Start.Line,
+                Column = context.Start.Column
             };
         }
 

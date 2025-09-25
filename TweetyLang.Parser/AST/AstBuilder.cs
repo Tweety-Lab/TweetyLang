@@ -8,7 +8,12 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 {
     public override AstNode VisitProgram(TweetyLangParser.ProgramContext context)
     {
-        var program = new ProgramNode();
+        var program = new ProgramNode
+        {
+            Line = context.Start.Line,
+            Column = context.Start.Column
+        };
+
         foreach (var decl in context.top_level_declaration())
         {
             var node = Visit(decl) as ModuleNode;
@@ -22,7 +27,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var module = new ModuleNode
         {
-            Name = context.module_name().GetText()
+            Name = context.module_name().GetText(),
+            Line = context.Start.Line,
+            Column = context.Start.Column
         };
 
         foreach (var decl in context.module_body().top_level_declaration())
@@ -46,7 +53,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         {
             Name = context.identifier().GetText(),
             ReturnType = returnType,
-            AccessModifier = context.access_modifier().GetText()
+            AccessModifier = context.access_modifier().GetText(),
+            Line = context.Start.Line,
+            Column = context.Start.Column
         };
 
         if (context.parameters() != null)
