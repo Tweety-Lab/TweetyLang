@@ -1,7 +1,9 @@
 # TweetyLang
-TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridges the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
+TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridge the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
 
 ## Usage
+For help using the compiler, see the compiler breakdown [here](#tweetylang-cli).
+
 TweetyLang is build around the concept of **modules**. A module serves to structure your code and also supports behind-the-scenes compilation processes, everything in TweetyLang exists within a module.
 
 **A Module looks like the following:**
@@ -17,11 +19,11 @@ module Program
 ### Debugging Errors
 The default TweetyLang compiler outputs errors in the following format:
 ```Terminal
-Compilation failed!
+Compilation failed in File.tl!
 error(14, 15): Tried to call private function 'NumberFunc'.
 ```
 
-In this example, `14` is the line number and `15` is the column where the error occurred.
+In this example, the error occurs in `File.tl` at line `14`, column `15`.
 
 ## Compiler Architecture
 The TweetyLang compiler is split up into several projects:
@@ -62,5 +64,13 @@ AwesomeMethod
 ### TweetyLang.Emitter
 The Emitter takes the AST from the previous parser stage and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures (including the web!).
 
-### TweetyLang
+### TweetyLang (CLI)
 This is the main program that brings together all the other components to compile TweetyLang code. It provides a command-line interface for building TweetyLang projects.
+
+### CLI Commands
+
+#### `new`
+Creates a new template TweetyLang project.
+
+#### `build`
+Builds the project in the current directory.
