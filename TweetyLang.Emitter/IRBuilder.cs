@@ -112,7 +112,11 @@ internal class IRBuilder
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
 
-        // I dont know how this works
+        if (fn.AccessModifier == "public")
+            function.Linkage = LLVMLinkage.LLVMExternalLinkage;
+        else
+            function.Linkage = LLVMLinkage.LLVMInternalLinkage;
+
         Funcs[fn.Name] = (function, fnType);
 
         // Entry block
