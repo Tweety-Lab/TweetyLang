@@ -10,11 +10,22 @@ internal class NewProject : BaseVerb
     public string Name { get; set; } = string.Empty;
 
     const string TEMPLATE_FILE = @"
+import Methods;
+
+module Methods 
+{
+    public i32 NumberFunc() 
+    {
+        return 32;
+    }
+}
+
 module Program
 {
     public i32 main() 
     {
-        return 128;
+        i32 myVar = NumberFunc();
+        return myVar;
     }
 }
 ";
