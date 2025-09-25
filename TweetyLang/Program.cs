@@ -18,7 +18,7 @@ module Program
 {
     public i32 main() 
     {
-        return NumberFunc();
+        return NumberFunc()
     }
 }
 ";

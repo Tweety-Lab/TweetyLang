@@ -55,23 +55,24 @@ public class TweetyLangSyntaxTree
         // Parse
         var programContext = parser.program();
 
-        // Print errors if any
-        if (parserListener.Errors.Count > 0)
-            foreach (var err in parserListener.Errors)
-                Console.WriteLine(err);
-
-        if (lexerListener.Errors.Count > 0)
-            foreach (var err in lexerListener.Errors)
-                Console.WriteLine(err);
-
         // Build AST
         tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
+
+        tree.Errors = Enumerable.Empty<SemanticError>();
+        tree.Warnings = Enumerable.Empty<SemanticWarning>();
+
+        // Merge lexer and parser errors
+        tree.Errors = tree.Errors
+            .Concat(lexerListener.Errors)
+            .Concat(parserListener.Errors);
 
         // Run analyzers
         var analyzer = new SemanticAnalyzer();
         analyzer.Analyze(tree.Root);
-        tree.Errors = analyzer.Errors;
-        tree.Warnings = analyzer.Warnings;
+
+        // Merge semantic errors and warnings
+        tree.Errors = tree.Errors.Concat(analyzer.Errors);
+        tree.Warnings = tree.Warnings.Concat(analyzer.Warnings);
 
         return tree;
     }
