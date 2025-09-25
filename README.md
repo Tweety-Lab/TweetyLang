@@ -14,6 +14,14 @@ module Program
     }
 }
 ```
+### Debugging Errors
+The default TweetyLang compiler outputs errors in the following format:
+```Terminal
+Compilation failed!
+error(14, 15): Tried to call private function 'NumberFunc'.
+```
+
+In this example, `14` is the line number and `15` is the column where the error occurred.
 
 ## Compiler Architecture
 The TweetyLang compiler is split up into several projects:
