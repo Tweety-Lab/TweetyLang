@@ -98,7 +98,7 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
         var currentModule = call.Ancestors().OfType<ModuleNode>().FirstOrDefault();
         if (currentModule == null)
         {
-            Error(call, $"Function call '{call.Name}' is not inside any module.");
+            Error(call, $"Function call '{call.Name}' is not inside any module... How?");
             return;
         }
 
@@ -107,14 +107,27 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
         bool isImported = program?.Imports.Any(i => i.ModuleName == declaringModule) ?? false;
 
         if (currentModule.Name != declaringModule && !isImported)
-        {
             Error(call, $"Cannot call function '{call.Name}' from module '{declaringModule}' because it is not imported.");
-        }
 
         // Check access modifier
         if (access != "public" && currentModule.Name != declaringModule)
+            Error(call, $"Tried to call inaccessible function '{call.Name}'.");
+    }
+}
+
+[SemanticAnalyzer]
+internal class ImportRule : BaseSemanticRule
+{
+    public override void AnalyzeProgram(ProgramNode program)
+    {
+        var moduleNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var import in program.Imports)
         {
-            Error(call, $"Tried to call private function '{call.Name}' from another module.");
+            if (!moduleNames.Add(import.ModuleName))
+                Warning(import, $"Duplicate import of module '{import.ModuleName}'.");
+
+            if (!program.Modules.Any(m => m.Name == import.ModuleName))
+                Error(import, $"Could not resolve import '{import.ModuleName}'.");
         }
     }
 }
