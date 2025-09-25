@@ -12,8 +12,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         return new IdentifierNode
         {
             Name = context.GetText(),
-            Line = context.Start.Line,
-            Column = context.Start.Column
+            SourceLine = context.Start.Line,
+            SourceColumn = context.Start.Column
         };
     }
 
@@ -22,8 +22,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         return new BooleanLiteralNode
         {
             Value = context.GetText() == "true",
-            Line = context.Start.Line,
-            Column = context.Start.Column
+            SourceLine = context.Start.Line,
+            SourceColumn = context.Start.Column
         };
     }
 
@@ -72,8 +72,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         var call = new FunctionCallNode
         {
             Name = context.identifier().GetText(),
-            Line = context.Start.Line,
-            Column = context.Start.Column
+            SourceLine = context.Start.Line,
+            SourceColumn = context.Start.Column
         };
 
         if (context.arguments() != null)
@@ -103,8 +103,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                 Operator = op,
                 Left = node,
                 Right = right,
-                Line = context.Start.Line,
-                Column = context.Start.Column
+                SourceLine = context.Start.Line,
+                SourceColumn = context.Start.Column
             };
         }
 

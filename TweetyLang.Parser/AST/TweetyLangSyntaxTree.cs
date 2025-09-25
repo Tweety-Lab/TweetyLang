@@ -17,7 +17,12 @@ public class TweetyLangSyntaxTree
     /// <summary>
     /// The errors found during parsing.
     /// </summary>
-    public IEnumerable<SemanticException> Errors = null!;
+    public IEnumerable<SemanticError> Errors = null!;
+
+    /// <summary>
+    /// The warnings found during parsing.
+    /// </summary>
+    public IEnumerable<SemanticWarning> Warnings = null!;
 
     private TweetyLangSyntaxTree() { }
 
@@ -62,10 +67,11 @@ public class TweetyLangSyntaxTree
         // Build AST
         tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
 
-        // Run anaylizers
+        // Run analyzers
         var analyzer = new SemanticAnalyzer();
         analyzer.Analyze(tree.Root);
         tree.Errors = analyzer.Errors;
+        tree.Warnings = analyzer.Warnings;
 
         return tree;
     }

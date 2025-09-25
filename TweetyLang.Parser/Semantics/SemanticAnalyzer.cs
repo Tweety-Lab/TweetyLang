@@ -4,13 +4,19 @@ namespace TweetyLang.Parser.Semantics;
 
 public class SemanticAnalyzer
 {
-    private readonly List<SemanticException> errors = new List<SemanticException>();
+    private readonly List<SemanticError> errors = new List<SemanticError>();
+    private readonly List<SemanticWarning> warnings = new();
     private readonly List<BaseSemanticRule> rules = new List<BaseSemanticRule>();
 
     /// <summary>
     /// A List of error messages.
     /// </summary>
-    public IReadOnlyList<SemanticException> Errors => errors;
+    public IReadOnlyList<SemanticError> Errors => errors;
+
+    /// <summary>
+    /// A List of warning messages.
+    /// </summary>
+    public IReadOnlyList<SemanticWarning> Warnings => warnings;
 
     public SemanticAnalyzer()
     {
@@ -24,14 +30,11 @@ public class SemanticAnalyzer
 
     public void Analyze(ProgramNode program)
     {
-        try
+        foreach (var rule in rules)
         {
-            foreach (var rule in rules)
-                rule.AnalyzeProgram(program);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
+            rule.AnalyzeProgram(program);
+            errors.AddRange(rule.Exceptions);
+            warnings.AddRange(rule.Warnings);
         }
 
         foreach (var module in program.Modules)
@@ -40,14 +43,11 @@ public class SemanticAnalyzer
 
     private void AnalyzeModule(ModuleNode module)
     {
-        try
+        foreach (var rule in rules)
         {
-            foreach (var rule in rules)
-                rule.AnalyzeModule(module);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
+            rule.AnalyzeModule(module);
+            errors.AddRange(rule.Exceptions);
+            warnings.AddRange(rule.Warnings);
         }
 
         foreach (var fn in module.Functions)
@@ -56,14 +56,11 @@ public class SemanticAnalyzer
 
     private void AnalyzeFunction(FunctionNode fn)
     {
-        try
+        foreach (var rule in rules)
         {
-            foreach (var rule in rules)
-                rule.AnalyzeFunction(fn);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
+            rule.AnalyzeFunction(fn);
+            errors.AddRange(rule.Exceptions);
+            warnings.AddRange(rule.Warnings);
         }
 
         foreach (var stmt in fn.Body)
@@ -72,14 +69,11 @@ public class SemanticAnalyzer
 
     private void AnalyzeStatement(StatementNode stmt)
     {
-        try
+        foreach (var rule in rules)
         {
-            foreach (var rule in rules)
-                rule.AnalyzeStatement(stmt);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
+            rule.AnalyzeStatement(stmt);
+            errors.AddRange(rule.Exceptions);
+            warnings.AddRange(rule.Warnings);
         }
 
         // Analyze expressions inside statements
@@ -100,14 +94,11 @@ public class SemanticAnalyzer
         if (expr == null)
             return;
 
-        try
+        foreach (var rule in rules)
         {
-            foreach (var rule in rules)
-                rule.AnalyzeExpression(expr);
-        }
-        catch (SemanticException e)
-        {
-            errors.Add(e);
+            rule.AnalyzeExpression(expr);
+            errors.AddRange(rule.Exceptions);
+            warnings.AddRange(rule.Warnings);
         }
 
         // Analyze child expressions

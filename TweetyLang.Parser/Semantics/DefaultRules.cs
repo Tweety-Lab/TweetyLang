@@ -8,11 +8,33 @@ namespace TweetyLang.Parser.Semantics;
 /// </summary>
 internal abstract class BaseSemanticRule
 {
+    /// <summary> A list of exceptions that occured during semantic analysis in this rule. </summary>
+    internal List<SemanticError> Exceptions { get; } = new();
+
+    /// <summary> A list of warnings that occured during semantic analysis in this rule. </summary>
+    internal List<SemanticWarning> Warnings { get; } = new();
+
     public virtual void AnalyzeFunction(FunctionNode func) { }
     public virtual void AnalyzeModule(ModuleNode module) { }
     public virtual void AnalyzeProgram(ProgramNode program) { }
     public virtual void AnalyzeStatement(StatementNode expr) { }
     public virtual void AnalyzeExpression(ExpressionNode expr) { }
+
+    /// <summary>
+    /// Throws a semantic exception for a given AST node.
+    /// </summary>
+    protected void Error(AstNode node, string message)
+    {
+        Exceptions.Add(new SemanticError(node.SourceLine, node.SourceColumn, message));
+    }
+
+    /// <summary>
+    /// Throws a semantic warning for a given AST node.
+    /// </summary>
+    protected void Warning(AstNode node, string message)
+    {
+        Warnings.Add(new SemanticWarning(node.SourceLine, node.SourceColumn, message));
+    }
 }
 
 [SemanticAnalyzer]
@@ -24,7 +46,7 @@ internal class DuplicateParameterRule : BaseSemanticRule
         foreach (var p in func.Parameters)
         {
             if (!paramNames.Add(p.Name))
-                throw new SemanticException(func.Line, func.Column, $"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
+                Error(func, $"Duplicate parameter '{p.Name}' in function '{func.Name}'.");
         }
     }
 }
@@ -38,7 +60,7 @@ internal class DuplicateFunctionRule : BaseSemanticRule
         foreach (var fn in module.Functions)
         {
             if (!functionNames.Add(fn.Name))
-                throw new SemanticException(module.Line, module.Column, $"Duplicate function '{fn.Name}' in module '{module.Name}'.");
+                Error(fn, $"Duplicate function '{fn.Name}' in module '{module.Name}'.");
         }
     }
 }
@@ -60,10 +82,10 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
 
         // If function is not found
         if (!FunctionVisibility.ContainsKey(call.Name))
-            throw new SemanticException(expr.Line, expr.Column, $"Tried to call unknown function '{call.Name}'.");
+            Error(call, $"Tried to call unknown function '{call.Name}'.");
 
         // If function is found but private
         if (FunctionVisibility[call.Name] != "public")
-            throw new SemanticException(expr.Line, expr.Column, $"Tried to call private function '{call.Name}'.");
+            Error(call, $"Tried to call private function '{call.Name}'.");
     }
 }

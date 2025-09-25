@@ -27,10 +27,17 @@ module Program
         // PARSE
         var tree = TweetyLangSyntaxTree.ParseText(SOURCE);
 
+        // Handle parsing warnings
+        if (tree.Warnings.Count() > 0)
+        {
+            foreach (var warning in tree.Warnings)
+                CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
+        }
+
         // Handle parsing errors
         if (tree.Errors.Count() > 0)
         {
-            Console.WriteLine("Could not compile!");
+            Console.WriteLine("\nCompilation failed!");
 
             foreach (var error in tree.Errors)
                 CompilerOutput.WriteError(error.Message, error.Line, error.Column);

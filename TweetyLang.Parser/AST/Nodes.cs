@@ -19,8 +19,8 @@ public class TypeReference
 
 public abstract class AstNode
 {
-    public int Line { get; set; }
-    public int Column { get; set; }
+    public int SourceLine { get; set; }
+    public int SourceColumn { get; set; }
 }
 
 public class ProgramNode : AstNode
