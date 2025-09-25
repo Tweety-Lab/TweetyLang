@@ -16,6 +16,10 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         foreach (var decl in context.top_level_declaration())
         {
+            var import = Visit(decl) as ImportNode;
+            if (import != null)
+                program.Imports.Add(import);
+
             var node = Visit(decl) as ModuleNode;
             if (node != null)
                 program.Modules.Add(node);
@@ -80,6 +84,16 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         }
 
         return fn;
+    }
+
+    public override AstNode VisitImport_statement(TweetyLangParser.Import_statementContext context)
+    {
+        return new ImportNode
+        {
+            ModuleName = context.module_name().GetText(),
+            SourceLine = context.Start.Line,
+            SourceColumn = context.Start.Column
+        };
     }
 
     private TypeReference BuildTypeReference(TweetyLangParser.TypeContext ctx)

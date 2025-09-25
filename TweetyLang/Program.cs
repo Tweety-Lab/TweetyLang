@@ -6,9 +6,11 @@ namespace TweetyLang;
 internal class Program
 {
     const string SOURCE = @"
+import Methods;
+
 module Methods 
 {
-    private i32 NumberFunc() 
+    public i32 NumberFunc() 
     {
         return 32;
     }
@@ -18,7 +20,7 @@ module Program
 {
     public i32 main() 
     {
-        return NumberFunc()
+        return NumberFunc();
     }
 }
 ";

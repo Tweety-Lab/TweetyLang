@@ -25,7 +25,13 @@ public abstract class AstNode
 
 public class ProgramNode : AstNode
 {
+    public List<ImportNode> Imports { get; set; } = new();
     public List<ModuleNode> Modules { get; set; } = new();
+}
+
+public class ImportNode : AstNode
+{
+    public string ModuleName { get; set; }
 }
 
 public class ModuleNode : AstNode
