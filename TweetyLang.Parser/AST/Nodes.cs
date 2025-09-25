@@ -21,6 +21,51 @@ public abstract class AstNode
 {
     public int SourceLine { get; set; }
     public int SourceColumn { get; set; }
+
+    /// <summary> The parent node of this node. </summary>
+    public AstNode? Parent { get; internal set; }
+
+    /// <summary>
+    /// Returns all ancestors (parents) of this node.
+    /// </summary>
+    /// <returns>IEnumerable of parent AstNodes.</returns>
+    public IEnumerable<AstNode> Ancestors()
+    {
+        var current = Parent;
+        while (current != null)
+        {
+            yield return current;
+            current = current.Parent;
+        }
+    }
+
+    /// <summary>
+    /// Adds a child node to this node.
+    /// </summary>
+    /// <typeparam name="T">Type of child node.</typeparam>
+    /// <param name="child">Child node.</param>
+    /// <returns>Child node.</returns>
+    public T AddChild<T>(T child) where T : AstNode
+    {
+        if (child != null)
+            child.Parent = this;
+        return child;
+    }
+
+    /// <summary>
+    /// Adds multiple child nodes to this node.
+    /// </summary>
+    /// <typeparam name="T">Type of child node.</typeparam>
+    /// <param name="children">Child nodes.</param>
+    /// <returns>Child nodes.</returns>
+    public IEnumerable<T> AddChildren<T>(IEnumerable<T> children) where T : AstNode
+    {
+        foreach (var c in children)
+        {
+            if (c != null) c.Parent = this;
+            yield return c;
+        }
+    }
 }
 
 public class ProgramNode : AstNode

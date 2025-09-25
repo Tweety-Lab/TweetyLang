@@ -14,21 +14,20 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
     public override AstNode VisitDeclaration(TweetyLangParser.DeclarationContext context)
     {
-        return new DeclarationNode
+        var declNode = new DeclarationNode
         {
             Name = context.identifier().GetText(),
-            Type = BuildTypeReference(context.type()),
-            Expression = Visit(context.expression()) as ExpressionNode
+            Type = BuildTypeReference(context.type())
         };
+        declNode.Expression = declNode.AddChild(Visit(context.expression()) as ExpressionNode);
+        return declNode;
     }
 
     public override AstNode VisitReturn_statement(TweetyLangParser.Return_statementContext context)
     {
-        return new ReturnNode
-        {
-            Expression = context.expression() != null
-                ? Visit(context.expression()) as ExpressionNode
-                : null
-        };
+        var retNode = new ReturnNode();
+        if (context.expression() != null)
+            retNode.Expression = retNode.AddChild(Visit(context.expression()) as ExpressionNode);
+        return retNode;
     }
 }

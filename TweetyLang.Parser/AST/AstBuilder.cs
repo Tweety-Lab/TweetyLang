@@ -16,14 +16,17 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         foreach (var decl in context.top_level_declaration())
         {
-            var import = Visit(decl) as ImportNode;
-            if (import != null)
-                program.Imports.Add(import);
+            var node = Visit(decl);
+            if (node is ModuleNode module)
+            {
+                program.Modules.Add(program.AddChild(module));
+                module.Functions = module.AddChildren(module.Functions).ToList();
+            }
 
-            var node = Visit(decl) as ModuleNode;
-            if (node != null)
-                program.Modules.Add(node);
+            if (node is ImportNode import)
+                program.Imports.Add(program.AddChild(import));
         }
+
         return program;
     }
 
@@ -38,9 +41,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         foreach (var decl in context.module_body().top_level_declaration())
         {
-            var fn = Visit(decl) as FunctionNode;
-            if (fn != null)
-                module.Functions.Add(fn);
+            if (Visit(decl) is FunctionNode fn)
+                module.Functions.Add(module.AddChild(fn));
         }
 
         return module;
@@ -66,11 +68,12 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         {
             foreach (var p in context.parameters().parameter())
             {
-                fn.Parameters.Add(new ParameterNode
+                var paramNode = new ParameterNode
                 {
                     Name = p.identifier().GetText(),
                     Type = BuildTypeReference(p.type())
-                });
+                };
+                fn.Parameters.Add(fn.AddChild(paramNode));
             }
         }
 
@@ -79,7 +82,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             foreach (var stmtCtx in context.function_body().statement())
             {
                 if (Visit(stmtCtx) is StatementNode stmt)
-                    fn.Body.Add(stmt);
+                    fn.Body.Add(fn.AddChild(stmt));
             }
         }
 

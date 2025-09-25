@@ -56,12 +56,16 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             var op = context.GetChild(2 * i - 1).GetText(); // '*' or '/'
             var right = Visit(context.factor(i)) as ExpressionNode;
 
-            node = new BinaryExpressionNode
+            var binNode = new BinaryExpressionNode
             {
                 Operator = op,
                 Left = node,
                 Right = right
             };
+
+            node = binNode.AddChild(binNode.Left).Parent == binNode ? binNode : binNode;
+            right.Parent = binNode;
+            node = binNode;
         }
 
         return node;
@@ -78,12 +82,12 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         if (context.arguments() != null)
         {
-            foreach (var argCtx in context.arguments().expression())
-            {
-                var argNode = Visit(argCtx) as ExpressionNode;
-                if (argNode != null)
-                    call.Arguments.Add(argNode);
-            }
+            var args = context.arguments().expression()
+                            .Select(arg => call.AddChild(Visit(arg) as ExpressionNode))
+                            .Where(arg => arg != null)
+                            .Cast<ExpressionNode>();
+
+            call.Arguments.AddRange(args);
         }
 
         return call;
@@ -98,7 +102,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             var op = context.GetChild(2 * i - 1).GetText(); // '+' or '-'
             var right = Visit(context.term(i)) as ExpressionNode;
 
-            node = new BinaryExpressionNode
+            var binNode = new BinaryExpressionNode
             {
                 Operator = op,
                 Left = node,
@@ -106,6 +110,10 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                 SourceLine = context.Start.Line,
                 SourceColumn = context.Start.Column
             };
+
+            node = binNode.AddChild(binNode.Left).Parent == binNode ? binNode : binNode;
+            right.Parent = binNode;
+            node = binNode;
         }
 
         return node;
