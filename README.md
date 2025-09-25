@@ -66,3 +66,11 @@ The Emitter takes the AST from the previous parser stage and emits [Intermediate
 
 ### TweetyLang (CLI)
 This is the main program that brings together all the other components to compile TweetyLang code. It provides a command-line interface for building TweetyLang projects.
+
+### CLI Commands
+
+#### `new`
+Creates a new template TweetyLang project.
+
+#### `build`
+Builds the project in the current directory.
