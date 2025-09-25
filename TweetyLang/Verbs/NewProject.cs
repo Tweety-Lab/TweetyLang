@@ -20,7 +20,7 @@ module Methods
     }
 }
 
-module Program
+module {PROJECT_NAME}
 {
     public i32 main() 
     {
@@ -41,6 +41,7 @@ module Program
         Serialization.SaveProject(project, Path.Combine(Directory.GetCurrentDirectory(), Name, $"{Name}.toml"));
 
         // Create a template .tl file in the new directory
-        File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), Name, $"{Name}.tl"), TEMPLATE_FILE);
+        string template = TEMPLATE_FILE.Replace("{PROJECT_NAME}", Name);
+        File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), Name, $"{Name}.tl"), template);
     }
 }
