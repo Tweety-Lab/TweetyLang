@@ -35,6 +35,10 @@ public class SemanticAnalyzer
             rule.AnalyzeProgram(program);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
+
+            // Reset exceptions and warnings
+            rule.Exceptions.Clear();
+            rule.Warnings.Clear();
         }
 
         foreach (var module in program.Modules)
@@ -48,6 +52,10 @@ public class SemanticAnalyzer
             rule.AnalyzeModule(module);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
+
+            // Reset exceptions and warnings
+            rule.Exceptions.Clear();
+            rule.Warnings.Clear();
         }
 
         foreach (var fn in module.Functions)
@@ -61,6 +69,10 @@ public class SemanticAnalyzer
             rule.AnalyzeFunction(fn);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
+
+            // Reset exceptions and warnings
+            rule.Exceptions.Clear();
+            rule.Warnings.Clear();
         }
 
         foreach (var stmt in fn.Body)
@@ -74,6 +86,10 @@ public class SemanticAnalyzer
             rule.AnalyzeStatement(stmt);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
+
+            // Reset exceptions and warnings
+            rule.Exceptions.Clear();
+            rule.Warnings.Clear();
         }
 
         // Analyze expressions inside statements
@@ -99,6 +115,10 @@ public class SemanticAnalyzer
             rule.AnalyzeExpression(expr);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
+
+            // Reset exceptions and warnings
+            rule.Exceptions.Clear();
+            rule.Warnings.Clear();
         }
 
         // Analyze child expressions
