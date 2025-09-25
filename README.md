@@ -1,6 +1,20 @@
 # TweetyLang
 TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridges the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
 
+## Usage
+TweetyLang is build around the concept of **modules**. A module serves to structure your code and also supports behind-the-scenes compilation processes, everything in TweetyLang exists within a module.
+
+**A Module looks like the following:**
+```TweetyLang
+module Program
+{
+    public i32 MyMethod() 
+    {
+        return 64;
+    }
+}
+```
+
 ## Compiler Architecture
 The TweetyLang compiler is split up into several projects:
 
@@ -26,9 +40,9 @@ Console.WriteLine(function?.Name);
 ```TweetyLang
 module MyModule
 {
-    public i32 AwesomeMethod() 
+    public bool AwesomeMethod() 
     {
-        return 64;
+        return true;
     }
 }
 ```
