@@ -143,3 +143,10 @@ public class FunctionCallNode : ExpressionNode
     public string Name { get; set; }
     public List<ExpressionNode> Arguments { get; set; } = new();
 }
+
+public class IfNode : StatementNode
+{
+    public ExpressionNode Condition { get; set; }
+    public List<StatementNode> ThenBlock { get; set; } = new();
+    public List<StatementNode>? ElseBlock { get; set; }
+}

@@ -80,12 +80,6 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFunction_definition([NotNull] TweetyLangParser.Function_definitionContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TweetyLangParser.function_body"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitFunction_body([NotNull] TweetyLangParser.Function_bodyContext context);
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.function_call"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -98,6 +92,12 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitArguments([NotNull] TweetyLangParser.ArgumentsContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.statement_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatement_block([NotNull] TweetyLangParser.Statement_blockContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -109,6 +109,24 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitRaw_statement([NotNull] TweetyLangParser.Raw_statementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.compound_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCompound_statement([NotNull] TweetyLangParser.Compound_statementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.if_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIf_statement([NotNull] TweetyLangParser.If_statementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.else_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElse_block([NotNull] TweetyLangParser.Else_blockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
 	/// </summary>

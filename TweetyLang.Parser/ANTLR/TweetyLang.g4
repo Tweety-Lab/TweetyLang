@@ -14,6 +14,7 @@ top_level_declaration
     | function_definition
     ;
 
+// Modules
 module_definition
     : 'module' module_name module_body
     ;
@@ -30,16 +31,14 @@ import_statement
     : 'import' module_name ';'
     ;
 
+// Identifiers
 identifier
     : CHARACTER (CHARACTER | DIGIT | '_')*
     ;
 
+// Functions
 function_definition
-    : access_modifier (type | 'void') identifier '(' parameters? ')' function_body
-    ;
-
-function_body
-    : '{' statement* '}'
+    : access_modifier (type | 'void') identifier '(' parameters? ')' statement_block
     ;
 
 function_call
@@ -48,6 +47,11 @@ function_call
 
 arguments
     : expression (',' expression)*
+    ;
+
+// Statements
+statement_block
+    : '{' (statement | compound_statement)* '}'
     ;
 
 statement
@@ -59,6 +63,18 @@ raw_statement
     | assignment
     | declaration
     | expression_statement
+    ;
+
+compound_statement
+    : if_statement
+    ;
+
+if_statement
+    : 'if' '(' expression ')' statement_block else_block?
+    ;
+
+else_block
+    : 'else' statement_block
     ;
 
 assignment

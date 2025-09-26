@@ -77,14 +77,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             }
         }
 
-        if (context.function_body() != null)
-        {
-            foreach (var stmtCtx in context.function_body().statement())
-            {
-                if (Visit(stmtCtx) is StatementNode stmt)
-                    fn.Body.Add(fn.AddChild(stmt));
-            }
-        }
+        if (context.statement_block() != null)
+            fn.Body = BuildStatementBlock(context.statement_block(), fn);
 
         return fn;
     }
@@ -104,5 +98,24 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         var baseType = ctx.raw_type().GetText();
         int pointerLevel = ctx.pointer_suffix()?.GetText().Count(c => c == '*') ?? 0;
         return new TypeReference(baseType, pointerLevel);
+    }
+
+    public List<StatementNode> BuildStatementBlock(TweetyLangParser.Statement_blockContext ctx, AstNode parent)
+    {
+        var statements = new List<StatementNode>();
+
+        foreach (var stmtCtx in ctx.statement())
+        {
+            if (Visit(stmtCtx) is StatementNode stmt)
+                statements.Add(parent.AddChild(stmt));
+        }
+
+        foreach (var compCtx in ctx.compound_statement())
+        {
+            if (Visit(compCtx) is StatementNode stmt)
+                statements.Add(parent.AddChild(stmt));
+        }
+
+        return statements;
     }
 }
