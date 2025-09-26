@@ -14,7 +14,7 @@ import Methods;
 
 module Methods 
 {
-    public i32 NumberFunc() 
+    export i32 NumberFunc() 
     {
         return 32;
     }
@@ -22,7 +22,7 @@ module Methods
 
 module {PROJECT_NAME}
 {
-    public i32 main() 
+    export i32 main() 
     {
         i32 myVar = NumberFunc();
         return myVar;
