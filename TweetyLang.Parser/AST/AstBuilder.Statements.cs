@@ -1,4 +1,5 @@
-﻿using TweetyLang.AST;
+﻿using Antlr4.Runtime.Misc;
+using TweetyLang.AST;
 
 namespace TweetyLang.Parser.AST;
 
@@ -21,6 +22,16 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         };
         declNode.Expression = declNode.AddChild(Visit(context.expression()) as ExpressionNode);
         return declNode;
+    }
+
+    public override AstNode VisitAssignment(TweetyLangParser.AssignmentContext context)
+    {
+        var assignNode = new AssignmentNode
+        {
+            Name = context.identifier().GetText()
+        };
+        assignNode.Expression = assignNode.AddChild(Visit(context.expression()) as ExpressionNode);
+        return assignNode;
     }
 
     public override AstNode VisitReturn_statement(TweetyLangParser.Return_statementContext context)

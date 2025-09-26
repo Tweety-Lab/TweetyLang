@@ -37,6 +37,27 @@ internal class DeclarationHandler : BaseStatementHandler
 }
 
 [StatementHandler]
+internal class AssignmentHandler : BaseStatementHandler
+{
+    public override bool CanHandle(StatementNode statement) => statement is AssignmentNode;
+
+    public override void Handle(StatementNode statement, IRBuilder builder)
+    {
+        if (statement is not AssignmentNode assign)
+            return;
+
+        if (!builder.FuncLocals.TryGetValue(assign.Name, out var varInfo))
+            throw new InvalidOperationException($"Variable '{assign.Name}' not found for assignment.");
+
+        var (pointer, type) = varInfo;
+
+        var value = builder.EmitExpression(assign.Expression);
+
+        builder.LLVMBuilder.BuildStore(value, pointer);
+    }
+}
+
+[StatementHandler]
 internal class ReturnHandler : BaseStatementHandler
 {
     public override bool CanHandle(StatementNode statement) => statement is ReturnNode;

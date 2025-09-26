@@ -109,6 +109,12 @@ public class DeclarationNode : StatementNode
     public ExpressionNode Expression { get; set; }
 }
 
+public class AssignmentNode : StatementNode
+{
+    public string Name { get; set; }
+    public ExpressionNode Expression { get; set; }
+}
+
 public class ReturnNode : StatementNode
 {
     public ExpressionNode Expression { get; set; }
