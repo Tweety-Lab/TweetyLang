@@ -10,7 +10,7 @@ TweetyLang is build around the concept of **modules**. A module serves to struct
 ```TweetyLang
 module Program
 {
-    public i32 MyMethod() 
+    export i32 MyMethod() 
     {
         return 64;
     }
@@ -39,8 +39,8 @@ var tree = TweetyLangSyntaxTree.ParseText(SOURCE);
 // Find the module called "MyModule"
 var module = tree.Root.Modules.FirstOrDefault(m => m.Name == "MyModule");
 
-// Find first public function in the module
-var function = module?.Functions.FirstOrDefault(f => f.AccessModifier == "public");
+// Find first exported function in the module
+var function = module?.Functions.FirstOrDefault(f => f.Modifiers.HasFlag(Modifiers.Export));
 
 // Print its name
 Console.WriteLine(function?.Name);
@@ -50,7 +50,7 @@ Console.WriteLine(function?.Name);
 ```TweetyLang
 module MyModule
 {
-    public bool AwesomeMethod() 
+    export bool AwesomeMethod() 
     {
         return true;
     }
