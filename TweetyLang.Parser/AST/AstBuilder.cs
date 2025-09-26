@@ -59,10 +59,21 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         {
             Name = context.identifier().GetText(),
             ReturnType = returnType,
-            AccessModifier = context.access_modifier().GetText(),
+            Modifiers = Modifiers.None,
             SourceLine = context.Start.Line,
             SourceColumn = context.Start.Column
         };
+
+        // Handle modifiers
+        if (context.modifier() != null)
+        {
+            foreach (var modCtx in context.modifier())
+            {
+                var modText = modCtx.GetText();
+                if (modText == "export")
+                    fn.Modifiers |= Modifiers.Export;
+            }
+        }
 
         if (context.parameters() != null)
         {

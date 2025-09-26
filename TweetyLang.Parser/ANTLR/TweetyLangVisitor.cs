@@ -206,9 +206,9 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitRaw_type([NotNull] TweetyLangParser.Raw_typeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context);
+	Result VisitModifier([NotNull] TweetyLangParser.ModifierContext context);
 }

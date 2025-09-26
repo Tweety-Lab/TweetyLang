@@ -68,7 +68,7 @@ internal class DuplicateFunctionRule : BaseSemanticRule
 [SemanticAnalyzer]
 internal class FunctionCallVisibilityRule : BaseSemanticRule
 {
-    public static Dictionary<string, (string ModuleName, string AccessModifier)> FunctionVisibility = new();
+    public static Dictionary<string, (string ModuleName, Modifiers Modifiers)> FunctionVisibility = new();
 
     public override void AnalyzeFunction(FunctionNode func)
     {
@@ -77,7 +77,7 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
         if (module == null)
             throw new InvalidOperationException($"Function '{func.Name}' is not contained in a module.");
 
-        FunctionVisibility[func.Name] = (module.Name, func.AccessModifier);
+        FunctionVisibility[func.Name] = (module.Name, func.Modifiers);
     }
 
     public override void AnalyzeExpression(ExpressionNode expr)
@@ -92,7 +92,7 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
             return;
         }
 
-        var (declaringModule, access) = FunctionVisibility[call.Name];
+        var (declaringModule, modifiers) = FunctionVisibility[call.Name];
 
         // Find the module of the current function call
         var currentModule = call.Ancestors().OfType<ModuleNode>().FirstOrDefault();
@@ -109,9 +109,9 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
         if (currentModule.Name != declaringModule && !isImported)
             Error(call, $"Cannot call function '{call.Name}' from module '{declaringModule}' because it is not imported.");
 
-        // Check access modifier
-        if (access != "public" && currentModule.Name != declaringModule)
-            Error(call, $"Tried to call inaccessible function '{call.Name}'.");
+        // Check export modifier
+        if (!modifiers.HasFlag(Modifiers.Export) && currentModule.Name != declaringModule)
+            Error(call, $"Tried to call inaccessible function '{call.Name}' (not exported).");
     }
 }
 

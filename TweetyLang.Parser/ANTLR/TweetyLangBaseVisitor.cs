@@ -325,7 +325,7 @@ public partial class TweetyLangBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitRaw_type([NotNull] TweetyLangParser.Raw_typeContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
 	/// on <paramref name="context"/>.
@@ -333,5 +333,5 @@ public partial class TweetyLangBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context) { return VisitChildren(context); }
+	public virtual Result VisitModifier([NotNull] TweetyLangParser.ModifierContext context) { return VisitChildren(context); }
 }

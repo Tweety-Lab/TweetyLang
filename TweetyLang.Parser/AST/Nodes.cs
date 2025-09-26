@@ -17,6 +17,13 @@ public class TypeReference
     public static TypeReference I32 => new("i32");
 }
 
+[Flags]
+public enum Modifiers
+{
+    None,
+    Export
+}
+
 public abstract class AstNode
 {
     public int SourceLine { get; set; }
@@ -89,7 +96,7 @@ public class FunctionNode : AstNode
 {
     public string Name { get; set; }
     public TypeReference ReturnType { get; set; }
-    public string AccessModifier { get; set; }
+    public Modifiers Modifiers { get; set; }
     public List<ParameterNode> Parameters { get; set; } = new();
     public List<StatementNode> Body { get; set; } = new();
 }

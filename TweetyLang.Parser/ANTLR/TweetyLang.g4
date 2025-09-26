@@ -38,7 +38,7 @@ identifier
 
 // Functions
 function_definition
-    : access_modifier (type | 'void') identifier '(' parameters? ')' statement_block
+    : modifier* (type | 'void') identifier '(' parameters? ')' statement_block
     ;
 
 function_call
@@ -138,9 +138,8 @@ raw_type
     ;
 
 // Common
-access_modifier
-    : 'public'
-    | 'private'
+modifier
+    : 'export'
     ;
 
 // ----------------

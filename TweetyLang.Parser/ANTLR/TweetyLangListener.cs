@@ -321,13 +321,13 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitRaw_type([NotNull] TweetyLangParser.Raw_typeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Enter a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context);
+	void EnterModifier([NotNull] TweetyLangParser.ModifierContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Exit a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context);
+	void ExitModifier([NotNull] TweetyLangParser.ModifierContext context);
 }

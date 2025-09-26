@@ -384,17 +384,17 @@ public partial class TweetyLangBaseListener : ITweetyLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRaw_type([NotNull] TweetyLangParser.Raw_typeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Enter a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context) { }
+	public virtual void EnterModifier([NotNull] TweetyLangParser.ModifierContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.access_modifier"/>.
+	/// Exit a parse tree produced by <see cref="TweetyLangParser.modifier"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAccess_modifier([NotNull] TweetyLangParser.Access_modifierContext context) { }
+	public virtual void ExitModifier([NotNull] TweetyLangParser.ModifierContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

@@ -39,7 +39,7 @@ public partial class TweetyLangParser : Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, CHARACTER=26, DIGIT=27, NUMBER=28, WS=29, COMMENT=30;
+		CHARACTER=25, DIGIT=26, NUMBER=27, WS=28, COMMENT=29;
 	public const int
 		RULE_program = 0, RULE_top_level_declaration = 1, RULE_module_definition = 2, 
 		RULE_module_name = 3, RULE_module_body = 4, RULE_import_statement = 5, 
@@ -49,7 +49,7 @@ public partial class TweetyLangParser : Parser {
 		RULE_assignment = 16, RULE_declaration = 17, RULE_return_statement = 18, 
 		RULE_expression_statement = 19, RULE_expression = 20, RULE_term = 21, 
 		RULE_factor = 22, RULE_boolean_literal = 23, RULE_parameters = 24, RULE_parameter = 25, 
-		RULE_type = 26, RULE_pointer_suffix = 27, RULE_raw_type = 28, RULE_access_modifier = 29;
+		RULE_type = 26, RULE_pointer_suffix = 27, RULE_raw_type = 28, RULE_modifier = 29;
 	public static readonly string[] ruleNames = {
 		"program", "top_level_declaration", "module_definition", "module_name", 
 		"module_body", "import_statement", "identifier", "function_definition", 
@@ -57,18 +57,18 @@ public partial class TweetyLangParser : Parser {
 		"compound_statement", "if_statement", "else_block", "assignment", "declaration", 
 		"return_statement", "expression_statement", "expression", "term", "factor", 
 		"boolean_literal", "parameters", "parameter", "type", "pointer_suffix", 
-		"raw_type", "access_modifier"
+		"raw_type", "modifier"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'module'", "'.'", "'{'", "'}'", "'import'", "';'", "'_'", "'void'", 
 		"'('", "')'", "','", "'if'", "'else'", "'='", "'return'", "'+'", "'-'", 
-		"'*'", "'/'", "'true'", "'false'", "'i32'", "'bool'", "'public'", "'private'"
+		"'*'", "'/'", "'true'", "'false'", "'i32'", "'bool'", "'export'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, "CHARACTER", "DIGIT", "NUMBER", "WS", "COMMENT"
+		null, "CHARACTER", "DIGIT", "NUMBER", "WS", "COMMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -144,7 +144,7 @@ public partial class TweetyLangParser : Parser {
 			State = 63;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 50331682L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 29360418L) != 0)) {
 				{
 				{
 				State = 60;
@@ -225,8 +225,10 @@ public partial class TweetyLangParser : Parser {
 				import_statement();
 				}
 				break;
+			case T__7:
+			case T__21:
+			case T__22:
 			case T__23:
-			case T__24:
 				EnterOuterAlt(_localctx, 3);
 				{
 				State = 70;
@@ -416,7 +418,7 @@ public partial class TweetyLangParser : Parser {
 			State = 89;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 50331682L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 29360418L) != 0)) {
 				{
 				{
 				State = 86;
@@ -540,12 +542,12 @@ public partial class TweetyLangParser : Parser {
 			State = 102;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 201326720L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 100663424L) != 0)) {
 				{
 				{
 				State = 99;
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 201326720L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 100663424L) != 0)) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -572,9 +574,6 @@ public partial class TweetyLangParser : Parser {
 	}
 
 	public partial class Function_definitionContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public Access_modifierContext access_modifier() {
-			return GetRuleContext<Access_modifierContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
 			return GetRuleContext<IdentifierContext>(0);
 		}
@@ -583,6 +582,12 @@ public partial class TweetyLangParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
 			return GetRuleContext<TypeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ModifierContext[] modifier() {
+			return GetRuleContexts<ModifierContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ModifierContext modifier(int i) {
+			return GetRuleContext<ModifierContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ParametersContext parameters() {
 			return GetRuleContext<ParametersContext>(0);
@@ -618,44 +623,56 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 105;
-			access_modifier();
 			State = 108;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==T__23) {
+				{
+				{
+				State = 105;
+				modifier();
+				}
+				}
+				State = 110;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 113;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__21:
 			case T__22:
 				{
-				State = 106;
+				State = 111;
 				type();
 				}
 				break;
 			case T__7:
 				{
-				State = 107;
+				State = 112;
 				Match(T__7);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			State = 110;
+			State = 115;
 			identifier();
-			State = 111;
+			State = 116;
 			Match(T__8);
-			State = 113;
+			State = 118;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==T__21 || _la==T__22) {
 				{
-				State = 112;
+				State = 117;
 				parameters();
 				}
 			}
 
-			State = 115;
+			State = 120;
 			Match(T__9);
-			State = 116;
+			State = 121;
 			statement_block();
 			}
 		}
@@ -708,21 +725,21 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 118;
+			State = 123;
 			identifier();
-			State = 119;
+			State = 124;
 			Match(T__8);
-			State = 121;
+			State = 126;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 338690560L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 170918400L) != 0)) {
 				{
-				State = 120;
+				State = 125;
 				arguments();
 				}
 			}
 
-			State = 123;
+			State = 128;
 			Match(T__9);
 			}
 		}
@@ -775,21 +792,21 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 125;
-			expression();
 			State = 130;
+			expression();
+			State = 135;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__10) {
 				{
 				{
-				State = 126;
+				State = 131;
 				Match(T__10);
-				State = 127;
+				State = 132;
 				expression();
 				}
 				}
-				State = 132;
+				State = 137;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -850,14 +867,14 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 133;
-			Match(T__2);
 			State = 138;
+			Match(T__2);
+			State = 143;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 351310336L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 183538176L) != 0)) {
 				{
-				State = 136;
+				State = 141;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
 				case T__8:
@@ -869,13 +886,13 @@ public partial class TweetyLangParser : Parser {
 				case CHARACTER:
 				case NUMBER:
 					{
-					State = 134;
+					State = 139;
 					statement();
 					}
 					break;
 				case T__11:
 					{
-					State = 135;
+					State = 140;
 					compound_statement();
 					}
 					break;
@@ -883,11 +900,11 @@ public partial class TweetyLangParser : Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 140;
+				State = 145;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 141;
+			State = 146;
 			Match(T__3);
 			}
 		}
@@ -936,9 +953,9 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 143;
+			State = 148;
 			raw_statement();
-			State = 144;
+			State = 149;
 			Match(T__5);
 			}
 		}
@@ -994,34 +1011,34 @@ public partial class TweetyLangParser : Parser {
 		Raw_statementContext _localctx = new Raw_statementContext(Context, State);
 		EnterRule(_localctx, 24, RULE_raw_statement);
 		try {
-			State = 150;
+			State = 155;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,11,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,12,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 146;
+				State = 151;
 				return_statement();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 147;
+				State = 152;
 				assignment();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 148;
+				State = 153;
 				declaration();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 149;
+				State = 154;
 				expression_statement();
 				}
 				break;
@@ -1072,7 +1089,7 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 152;
+			State = 157;
 			if_statement();
 			}
 		}
@@ -1128,22 +1145,22 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 154;
+			State = 159;
 			Match(T__11);
-			State = 155;
-			Match(T__8);
-			State = 156;
-			expression();
-			State = 157;
-			Match(T__9);
-			State = 158;
-			statement_block();
 			State = 160;
+			Match(T__8);
+			State = 161;
+			expression();
+			State = 162;
+			Match(T__9);
+			State = 163;
+			statement_block();
+			State = 165;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==T__12) {
 				{
-				State = 159;
+				State = 164;
 				else_block();
 				}
 			}
@@ -1195,9 +1212,9 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 162;
+			State = 167;
 			Match(T__12);
-			State = 163;
+			State = 168;
 			statement_block();
 			}
 		}
@@ -1249,11 +1266,11 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 165;
+			State = 170;
 			identifier();
-			State = 166;
+			State = 171;
 			Match(T__13);
-			State = 167;
+			State = 172;
 			expression();
 			}
 		}
@@ -1308,13 +1325,13 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 169;
+			State = 174;
 			type();
-			State = 170;
+			State = 175;
 			identifier();
-			State = 171;
+			State = 176;
 			Match(T__13);
-			State = 172;
+			State = 177;
 			expression();
 			}
 		}
@@ -1364,14 +1381,14 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 174;
+			State = 179;
 			Match(T__14);
-			State = 176;
+			State = 181;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 338690560L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 170918400L) != 0)) {
 				{
-				State = 175;
+				State = 180;
 				expression();
 				}
 			}
@@ -1423,7 +1440,7 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 183;
 			expression();
 			}
 		}
@@ -1476,15 +1493,15 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 180;
-			term();
 			State = 185;
+			term();
+			State = 190;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__15 || _la==T__16) {
 				{
 				{
-				State = 181;
+				State = 186;
 				_la = TokenStream.LA(1);
 				if ( !(_la==T__15 || _la==T__16) ) {
 				ErrorHandler.RecoverInline(this);
@@ -1493,11 +1510,11 @@ public partial class TweetyLangParser : Parser {
 					ErrorHandler.ReportMatch(this);
 				    Consume();
 				}
-				State = 182;
+				State = 187;
 				term();
 				}
 				}
-				State = 187;
+				State = 192;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1552,15 +1569,15 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 188;
-			factor();
 			State = 193;
+			factor();
+			State = 198;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__17 || _la==T__18) {
 				{
 				{
-				State = 189;
+				State = 194;
 				_la = TokenStream.LA(1);
 				if ( !(_la==T__17 || _la==T__18) ) {
 				ErrorHandler.RecoverInline(this);
@@ -1569,11 +1586,11 @@ public partial class TweetyLangParser : Parser {
 					ErrorHandler.ReportMatch(this);
 				    Consume();
 				}
-				State = 190;
+				State = 195;
 				factor();
 				}
 				}
-				State = 195;
+				State = 200;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1632,45 +1649,45 @@ public partial class TweetyLangParser : Parser {
 		FactorContext _localctx = new FactorContext(Context, State);
 		EnterRule(_localctx, 44, RULE_factor);
 		try {
-			State = 204;
+			State = 209;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,16,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,17,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 196;
+				State = 201;
 				Match(NUMBER);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 197;
+				State = 202;
 				identifier();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 198;
+				State = 203;
 				function_call();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 199;
+				State = 204;
 				boolean_literal();
 				}
 				break;
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 200;
+				State = 205;
 				Match(T__8);
-				State = 201;
+				State = 206;
 				expression();
-				State = 202;
+				State = 207;
 				Match(T__9);
 				}
 				break;
@@ -1719,7 +1736,7 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 206;
+			State = 211;
 			_la = TokenStream.LA(1);
 			if ( !(_la==T__19 || _la==T__20) ) {
 			ErrorHandler.RecoverInline(this);
@@ -1779,21 +1796,21 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 208;
-			parameter();
 			State = 213;
+			parameter();
+			State = 218;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__10) {
 				{
 				{
-				State = 209;
+				State = 214;
 				Match(T__10);
-				State = 210;
+				State = 215;
 				parameter();
 				}
 				}
-				State = 215;
+				State = 220;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1847,9 +1864,9 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 216;
+			State = 221;
 			type();
-			State = 217;
+			State = 222;
 			identifier();
 			}
 		}
@@ -1901,9 +1918,9 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 219;
+			State = 224;
 			raw_type();
-			State = 220;
+			State = 225;
 			pointer_suffix();
 			}
 		}
@@ -1950,17 +1967,17 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 225;
+			State = 230;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__17) {
 				{
 				{
-				State = 222;
+				State = 227;
 				Match(T__17);
 				}
 				}
-				State = 227;
+				State = 232;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -2009,7 +2026,7 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 228;
+			State = 233;
 			_la = TokenStream.LA(1);
 			if ( !(_la==T__21 || _la==T__22) ) {
 			ErrorHandler.RecoverInline(this);
@@ -2031,47 +2048,39 @@ public partial class TweetyLangParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Access_modifierContext : ParserRuleContext {
-		public Access_modifierContext(ParserRuleContext parent, int invokingState)
+	public partial class ModifierContext : ParserRuleContext {
+		public ModifierContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_access_modifier; } }
+		public override int RuleIndex { get { return RULE_modifier; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ITweetyLangListener typedListener = listener as ITweetyLangListener;
-			if (typedListener != null) typedListener.EnterAccess_modifier(this);
+			if (typedListener != null) typedListener.EnterModifier(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ITweetyLangListener typedListener = listener as ITweetyLangListener;
-			if (typedListener != null) typedListener.ExitAccess_modifier(this);
+			if (typedListener != null) typedListener.ExitModifier(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAccess_modifier(this);
+			if (typedVisitor != null) return typedVisitor.VisitModifier(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public Access_modifierContext access_modifier() {
-		Access_modifierContext _localctx = new Access_modifierContext(Context, State);
-		EnterRule(_localctx, 58, RULE_access_modifier);
-		int _la;
+	public ModifierContext modifier() {
+		ModifierContext _localctx = new ModifierContext(Context, State);
+		EnterRule(_localctx, 58, RULE_modifier);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 230;
-			_la = TokenStream.LA(1);
-			if ( !(_la==T__23 || _la==T__24) ) {
-			ErrorHandler.RecoverInline(this);
-			}
-			else {
-				ErrorHandler.ReportMatch(this);
-			    Consume();
-			}
+			State = 235;
+			Match(T__23);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2086,77 +2095,79 @@ public partial class TweetyLangParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,30,233,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,29,238,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
 		2,29,7,29,1,0,5,0,62,8,0,10,0,12,0,65,9,0,1,0,1,0,1,1,1,1,1,1,3,1,72,8,
 		1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,81,8,3,10,3,12,3,84,9,3,1,4,1,4,5,4,
 		88,8,4,10,4,12,4,91,9,4,1,4,1,4,1,5,1,5,1,5,1,5,1,6,1,6,5,6,101,8,6,10,
-		6,12,6,104,9,6,1,7,1,7,1,7,3,7,109,8,7,1,7,1,7,1,7,3,7,114,8,7,1,7,1,7,
-		1,7,1,8,1,8,1,8,3,8,122,8,8,1,8,1,8,1,9,1,9,1,9,5,9,129,8,9,10,9,12,9,
-		132,9,9,1,10,1,10,1,10,5,10,137,8,10,10,10,12,10,140,9,10,1,10,1,10,1,
-		11,1,11,1,11,1,12,1,12,1,12,1,12,3,12,151,8,12,1,13,1,13,1,14,1,14,1,14,
-		1,14,1,14,1,14,3,14,161,8,14,1,15,1,15,1,15,1,16,1,16,1,16,1,16,1,17,1,
-		17,1,17,1,17,1,17,1,18,1,18,3,18,177,8,18,1,19,1,19,1,20,1,20,1,20,5,20,
-		184,8,20,10,20,12,20,187,9,20,1,21,1,21,1,21,5,21,192,8,21,10,21,12,21,
-		195,9,21,1,22,1,22,1,22,1,22,1,22,1,22,1,22,1,22,3,22,205,8,22,1,23,1,
-		23,1,24,1,24,1,24,5,24,212,8,24,10,24,12,24,215,9,24,1,25,1,25,1,25,1,
-		26,1,26,1,26,1,27,5,27,224,8,27,10,27,12,27,227,9,27,1,28,1,28,1,29,1,
-		29,1,29,0,0,30,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,
-		40,42,44,46,48,50,52,54,56,58,0,6,2,0,7,7,26,27,1,0,16,17,1,0,18,19,1,
-		0,20,21,1,0,22,23,1,0,24,25,227,0,63,1,0,0,0,2,71,1,0,0,0,4,73,1,0,0,0,
-		6,77,1,0,0,0,8,85,1,0,0,0,10,94,1,0,0,0,12,98,1,0,0,0,14,105,1,0,0,0,16,
-		118,1,0,0,0,18,125,1,0,0,0,20,133,1,0,0,0,22,143,1,0,0,0,24,150,1,0,0,
-		0,26,152,1,0,0,0,28,154,1,0,0,0,30,162,1,0,0,0,32,165,1,0,0,0,34,169,1,
-		0,0,0,36,174,1,0,0,0,38,178,1,0,0,0,40,180,1,0,0,0,42,188,1,0,0,0,44,204,
-		1,0,0,0,46,206,1,0,0,0,48,208,1,0,0,0,50,216,1,0,0,0,52,219,1,0,0,0,54,
-		225,1,0,0,0,56,228,1,0,0,0,58,230,1,0,0,0,60,62,3,2,1,0,61,60,1,0,0,0,
-		62,65,1,0,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,66,1,0,0,0,65,63,1,0,0,0,
-		66,67,5,0,0,1,67,1,1,0,0,0,68,72,3,4,2,0,69,72,3,10,5,0,70,72,3,14,7,0,
-		71,68,1,0,0,0,71,69,1,0,0,0,71,70,1,0,0,0,72,3,1,0,0,0,73,74,5,1,0,0,74,
-		75,3,6,3,0,75,76,3,8,4,0,76,5,1,0,0,0,77,82,3,12,6,0,78,79,5,2,0,0,79,
-		81,3,12,6,0,80,78,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,
-		7,1,0,0,0,84,82,1,0,0,0,85,89,5,3,0,0,86,88,3,2,1,0,87,86,1,0,0,0,88,91,
-		1,0,0,0,89,87,1,0,0,0,89,90,1,0,0,0,90,92,1,0,0,0,91,89,1,0,0,0,92,93,
-		5,4,0,0,93,9,1,0,0,0,94,95,5,5,0,0,95,96,3,6,3,0,96,97,5,6,0,0,97,11,1,
-		0,0,0,98,102,5,26,0,0,99,101,7,0,0,0,100,99,1,0,0,0,101,104,1,0,0,0,102,
-		100,1,0,0,0,102,103,1,0,0,0,103,13,1,0,0,0,104,102,1,0,0,0,105,108,3,58,
-		29,0,106,109,3,52,26,0,107,109,5,8,0,0,108,106,1,0,0,0,108,107,1,0,0,0,
-		109,110,1,0,0,0,110,111,3,12,6,0,111,113,5,9,0,0,112,114,3,48,24,0,113,
-		112,1,0,0,0,113,114,1,0,0,0,114,115,1,0,0,0,115,116,5,10,0,0,116,117,3,
-		20,10,0,117,15,1,0,0,0,118,119,3,12,6,0,119,121,5,9,0,0,120,122,3,18,9,
-		0,121,120,1,0,0,0,121,122,1,0,0,0,122,123,1,0,0,0,123,124,5,10,0,0,124,
-		17,1,0,0,0,125,130,3,40,20,0,126,127,5,11,0,0,127,129,3,40,20,0,128,126,
-		1,0,0,0,129,132,1,0,0,0,130,128,1,0,0,0,130,131,1,0,0,0,131,19,1,0,0,0,
-		132,130,1,0,0,0,133,138,5,3,0,0,134,137,3,22,11,0,135,137,3,26,13,0,136,
-		134,1,0,0,0,136,135,1,0,0,0,137,140,1,0,0,0,138,136,1,0,0,0,138,139,1,
-		0,0,0,139,141,1,0,0,0,140,138,1,0,0,0,141,142,5,4,0,0,142,21,1,0,0,0,143,
-		144,3,24,12,0,144,145,5,6,0,0,145,23,1,0,0,0,146,151,3,36,18,0,147,151,
-		3,32,16,0,148,151,3,34,17,0,149,151,3,38,19,0,150,146,1,0,0,0,150,147,
-		1,0,0,0,150,148,1,0,0,0,150,149,1,0,0,0,151,25,1,0,0,0,152,153,3,28,14,
-		0,153,27,1,0,0,0,154,155,5,12,0,0,155,156,5,9,0,0,156,157,3,40,20,0,157,
-		158,5,10,0,0,158,160,3,20,10,0,159,161,3,30,15,0,160,159,1,0,0,0,160,161,
-		1,0,0,0,161,29,1,0,0,0,162,163,5,13,0,0,163,164,3,20,10,0,164,31,1,0,0,
-		0,165,166,3,12,6,0,166,167,5,14,0,0,167,168,3,40,20,0,168,33,1,0,0,0,169,
-		170,3,52,26,0,170,171,3,12,6,0,171,172,5,14,0,0,172,173,3,40,20,0,173,
-		35,1,0,0,0,174,176,5,15,0,0,175,177,3,40,20,0,176,175,1,0,0,0,176,177,
-		1,0,0,0,177,37,1,0,0,0,178,179,3,40,20,0,179,39,1,0,0,0,180,185,3,42,21,
-		0,181,182,7,1,0,0,182,184,3,42,21,0,183,181,1,0,0,0,184,187,1,0,0,0,185,
-		183,1,0,0,0,185,186,1,0,0,0,186,41,1,0,0,0,187,185,1,0,0,0,188,193,3,44,
-		22,0,189,190,7,2,0,0,190,192,3,44,22,0,191,189,1,0,0,0,192,195,1,0,0,0,
-		193,191,1,0,0,0,193,194,1,0,0,0,194,43,1,0,0,0,195,193,1,0,0,0,196,205,
-		5,28,0,0,197,205,3,12,6,0,198,205,3,16,8,0,199,205,3,46,23,0,200,201,5,
-		9,0,0,201,202,3,40,20,0,202,203,5,10,0,0,203,205,1,0,0,0,204,196,1,0,0,
-		0,204,197,1,0,0,0,204,198,1,0,0,0,204,199,1,0,0,0,204,200,1,0,0,0,205,
-		45,1,0,0,0,206,207,7,3,0,0,207,47,1,0,0,0,208,213,3,50,25,0,209,210,5,
-		11,0,0,210,212,3,50,25,0,211,209,1,0,0,0,212,215,1,0,0,0,213,211,1,0,0,
-		0,213,214,1,0,0,0,214,49,1,0,0,0,215,213,1,0,0,0,216,217,3,52,26,0,217,
-		218,3,12,6,0,218,51,1,0,0,0,219,220,3,56,28,0,220,221,3,54,27,0,221,53,
-		1,0,0,0,222,224,5,18,0,0,223,222,1,0,0,0,224,227,1,0,0,0,225,223,1,0,0,
-		0,225,226,1,0,0,0,226,55,1,0,0,0,227,225,1,0,0,0,228,229,7,4,0,0,229,57,
-		1,0,0,0,230,231,7,5,0,0,231,59,1,0,0,0,19,63,71,82,89,102,108,113,121,
-		130,136,138,150,160,176,185,193,204,213,225
+		6,12,6,104,9,6,1,7,5,7,107,8,7,10,7,12,7,110,9,7,1,7,1,7,3,7,114,8,7,1,
+		7,1,7,1,7,3,7,119,8,7,1,7,1,7,1,7,1,8,1,8,1,8,3,8,127,8,8,1,8,1,8,1,9,
+		1,9,1,9,5,9,134,8,9,10,9,12,9,137,9,9,1,10,1,10,1,10,5,10,142,8,10,10,
+		10,12,10,145,9,10,1,10,1,10,1,11,1,11,1,11,1,12,1,12,1,12,1,12,3,12,156,
+		8,12,1,13,1,13,1,14,1,14,1,14,1,14,1,14,1,14,3,14,166,8,14,1,15,1,15,1,
+		15,1,16,1,16,1,16,1,16,1,17,1,17,1,17,1,17,1,17,1,18,1,18,3,18,182,8,18,
+		1,19,1,19,1,20,1,20,1,20,5,20,189,8,20,10,20,12,20,192,9,20,1,21,1,21,
+		1,21,5,21,197,8,21,10,21,12,21,200,9,21,1,22,1,22,1,22,1,22,1,22,1,22,
+		1,22,1,22,3,22,210,8,22,1,23,1,23,1,24,1,24,1,24,5,24,217,8,24,10,24,12,
+		24,220,9,24,1,25,1,25,1,25,1,26,1,26,1,26,1,27,5,27,229,8,27,10,27,12,
+		27,232,9,27,1,28,1,28,1,29,1,29,1,29,0,0,30,0,2,4,6,8,10,12,14,16,18,20,
+		22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,0,5,2,0,7,7,25,
+		26,1,0,16,17,1,0,18,19,1,0,20,21,1,0,22,23,233,0,63,1,0,0,0,2,71,1,0,0,
+		0,4,73,1,0,0,0,6,77,1,0,0,0,8,85,1,0,0,0,10,94,1,0,0,0,12,98,1,0,0,0,14,
+		108,1,0,0,0,16,123,1,0,0,0,18,130,1,0,0,0,20,138,1,0,0,0,22,148,1,0,0,
+		0,24,155,1,0,0,0,26,157,1,0,0,0,28,159,1,0,0,0,30,167,1,0,0,0,32,170,1,
+		0,0,0,34,174,1,0,0,0,36,179,1,0,0,0,38,183,1,0,0,0,40,185,1,0,0,0,42,193,
+		1,0,0,0,44,209,1,0,0,0,46,211,1,0,0,0,48,213,1,0,0,0,50,221,1,0,0,0,52,
+		224,1,0,0,0,54,230,1,0,0,0,56,233,1,0,0,0,58,235,1,0,0,0,60,62,3,2,1,0,
+		61,60,1,0,0,0,62,65,1,0,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,66,1,0,0,0,
+		65,63,1,0,0,0,66,67,5,0,0,1,67,1,1,0,0,0,68,72,3,4,2,0,69,72,3,10,5,0,
+		70,72,3,14,7,0,71,68,1,0,0,0,71,69,1,0,0,0,71,70,1,0,0,0,72,3,1,0,0,0,
+		73,74,5,1,0,0,74,75,3,6,3,0,75,76,3,8,4,0,76,5,1,0,0,0,77,82,3,12,6,0,
+		78,79,5,2,0,0,79,81,3,12,6,0,80,78,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,
+		82,83,1,0,0,0,83,7,1,0,0,0,84,82,1,0,0,0,85,89,5,3,0,0,86,88,3,2,1,0,87,
+		86,1,0,0,0,88,91,1,0,0,0,89,87,1,0,0,0,89,90,1,0,0,0,90,92,1,0,0,0,91,
+		89,1,0,0,0,92,93,5,4,0,0,93,9,1,0,0,0,94,95,5,5,0,0,95,96,3,6,3,0,96,97,
+		5,6,0,0,97,11,1,0,0,0,98,102,5,25,0,0,99,101,7,0,0,0,100,99,1,0,0,0,101,
+		104,1,0,0,0,102,100,1,0,0,0,102,103,1,0,0,0,103,13,1,0,0,0,104,102,1,0,
+		0,0,105,107,3,58,29,0,106,105,1,0,0,0,107,110,1,0,0,0,108,106,1,0,0,0,
+		108,109,1,0,0,0,109,113,1,0,0,0,110,108,1,0,0,0,111,114,3,52,26,0,112,
+		114,5,8,0,0,113,111,1,0,0,0,113,112,1,0,0,0,114,115,1,0,0,0,115,116,3,
+		12,6,0,116,118,5,9,0,0,117,119,3,48,24,0,118,117,1,0,0,0,118,119,1,0,0,
+		0,119,120,1,0,0,0,120,121,5,10,0,0,121,122,3,20,10,0,122,15,1,0,0,0,123,
+		124,3,12,6,0,124,126,5,9,0,0,125,127,3,18,9,0,126,125,1,0,0,0,126,127,
+		1,0,0,0,127,128,1,0,0,0,128,129,5,10,0,0,129,17,1,0,0,0,130,135,3,40,20,
+		0,131,132,5,11,0,0,132,134,3,40,20,0,133,131,1,0,0,0,134,137,1,0,0,0,135,
+		133,1,0,0,0,135,136,1,0,0,0,136,19,1,0,0,0,137,135,1,0,0,0,138,143,5,3,
+		0,0,139,142,3,22,11,0,140,142,3,26,13,0,141,139,1,0,0,0,141,140,1,0,0,
+		0,142,145,1,0,0,0,143,141,1,0,0,0,143,144,1,0,0,0,144,146,1,0,0,0,145,
+		143,1,0,0,0,146,147,5,4,0,0,147,21,1,0,0,0,148,149,3,24,12,0,149,150,5,
+		6,0,0,150,23,1,0,0,0,151,156,3,36,18,0,152,156,3,32,16,0,153,156,3,34,
+		17,0,154,156,3,38,19,0,155,151,1,0,0,0,155,152,1,0,0,0,155,153,1,0,0,0,
+		155,154,1,0,0,0,156,25,1,0,0,0,157,158,3,28,14,0,158,27,1,0,0,0,159,160,
+		5,12,0,0,160,161,5,9,0,0,161,162,3,40,20,0,162,163,5,10,0,0,163,165,3,
+		20,10,0,164,166,3,30,15,0,165,164,1,0,0,0,165,166,1,0,0,0,166,29,1,0,0,
+		0,167,168,5,13,0,0,168,169,3,20,10,0,169,31,1,0,0,0,170,171,3,12,6,0,171,
+		172,5,14,0,0,172,173,3,40,20,0,173,33,1,0,0,0,174,175,3,52,26,0,175,176,
+		3,12,6,0,176,177,5,14,0,0,177,178,3,40,20,0,178,35,1,0,0,0,179,181,5,15,
+		0,0,180,182,3,40,20,0,181,180,1,0,0,0,181,182,1,0,0,0,182,37,1,0,0,0,183,
+		184,3,40,20,0,184,39,1,0,0,0,185,190,3,42,21,0,186,187,7,1,0,0,187,189,
+		3,42,21,0,188,186,1,0,0,0,189,192,1,0,0,0,190,188,1,0,0,0,190,191,1,0,
+		0,0,191,41,1,0,0,0,192,190,1,0,0,0,193,198,3,44,22,0,194,195,7,2,0,0,195,
+		197,3,44,22,0,196,194,1,0,0,0,197,200,1,0,0,0,198,196,1,0,0,0,198,199,
+		1,0,0,0,199,43,1,0,0,0,200,198,1,0,0,0,201,210,5,27,0,0,202,210,3,12,6,
+		0,203,210,3,16,8,0,204,210,3,46,23,0,205,206,5,9,0,0,206,207,3,40,20,0,
+		207,208,5,10,0,0,208,210,1,0,0,0,209,201,1,0,0,0,209,202,1,0,0,0,209,203,
+		1,0,0,0,209,204,1,0,0,0,209,205,1,0,0,0,210,45,1,0,0,0,211,212,7,3,0,0,
+		212,47,1,0,0,0,213,218,3,50,25,0,214,215,5,11,0,0,215,217,3,50,25,0,216,
+		214,1,0,0,0,217,220,1,0,0,0,218,216,1,0,0,0,218,219,1,0,0,0,219,49,1,0,
+		0,0,220,218,1,0,0,0,221,222,3,52,26,0,222,223,3,12,6,0,223,51,1,0,0,0,
+		224,225,3,56,28,0,225,226,3,54,27,0,226,53,1,0,0,0,227,229,5,18,0,0,228,
+		227,1,0,0,0,229,232,1,0,0,0,230,228,1,0,0,0,230,231,1,0,0,0,231,55,1,0,
+		0,0,232,230,1,0,0,0,233,234,7,4,0,0,234,57,1,0,0,0,235,236,5,24,0,0,236,
+		59,1,0,0,0,20,63,71,82,89,102,108,113,118,126,135,141,143,155,165,181,
+		190,198,209,218,230
 	};
 
 	public static readonly ATN _ATN =
