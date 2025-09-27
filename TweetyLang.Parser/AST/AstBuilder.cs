@@ -70,11 +70,8 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             foreach (var modCtx in context.modifier())
             {
                 var modText = modCtx.GetText();
-                if (modText == "export")
-                    fn.Modifiers |= Modifiers.Export;
-
-                if (modText == "extern")
-                    fn.Modifiers |= Modifiers.Extern;
+                var enumValue = (Modifiers)Enum.Parse(typeof(Modifiers), modText, true);
+                fn.Modifiers |= enumValue;
             }
         }
 
