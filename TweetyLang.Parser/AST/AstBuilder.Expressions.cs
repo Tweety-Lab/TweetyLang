@@ -29,6 +29,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
     public override AstNode VisitFactor(TweetyLangParser.FactorContext context)
     {
+        if (context.char_literal() != null)
+            return new CharacterLiteralNode { Value = context.char_literal().GetText()[0] };
+
         if (context.identifier() != null)
             return Visit(context.identifier());
 

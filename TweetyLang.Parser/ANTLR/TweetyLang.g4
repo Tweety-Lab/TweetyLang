@@ -107,6 +107,7 @@ factor
     | identifier
     | function_call
     | boolean_literal
+    | char_literal
     | '(' expression ')'
     ;
 
@@ -135,12 +136,17 @@ pointer_suffix
 raw_type
     : 'i32'
     | 'bool'
+    | 'char'
     ;
 
 // Common
 modifier
     : 'export'
     | 'extern'
+    ;
+
+char_literal
+    : '\'' (CHARACTER) '\''
     ;
 
 // ----------------

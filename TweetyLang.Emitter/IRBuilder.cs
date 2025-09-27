@@ -51,6 +51,9 @@ internal class IRBuilder
             case BooleanLiteralNode boolLit:
                 return LLVMValueRef.CreateConstInt(LLVMTypeRef.Int1, boolLit.Value ? 1UL : 0UL, false);
 
+            case CharacterLiteralNode charLit:
+                return LLVMValueRef.CreateConstInt(LLVMTypeRef.Int8, (ulong)charLit.Value, false);
+
             case IdentifierNode id:
                 if (!FuncLocals.TryGetValue(id.Name, out var value))
                     throw new InvalidOperationException($"Unknown variable {id.Name}");

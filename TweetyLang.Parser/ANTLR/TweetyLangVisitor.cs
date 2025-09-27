@@ -211,4 +211,10 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitModifier([NotNull] TweetyLangParser.ModifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.char_literal"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitChar_literal([NotNull] TweetyLangParser.Char_literalContext context);
 }

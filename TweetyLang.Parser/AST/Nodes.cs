@@ -15,6 +15,8 @@ public class TypeReference
 
     public static TypeReference Void => new("void");
     public static TypeReference I32 => new("i32");
+    public static TypeReference Bool => new("bool");
+    public static TypeReference Char => new("char");
 }
 
 [Flags]
@@ -154,6 +156,11 @@ public class BooleanLiteralNode : ExpressionNode
 public class IntegerLiteralNode : ExpressionNode
 {
     public int Value { get; set; }
+}
+
+public class CharacterLiteralNode : ExpressionNode
+{
+    public char Value { get; set; }
 }
 
 public class BinaryExpressionNode : ExpressionNode

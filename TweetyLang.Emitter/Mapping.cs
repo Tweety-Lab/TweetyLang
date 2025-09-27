@@ -21,6 +21,7 @@ internal static class Mapping
             "i32" => LLVMTypeRef.Int32,
             "bool" => LLVMTypeRef.Int1,
             "void" => LLVMTypeRef.Void,
+            "char" => LLVMTypeRef.Int8,
             _ => throw new System.NotSupportedException($"Unknown base type {typeRef.BaseType}")
         };
 
