@@ -39,7 +39,7 @@ public partial class TweetyLangParser : Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		CHARACTER=25, DIGIT=26, NUMBER=27, WS=28, COMMENT=29;
+		CHARACTER=25, NUMBER=26, WS=27, COMMENT=28;
 	public const int
 		RULE_program = 0, RULE_top_level_declaration = 1, RULE_module_definition = 2, 
 		RULE_module_name = 3, RULE_module_body = 4, RULE_import_statement = 5, 
@@ -68,7 +68,7 @@ public partial class TweetyLangParser : Parser {
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, "CHARACTER", "DIGIT", "NUMBER", "WS", "COMMENT"
+		null, "CHARACTER", "NUMBER", "WS", "COMMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -502,9 +502,9 @@ public partial class TweetyLangParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CHARACTER(int i) {
 			return GetToken(TweetyLangParser.CHARACTER, i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] DIGIT() { return GetTokens(TweetyLangParser.DIGIT); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIGIT(int i) {
-			return GetToken(TweetyLangParser.DIGIT, i);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NUMBER() { return GetTokens(TweetyLangParser.NUMBER); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NUMBER(int i) {
+			return GetToken(TweetyLangParser.NUMBER, i);
 		}
 		public IdentifierContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -732,7 +732,7 @@ public partial class TweetyLangParser : Parser {
 			State = 126;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 170918400L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 103809536L) != 0)) {
 				{
 				State = 125;
 				arguments();
@@ -872,7 +872,7 @@ public partial class TweetyLangParser : Parser {
 			State = 143;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 183538176L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 116429312L) != 0)) {
 				{
 				State = 141;
 				ErrorHandler.Sync(this);
@@ -1386,7 +1386,7 @@ public partial class TweetyLangParser : Parser {
 			State = 181;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 170918400L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 103809536L) != 0)) {
 				{
 				State = 180;
 				expression();
@@ -2095,7 +2095,7 @@ public partial class TweetyLangParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,29,238,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,28,238,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
@@ -2156,7 +2156,7 @@ public partial class TweetyLangParser : Parser {
 		3,42,21,0,188,186,1,0,0,0,189,192,1,0,0,0,190,188,1,0,0,0,190,191,1,0,
 		0,0,191,41,1,0,0,0,192,190,1,0,0,0,193,198,3,44,22,0,194,195,7,2,0,0,195,
 		197,3,44,22,0,196,194,1,0,0,0,197,200,1,0,0,0,198,196,1,0,0,0,198,199,
-		1,0,0,0,199,43,1,0,0,0,200,198,1,0,0,0,201,210,5,27,0,0,202,210,3,12,6,
+		1,0,0,0,199,43,1,0,0,0,200,198,1,0,0,0,201,210,5,26,0,0,202,210,3,12,6,
 		0,203,210,3,16,8,0,204,210,3,46,23,0,205,206,5,9,0,0,206,207,3,40,20,0,
 		207,208,5,10,0,0,208,210,1,0,0,0,209,201,1,0,0,0,209,202,1,0,0,0,209,203,
 		1,0,0,0,209,204,1,0,0,0,209,205,1,0,0,0,210,45,1,0,0,0,211,212,7,3,0,0,

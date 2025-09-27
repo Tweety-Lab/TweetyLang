@@ -88,13 +88,20 @@ public class ImportNode : AstNode
 
 public class ModuleNode : AstNode
 {
+    /// <summary> The name of the module. </summary>
     public string Name { get; set; }
+
     public List<FunctionNode> Functions { get; set; } = new();
 }
 
 public class FunctionNode : AstNode
 {
+    /// <summary> The name of the function. </summary>
     public string Name { get; set; }
+
+    /// <summary> The fully qualified name of the function. </summary>
+    public string FullName => Parent is ModuleNode module ? $"{module.Name}::{Name}" : Name;
+
     public TypeReference ReturnType { get; set; }
     public Modifiers Modifiers { get; set; }
     public List<ParameterNode> Parameters { get; set; } = new();
@@ -111,14 +118,18 @@ public abstract class StatementNode : AstNode { }
 
 public class DeclarationNode : StatementNode
 {
+    /// <summary> The name of the variable being declared. </summary>
     public string Name { get; set; }
+
     public TypeReference Type { get; set; }
     public ExpressionNode Expression { get; set; }
 }
 
 public class AssignmentNode : StatementNode
 {
+    /// <summary> The name of the variable being assigned. </summary>
     public string Name { get; set; }
+
     public ExpressionNode Expression { get; set; }
 }
 

@@ -33,7 +33,7 @@ import_statement
 
 // Identifiers
 identifier
-    : CHARACTER (CHARACTER | DIGIT | '_')*
+    : CHARACTER (CHARACTER | NUMBER | '_')*
     ;
 
 // Functions
@@ -150,13 +150,7 @@ CHARACTER
     : [a-zA-Z]
     ;
 
-DIGIT
-    : [0-9]
-    ;
-
-NUMBER
-    : DIGIT+
-    ;
+NUMBER : [0-9]+ ;
 
 WS
     : [ \t\r\n]+ -> skip
