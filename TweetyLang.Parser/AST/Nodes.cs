@@ -21,7 +21,8 @@ public class TypeReference
 public enum Modifiers
 {
     None,
-    Export
+    Export,
+    Extern
 }
 
 public abstract class AstNode

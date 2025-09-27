@@ -38,7 +38,7 @@ identifier
 
 // Functions
 function_definition
-    : modifier* (type | 'void') identifier '(' parameters? ')' statement_block
+    : modifier* (type | 'void') identifier '(' parameters? ')' (statement_block | ';')
     ;
 
 function_call
@@ -140,6 +140,7 @@ raw_type
 // Common
 modifier
     : 'export'
+    | 'extern'
     ;
 
 // ----------------

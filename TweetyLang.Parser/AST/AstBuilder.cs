@@ -72,6 +72,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                 var modText = modCtx.GetText();
                 if (modText == "export")
                     fn.Modifiers |= Modifiers.Export;
+
+                if (modText == "extern")
+                    fn.Modifiers |= Modifiers.Extern;
             }
         }
 
