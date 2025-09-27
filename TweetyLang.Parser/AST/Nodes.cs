@@ -1,8 +1,13 @@
-﻿namespace TweetyLang.AST;
+﻿using System.Xml.Linq;
 
-public class TypeReference
+namespace TweetyLang.AST;
+
+public class TypeReference : IEquatable<TypeReference>
 {
+    /// <summary> The base type of the type reference. </summary>
     public string BaseType { get; set; }
+
+    /// <summary> The number of pointer levels in the type reference. </summary>
     public int PointerLevel { get; set; }
 
     public TypeReference(string baseType, int pointerLevel = 0)
@@ -11,7 +16,29 @@ public class TypeReference
         PointerLevel = pointerLevel;
     }
 
+    /// <summary> Returns a string representation of the type reference. </summary>
     public override string ToString() => BaseType + new string('*', PointerLevel);
+
+    /// <summary> Compares two type references for equality. </summary>
+    public bool Equals(TypeReference? obj)
+    {
+        if (obj is not TypeReference other) return false;
+        return BaseType == other.BaseType && PointerLevel == other.PointerLevel;
+    }
+
+    /// <summary> Compares two type references for equality. </summary>
+    public override bool Equals(object obj)
+    {
+        return Equals(obj as TypeReference);
+    }
+
+    public override int GetHashCode() => HashCode.Combine(BaseType, PointerLevel);
+
+    public static bool operator ==(TypeReference? left, TypeReference? right) =>
+        Equals(left, right);
+
+    public static bool operator !=(TypeReference? left, TypeReference? right) =>
+        !Equals(left, right);
 
     public static TypeReference Void => new("void");
     public static TypeReference I32 => new("i32");

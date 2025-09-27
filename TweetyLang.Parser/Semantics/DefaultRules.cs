@@ -17,7 +17,7 @@ internal abstract class BaseSemanticRule
     public virtual void AnalyzeFunction(FunctionNode func) { }
     public virtual void AnalyzeModule(ModuleNode module) { }
     public virtual void AnalyzeProgram(ProgramNode program) { }
-    public virtual void AnalyzeStatement(StatementNode expr) { }
+    public virtual void AnalyzeStatement(StatementNode stmt) { }
     public virtual void AnalyzeExpression(ExpressionNode expr) { }
 
     /// <summary>
@@ -142,5 +142,31 @@ internal class ImportRule : BaseSemanticRule
             if (!program.Modules.Any(m => m.Name == import.ModuleName))
                 Error(import, $"Could not resolve import '{import.ModuleName}'.");
         }
+    }
+}
+
+[SemanticAnalyzer]
+internal class TypeDeclarationRule : BaseSemanticRule
+{
+    public override void AnalyzeStatement(StatementNode stmt)
+    {
+        if (stmt is not DeclarationNode decl)
+            return;
+
+        var type = decl.Type;
+        if (ResolveExpressionType(decl.Expression) != type)
+            Error(decl, $"Type mismatch: Expression type '{ResolveExpressionType(decl.Expression)}' does not match declared type '{type}'.");
+    }
+
+    private TypeReference? ResolveExpressionType(ExpressionNode expr)
+    {
+        return expr switch
+        {
+            StringLiteralNode => new TypeReference("char", 1),
+            CharacterLiteralNode => TypeReference.Char,
+            IntegerLiteralNode => TypeReference.I32,
+            BooleanLiteralNode => TypeReference.Bool,
+            _ => null,
+        };
     }
 }
