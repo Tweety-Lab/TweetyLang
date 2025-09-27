@@ -55,6 +55,9 @@ internal class BuildProject : BaseVerb
 
             // PRINT IR
             Console.WriteLine("\n" + module.PrintToString());
+
+            // Write IR to file
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(tlFile), "program.ll"), module.PrintToString());
         }
     }
 }

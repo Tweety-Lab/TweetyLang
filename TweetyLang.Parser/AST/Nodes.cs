@@ -106,7 +106,7 @@ public class FunctionNode : AstNode
     public TypeReference ReturnType { get; set; }
     public Modifiers Modifiers { get; set; }
     public List<ParameterNode> Parameters { get; set; } = new();
-    public List<StatementNode> Body { get; set; } = new();
+    public List<StatementNode>? Body { get; set; }
 }
 
 public class ParameterNode : AstNode

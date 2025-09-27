@@ -75,7 +75,7 @@ public class SemanticAnalyzer
             rule.Warnings.Clear();
         }
 
-        foreach (var stmt in fn.Body)
+        foreach (var stmt in fn.Body ?? new List<StatementNode>())
             AnalyzeStatement(stmt);
     }
 

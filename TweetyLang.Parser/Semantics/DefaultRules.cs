@@ -116,6 +116,19 @@ internal class FunctionCallVisibilityRule : BaseSemanticRule
 }
 
 [SemanticAnalyzer]
+internal class FunctionBodyRule : BaseSemanticRule
+{
+    public override void AnalyzeFunction(FunctionNode func)
+    {
+        if (func.Body == null && !func.Modifiers.HasFlag(Modifiers.Extern))
+            Error(func, $"Non-externed function '{func.FullName}' has no body.");
+        
+        if (func.Body != null && func.Modifiers.HasFlag(Modifiers.Extern))
+            Error(func, $"Externed function '{func.FullName}' has a body.");
+    }
+}
+
+[SemanticAnalyzer]
 internal class ImportRule : BaseSemanticRule
 {
     public override void AnalyzeProgram(ProgramNode program)
