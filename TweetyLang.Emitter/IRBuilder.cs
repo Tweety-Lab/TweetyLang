@@ -112,12 +112,16 @@ internal class IRBuilder
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
 
-        if (fn.Modifiers.HasFlag(Modifiers.Export))
+        if (fn.Modifiers.HasFlag(Modifiers.Export) || fn.Modifiers.HasFlag(Modifiers.Extern))
             function.Linkage = LLVMLinkage.LLVMExternalLinkage;
         else
             function.Linkage = LLVMLinkage.LLVMInternalLinkage;
 
         Funcs[fn.Name] = (function, fnType);
+
+        // If extern, we don't emit a body
+        if (fn.Modifiers.HasFlag(Modifiers.Extern))
+            return;
 
         // Entry block
         var entry = function.AppendBasicBlock("entry");
@@ -138,7 +142,7 @@ internal class IRBuilder
         }
 
         // Emit statements
-        foreach (var stmt in fn.Body)
+        foreach (var stmt in fn.Body ?? new List<StatementNode>())
             EmitStatement(stmt);
 
         // Return
