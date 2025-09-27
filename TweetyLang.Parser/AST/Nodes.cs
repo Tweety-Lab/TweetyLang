@@ -10,6 +10,7 @@ public class TypeReference : IEquatable<TypeReference>
     /// <summary> The number of pointer levels in the type reference. </summary>
     public int PointerLevel { get; set; }
 
+    /// <summary> Creates a new instance of <see cref="TypeReference"/> </summary>
     public TypeReference(string baseType, int pointerLevel = 0)
     {
         BaseType = baseType;
@@ -113,6 +114,7 @@ public class ProgramNode : AstNode
 
 public class ImportNode : AstNode
 {
+    /// <summary> The name of the module being imported. </summary>
     public string ModuleName { get; set; }
 }
 
