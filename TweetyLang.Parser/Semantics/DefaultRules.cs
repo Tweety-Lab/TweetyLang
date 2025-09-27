@@ -154,11 +154,13 @@ internal class TypeDeclarationRule : BaseSemanticRule
             return;
 
         var type = decl.Type;
-        if (ResolveExpressionType(decl.Expression) != type)
-            Error(decl, $"Type mismatch: Expression type '{ResolveExpressionType(decl.Expression)}' does not match declared type '{type}'.");
+        var exprType = ResolveExpressionType(decl.Expression, type);
+
+        if (exprType != type && exprType != new TypeReference("unknown"))
+            Error(decl, $"Type mismatch: Expression type '{exprType}' does not match declared type '{type}'.");
     }
 
-    private TypeReference? ResolveExpressionType(ExpressionNode expr)
+    private TypeReference ResolveExpressionType(ExpressionNode expr, TypeReference? expectedType = null)
     {
         return expr switch
         {
@@ -166,7 +168,8 @@ internal class TypeDeclarationRule : BaseSemanticRule
             CharacterLiteralNode => TypeReference.Char,
             IntegerLiteralNode => TypeReference.I32,
             BooleanLiteralNode => TypeReference.Bool,
-            _ => null,
+            IdentifierNode => expectedType ?? new TypeReference("unknown"),
+            _ => new TypeReference("unknown")
         };
     }
 }
