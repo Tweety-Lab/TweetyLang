@@ -46,9 +46,13 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var expr = Visit(context.expression()) as ExpressionNode;
 
-        if (expr is FunctionCallNode)
-            return new ExpressionStatementNode { Expression = expr };
+        var exprStmtNode = new ExpressionStatementNode
+        {
+            Expression = expr
+        };
 
-        return new ExpressionStatementNode { Expression = expr };
+        exprStmtNode.AddChild(expr);
+
+        return exprStmtNode;
     }
 }

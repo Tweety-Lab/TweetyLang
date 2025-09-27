@@ -74,7 +74,12 @@ internal class IRBuilder
                     throw new InvalidOperationException($"Unknown function {call.Name}");
 
                 var args = call.Arguments?.Select(EmitExpression).ToArray() ?? Array.Empty<LLVMValueRef>();
-                return LLVMBuilder.BuildCall2(fnData.FunctionType, fnData.Function, args, "calltmp");
+
+                // Check if the function returns void
+                if (fnData.FunctionType.ReturnType == LLVMTypeRef.Void)
+                    return LLVMBuilder.BuildCall2(fnData.FunctionType, fnData.Function, args); // Functions that return void can't have a name
+                else
+                    return LLVMBuilder.BuildCall2(fnData.FunctionType, fnData.Function, args, "calltmp");
 
 
             default:
