@@ -61,7 +61,7 @@ public partial class TweetyLangParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'module'", "'.'", "'{'", "'}'", "'import'", "';'", "'_'", "'void'", 
+		null, "'module'", "'::'", "'{'", "'}'", "'import'", "';'", "'_'", "'void'", 
 		"'('", "')'", "','", "'if'", "'else'", "'='", "'return'", "'+'", "'-'", 
 		"'*'", "'/'", "'true'", "'false'", "'i32'", "'bool'", "'export'"
 	};

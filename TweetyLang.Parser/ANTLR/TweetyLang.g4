@@ -20,7 +20,7 @@ module_definition
     ;
 
 module_name
-    : identifier ('.' identifier)*
+    : identifier ('::' identifier)*
     ;
 
 module_body
