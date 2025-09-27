@@ -78,3 +78,17 @@ internal class ReturnHandler : BaseStatementHandler
         builder.LLVMBuilder.BuildRet(value);
     }
 }
+
+[StatementHandler]
+internal class ExpressionStatementHandler : BaseStatementHandler
+{
+    public override bool CanHandle(StatementNode statement) => statement is ExpressionStatementNode;
+
+    public override void Handle(StatementNode statement, IRBuilder builder)
+    {
+        if (statement is not ExpressionStatementNode expr)
+            return;
+
+        builder.EmitExpression(expr.Expression);
+    }
+}

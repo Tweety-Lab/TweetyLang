@@ -102,6 +102,10 @@ public class SemanticAnalyzer
             case ReturnNode ret:
                 AnalyzeExpression(ret.Expression);
                 break;
+
+            case ExpressionStatementNode expression:
+                AnalyzeExpression(expression.Expression);
+                break;
         }
     }
 

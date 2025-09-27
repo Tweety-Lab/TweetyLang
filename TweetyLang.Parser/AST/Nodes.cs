@@ -175,3 +175,8 @@ public class IfNode : StatementNode
     public List<StatementNode> ThenBlock { get; set; } = new();
     public List<StatementNode>? ElseBlock { get; set; }
 }
+
+public class ExpressionStatementNode : StatementNode
+{
+    public ExpressionNode Expression { get; set; }
+}
