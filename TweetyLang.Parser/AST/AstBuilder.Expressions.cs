@@ -29,8 +29,26 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
     public override AstNode VisitFactor(TweetyLangParser.FactorContext context)
     {
-        if (context.char_literal() != null)
-            return new CharacterLiteralNode { Value = context.char_literal().GetText()[0] };
+        if (context.CHAR_LITERAL() != null)
+            return new CharacterLiteralNode { Value = context.CHAR_LITERAL().GetText()[0] };
+
+        if (context.STRING_LITERAL() != null)
+        {
+            var text = context.STRING_LITERAL().GetText();
+
+            // Remove the surrounding quotes
+            text = text.Substring(1, text.Length - 2);
+
+            // Replace escape sequences
+            text = text.Replace("\\n", "\n")
+                       .Replace("\\t", "\t")
+                       .Replace("\\r", "\r")
+                       .Replace("\\\"", "\"")
+                       .Replace("\\'", "'")
+                       .Replace("\\\\", "\\");
+
+            return new StringLiteralNode { Value = text };
+        }
 
         if (context.identifier() != null)
             return Visit(context.identifier());

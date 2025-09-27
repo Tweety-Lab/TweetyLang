@@ -163,6 +163,11 @@ public class CharacterLiteralNode : ExpressionNode
     public char Value { get; set; }
 }
 
+public class StringLiteralNode : ExpressionNode
+{
+    public string Value { get; set; }
+}
+
 public class BinaryExpressionNode : ExpressionNode
 {
     public string Operator { get; set; }

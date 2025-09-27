@@ -138,6 +138,7 @@ public class SemanticAnalyzer
                     AnalyzeExpression(arg);
                 break;
 
+            case StringLiteralNode:
             case CharacterLiteralNode:
             case IdentifierNode:
             case IntegerLiteralNode:

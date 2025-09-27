@@ -27,6 +27,8 @@ internal class IRBuilder
     private readonly LLVMContextRef context;
     private readonly List<BaseStatementHandler> handlers = new List<BaseStatementHandler>();
 
+    private int nextStringID = 0;
+
     public IRBuilder()
     {
         context = LLVMContextRef.Create();
@@ -53,6 +55,31 @@ internal class IRBuilder
 
             case CharacterLiteralNode charLit:
                 return LLVMValueRef.CreateConstInt(LLVMTypeRef.Int8, (ulong)charLit.Value, false);
+
+            case StringLiteralNode strLit:
+                // Generate a unique name for the string global
+                var globalName = $"str{nextStringID++}";
+
+                // Null-terminated string bytes
+                var strValue = strLit.Value;
+                byte[] strBytes = System.Text.Encoding.ASCII.GetBytes(strValue + "\0");
+
+                var arrayType = LLVMTypeRef.CreateArray(LLVMTypeRef.Int8, (uint)strBytes.Length);
+                var global = currentModule.AddGlobal(arrayType, globalName);
+
+                // Create the initializer as a constant array of i8
+                var constElements = strBytes.Select(b => LLVMValueRef.CreateConstInt(LLVMTypeRef.Int8, b, false)).ToArray();
+                var initializer = LLVMValueRef.CreateConstArray(LLVMTypeRef.Int8, constElements);
+
+                global.Initializer = initializer;
+                global.Linkage = LLVMLinkage.LLVMPrivateLinkage;
+
+                // Return a pointer to the first character (i8*)
+                var zero = LLVMValueRef.CreateConstInt(LLVMTypeRef.Int32, 0, false);
+                var ptr = LLVMBuilder.BuildInBoundsGEP2(arrayType, global, new LLVMValueRef[] { zero, zero }, "strptr");
+
+                var i8PtrType = LLVMTypeRef.CreatePointer(LLVMTypeRef.Int8, 0);
+                return LLVMBuilder.BuildBitCast(ptr, i8PtrType, "strptr_cast");
 
             case IdentifierNode id:
                 if (!FuncLocals.TryGetValue(id.Name, out var value))

@@ -330,14 +330,4 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitModifier([NotNull] TweetyLangParser.ModifierContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.char_literal"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterChar_literal([NotNull] TweetyLangParser.Char_literalContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.char_literal"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitChar_literal([NotNull] TweetyLangParser.Char_literalContext context);
 }

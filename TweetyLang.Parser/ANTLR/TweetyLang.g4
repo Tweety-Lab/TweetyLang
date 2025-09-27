@@ -107,7 +107,8 @@ factor
     | identifier
     | function_call
     | boolean_literal
-    | char_literal
+    | CHAR_LITERAL
+    | STRING_LITERAL
     | '(' expression ')'
     ;
 
@@ -145,13 +146,22 @@ modifier
     | 'extern'
     ;
 
-char_literal
-    : '\'' (CHARACTER) '\''
-    ;
 
 // ----------------
 // Lexer Rules
 // ----------------
+
+CHAR_LITERAL
+    : '\'' ( ESCAPE_SEQUENCE | ~['\\\r\n] ) '\''
+    ;
+
+STRING_LITERAL
+    : '"' ( ESCAPE_SEQUENCE | ~["\\\r\n] )* '"'
+    ;
+
+ESCAPE_SEQUENCE
+    : '\\' .  // matches a backslash followed by any single character
+    ;
 
 CHARACTER
     : [a-zA-Z]
