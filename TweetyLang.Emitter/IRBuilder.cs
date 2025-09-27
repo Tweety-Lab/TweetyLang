@@ -123,6 +123,20 @@ internal class IRBuilder
         var entry = function.AppendBasicBlock("entry");
         LLVMBuilder.PositionAtEnd(entry);
 
+
+        // Allocate space for parameters
+        for (int i = 0; i < fn.Parameters.Count; i++)
+        {
+            var param = fn.Parameters[i];
+            var llvmParam = function.GetParam((uint)i);
+            llvmParam.Name = param.Name;
+
+            var alloca = LLVMBuilder.BuildAlloca(Mapping.MapType(param.Type), param.Name);
+            LLVMBuilder.BuildStore(llvmParam, alloca);
+
+            FuncLocals[param.Name] = (alloca, Mapping.MapType(param.Type));
+        }
+
         // Emit statements
         foreach (var stmt in fn.Body)
             EmitStatement(stmt);
