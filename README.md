@@ -1,6 +1,9 @@
 # TweetyLang
 TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridge the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
 
+![Example of TweetyLang](https://github.com/user-attachments/assets/269a2d6a-00eb-4b90-8a7e-6aeae84cd4cf)
+
+
 ## Usage
 For help using the compiler, see the compiler breakdown [here](#tweetylang-cli).
 
