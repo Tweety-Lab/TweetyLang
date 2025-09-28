@@ -33,14 +33,7 @@ internal class BuildProject : BaseVerb
 
             TweetyLangSyntaxTree syntaxTree = TweetyLangSyntaxTree.ParseText(tl);
 
-            // Handle parsing warnings
-            if (syntaxTree.Warnings.Count() > 0)
-            {
-                foreach (var warning in syntaxTree.Warnings)
-                    CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
-            }
-
-            // Handle parsing errors
+            // Handle Syntax Errors
             if (syntaxTree.Errors.Count() > 0)
             {
                 Console.WriteLine($"\nCompilation failed in {Path.GetFileName(tlFile)}!");

@@ -3,7 +3,6 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using TweetyLang.AST;
 using TweetyLang.Parser.ErrorListeners;
-using TweetyLang.Parser.Semantics;
 
 namespace TweetyLang.Parser.AST;
 
@@ -17,12 +16,7 @@ public class TweetyLangSyntaxTree
     /// <summary>
     /// The errors found during parsing.
     /// </summary>
-    public IEnumerable<SemanticError> Errors = null!;
-
-    /// <summary>
-    /// The warnings found during parsing.
-    /// </summary>
-    public IEnumerable<SemanticWarning> Warnings = null!;
+    public IEnumerable<SyntaxError> Errors = null!;
 
     private TweetyLangSyntaxTree() { }
 
@@ -58,21 +52,12 @@ public class TweetyLangSyntaxTree
         // Build AST
         tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
 
-        tree.Errors = Enumerable.Empty<SemanticError>();
-        tree.Warnings = Enumerable.Empty<SemanticWarning>();
+        tree.Errors = Enumerable.Empty<SyntaxError>();
 
         // Merge lexer and parser errors
         tree.Errors = tree.Errors
             .Concat(lexerListener.Errors)
             .Concat(parserListener.Errors);
-
-        // Run analyzers
-        var analyzer = new SemanticAnalyzer();
-        analyzer.Analyze(tree.Root);
-
-        // Merge semantic errors and warnings
-        tree.Errors = tree.Errors.Concat(analyzer.Errors);
-        tree.Warnings = tree.Warnings.Concat(analyzer.Warnings);
 
         return tree;
     }

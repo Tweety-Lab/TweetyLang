@@ -1,5 +1,4 @@
 ﻿using Antlr4.Runtime;
-using TweetyLang.Parser.Semantics;
 
 namespace TweetyLang.Parser.ErrorListeners;
 
@@ -9,9 +8,9 @@ namespace TweetyLang.Parser.ErrorListeners;
 internal class LexerErrorListener : IAntlrErrorListener<int>
 {
     /// <summary>
-    /// The list of al caught syntax errors.
+    /// The list of all caught syntax errors.
     /// </summary>
-    public List<SemanticError> Errors { get; } = new();
+    public List<SyntaxError> Errors { get; } = new();
 
     public void SyntaxError(TextWriter output,
                             IRecognizer recognizer,
@@ -21,6 +20,6 @@ internal class LexerErrorListener : IAntlrErrorListener<int>
                             string msg,
                             RecognitionException e)
     {
-        Errors.Add(new SemanticError(line, charPositionInLine, msg));
+        Errors.Add(new SyntaxError(line, charPositionInLine, msg));
     }
 }
