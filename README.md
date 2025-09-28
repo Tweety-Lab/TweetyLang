@@ -1,7 +1,7 @@
 # TweetyLang
 ![Version](https://img.shields.io/badge/Version-PREPREPREPREAlpha-red)
 
-TweetyLang is a native programming language designed around the philsophy of tools that ***Just Work***. It aims to bridge the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
+TweetyLang is a native programming language designed around the philosophy of tools that ***Just Work***. It aims to bridge the gap between the ease of use of a high-level language like C#, and the control of low-level languages like C.
 
 ![Example of TweetyLang](https://github.com/user-attachments/assets/269a2d6a-00eb-4b90-8a7e-6aeae84cd4cf)
 
