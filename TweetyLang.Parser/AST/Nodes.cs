@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using TweetyLang.Parser.AST;
 
 namespace TweetyLang.AST;
 
@@ -63,6 +64,9 @@ public abstract class AstNode
     /// <summary> The parent node of this node. </summary>
     public AstNode? Parent { get; internal set; }
 
+    /// <summary> The syntax tree that contains this node. </summary>
+    public TweetyLangSyntaxTree? Tree { get; internal set; }
+
     /// <summary>
     /// Returns all ancestors (parents) of this node.
     /// </summary>
@@ -86,7 +90,11 @@ public abstract class AstNode
     public T AddChild<T>(T child) where T : AstNode
     {
         if (child != null)
+        {
             child.Parent = this;
+            child.Tree = this.Tree;
+        }
+
         return child;
     }
 
@@ -100,7 +108,12 @@ public abstract class AstNode
     {
         foreach (var c in children)
         {
-            if (c != null) c.Parent = this;
+            if (c != null)
+            {
+                c.Parent = this;
+                c.Tree = this.Tree;
+            }
+
             yield return c;
         }
     }

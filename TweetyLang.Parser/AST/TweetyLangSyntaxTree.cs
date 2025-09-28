@@ -45,12 +45,13 @@ public class TweetyLangSyntaxTree
 
         var lexerListener = new LexerErrorListener();
         lexer.AddErrorListener(lexerListener);
-
+        
         // Parse
         var programContext = parser.program();
 
         // Build AST
         tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
+        tree.Root.Tree = tree;
 
         tree.Errors = Enumerable.Empty<SyntaxError>();
 

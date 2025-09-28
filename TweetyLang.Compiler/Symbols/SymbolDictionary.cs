@@ -51,6 +51,9 @@ public class SymbolDictionary
             case FunctionNode func:
                 return new FunctionSymbol(func.Name) { IsExtern = func.Modifiers.HasFlag(Modifiers.Extern), IsExport = func.Modifiers.HasFlag(Modifiers.Export) };
 
+            case ModuleNode module:
+                return new ModuleSymbol(module.Name);
+
             default:
                 return null;
         }

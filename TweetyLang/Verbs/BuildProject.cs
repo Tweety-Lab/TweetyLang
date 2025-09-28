@@ -38,14 +38,13 @@ internal class BuildProject : BaseVerb
             syntaxTrees.Add(syntaxTree);
 
             // Handle Syntax Errors
-            if (syntaxTree.Errors.Count() > 0)
+            if (syntaxTree.Errors.Any())
             {
-                Console.WriteLine($"\nCompilation failed in {Path.GetFileName(tlFile)}!");
-
+                Console.WriteLine($"\nSyntax errors in {Path.GetFileName(tlFile)}:");
                 foreach (var error in syntaxTree.Errors)
                     CompilerOutput.WriteError(error.Message, error.Line, error.Column);
 
-                return;
+                return; // Stop compilation on syntax errors
             }
         }
 
@@ -53,9 +52,25 @@ internal class BuildProject : BaseVerb
         SymbolDictionary dict = compilation.GetSymbolDictionary(syntaxTrees[0]);
         IFunctionSymbol function = dict.GetDeclaredSymbol<IFunctionSymbol>(syntaxTrees[0].Root.Modules[0].Functions[0]);
 
+        if (compilation.Errors.Any())
+        {
+            Console.WriteLine("\nCould not compile project:");
+            foreach (var error in compilation.Errors)
+                CompilerOutput.WriteError(error.Message, error.Line, error.Column);
+        }
+
+        if (compilation.Warnings.Any())
+        {
+            foreach (var warning in compilation.Warnings)
+                CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
+        }
+
         Console.WriteLine(function.Name);
 
         LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation);
         Console.WriteLine(module.PrintToString());
+
+        // Write it to program.ll
+        File.WriteAllText("program.ll", module.PrintToString());
     }
 }

@@ -1,6 +1,8 @@
 ﻿
 using TweetyLang.AST;
 using TweetyLang.Compiler;
+using TweetyLang.Compiler.Symbols;
+using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Parser.Semantics;
 
@@ -140,14 +142,31 @@ internal class ImportRule : BaseSemanticRule
 {
     public override void AnalyzeProgram(ProgramNode program)
     {
-        var moduleNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var allModuleSymbols = Compilation.SyntaxTrees
+            .SelectMany(tree =>
+            {
+                var dict = Compilation.GetSymbolDictionary(tree);
+                return tree.Root.Modules
+                    .Select(m => dict.GetDeclaredSymbol<IModuleSymbol>(m))
+                    .Where(s => s != null)!;
+            })
+            .ToDictionary(s => s.Name, StringComparer.OrdinalIgnoreCase);
+
+        var seenImports = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var import in program.Imports)
         {
-            if (!moduleNames.Add(import.ModuleName))
+            // Duplicate import warning
+            if (!seenImports.Add(import.ModuleName))
+            {
                 Warning(import, $"Duplicate import of module '{import.ModuleName}'.");
+            }
 
-            if (!program.Modules.Any(m => m.Name == import.ModuleName))
+            // Resolve imported module via symbol table
+            if (!allModuleSymbols.ContainsKey(import.ModuleName))
+            {
                 Error(import, $"Could not resolve import '{import.ModuleName}'.");
+            }
         }
     }
 }
