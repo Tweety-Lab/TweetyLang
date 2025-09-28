@@ -1,5 +1,6 @@
 ﻿
 using TweetyLang.AST;
+using TweetyLang.Compiler;
 
 namespace TweetyLang.Parser.Semantics;
 
@@ -8,11 +9,17 @@ namespace TweetyLang.Parser.Semantics;
 /// </summary>
 internal abstract class BaseSemanticRule
 {
+    /// <summary> The compilation that is currently being analyzed. </summary>
+    protected TweetyLangCompilation Compilation { get; private set; } = null!;
+
     /// <summary> A list of exceptions that occured during semantic analysis in this rule. </summary>
     internal List<SemanticError> Exceptions { get; } = new();
 
     /// <summary> A list of warnings that occured during semantic analysis in this rule. </summary>
     internal List<SemanticWarning> Warnings { get; } = new();
+
+    /// <summary> Sets the compilation that is currently being analyzed. </summary>
+    internal void SetCompilation(TweetyLangCompilation compilation) => Compilation = compilation;
 
     public virtual void AnalyzeFunction(FunctionNode func) { }
     public virtual void AnalyzeModule(ModuleNode module) { }

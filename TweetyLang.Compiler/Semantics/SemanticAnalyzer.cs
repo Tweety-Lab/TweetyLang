@@ -1,9 +1,12 @@
 ﻿using TweetyLang.AST;
+using TweetyLang.Compiler;
 
 namespace TweetyLang.Parser.Semantics;
 
 public class SemanticAnalyzer
 {
+    private readonly TweetyLangCompilation compilation;
+
     private readonly List<SemanticError> errors = new List<SemanticError>();
     private readonly List<SemanticWarning> warnings = new();
     private readonly List<BaseSemanticRule> rules = new List<BaseSemanticRule>();
@@ -18,14 +21,19 @@ public class SemanticAnalyzer
     /// </summary>
     public IReadOnlyList<SemanticWarning> Warnings => warnings;
 
-    public SemanticAnalyzer()
+    public SemanticAnalyzer(TweetyLangCompilation compilation)
     {
+        this.compilation = compilation;
+
         // Setup rules
         foreach (var type in typeof(BaseSemanticRule).Assembly.GetTypes())
         {
             if (type.IsSubclassOf(typeof(BaseSemanticRule)) && type.IsDefined(typeof(SemanticAnalyzerAttribute), false))
                 rules.Add((BaseSemanticRule)Activator.CreateInstance(type)!);
         }
+
+        foreach (var rule in rules)
+            rule.SetCompilation(compilation);
     }
 
     public void Analyze(ProgramNode program)

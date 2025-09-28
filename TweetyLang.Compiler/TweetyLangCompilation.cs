@@ -12,7 +12,7 @@ public class TweetyLangCompilation
     private readonly List<TweetyLangSyntaxTree> syntaxTrees;
 
     /// <summary> The syntax trees in the compilation. </summary>
-    internal IEnumerable<TweetyLangSyntaxTree> SyntaxTrees => syntaxTrees;
+    public IEnumerable<TweetyLangSyntaxTree> SyntaxTrees => syntaxTrees;
 
     /// <summary> The semantic errors in the compilation. </summary>
     public List<SemanticError> Errors { get; } = new List<SemanticError>();
@@ -30,7 +30,7 @@ public class TweetyLangCompilation
         TweetyLangCompilation compilation = new TweetyLangCompilation(syntaxTrees);
 
         // Run semantic checks
-        SemanticAnalyzer analyzer = new SemanticAnalyzer();
+        SemanticAnalyzer analyzer = new SemanticAnalyzer(compilation);
         foreach (var tree in syntaxTrees)
         {
             analyzer.Analyze(tree.Root);

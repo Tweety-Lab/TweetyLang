@@ -36,6 +36,12 @@ public class SymbolDictionary
         return computed;
     }
 
+    /// <summary>
+    /// Returns the symbol for a node.
+    /// </summary>
+    /// <typeparam name="T">Type of symbol.</typeparam>
+    /// <param name="node">Node to get symbol for.</param>
+    /// <returns>Symbol.</returns>
     public T? GetDeclaredSymbol<T>(AstNode node) where T : ISymbol => (T?)GetDeclaredSymbol(node);
 
     private ISymbol? ComputeDeclaredSymbol(AstNode node)
@@ -43,7 +49,7 @@ public class SymbolDictionary
         switch (node)
         {
             case FunctionNode func:
-                return new FunctionSymbol(func.Name);
+                return new FunctionSymbol(func.Name) { IsExtern = func.Modifiers.HasFlag(Modifiers.Extern), IsExport = func.Modifiers.HasFlag(Modifiers.Export) };
 
             default:
                 return null;

@@ -1,4 +1,5 @@
 ﻿using LLVMSharp.Interop;
+using TweetyLang.Compiler;
 using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Emitter;
@@ -6,39 +7,61 @@ namespace TweetyLang.Emitter;
 public static class Emitter
 {
     /// <summary>
-    /// Converts a TweetyLangSyntaxTree into LLVM IR.
+    /// Converts a TweetyLangCompilation into LLVM IR.
     /// </summary>
-    /// <param name="tree">Syntax tree.</param>
-    /// <returns>LLVM IR.</returns>
-    public static string EmitIR(TweetyLangSyntaxTree tree)
+    /// <param name="compilation">Compilation.</param>
+    /// <returns>LLVM IR as text.</returns>
+    public static string EmitIR(TweetyLangCompilation compilation)
     {
         var irBuilder = new IRBuilder();
-        var modules = irBuilder.EmitProgram(tree.Root);
+        var allModules = new List<LLVMModuleRef>();
+
+        // Emit each tree in the compilation
+        foreach (var tree in compilation.SyntaxTrees)
+        {
+            var modules = irBuilder.EmitProgram(tree.Root);
+            allModules.AddRange(modules);
+        }
 
         // Concatenate IR from all modules
-        var irText = string.Join("\n", modules.Select(m => m.PrintToString()));
-
+        var irText = string.Join("\n", allModules.Select(m => m.PrintToString()));
         return irText;
     }
 
 
-    public static LLVMModuleRef EmitModule(TweetyLangSyntaxTree tree)
+    /// <summary>
+    /// Emits a single linked LLVM module for the entire compilation.
+    /// </summary>
+    /// <param name="compilation">Compilation.</param>
+    /// <returns>Linked LLVM module.</returns>
+    public static LLVMModuleRef EmitModule(TweetyLangCompilation compilation)
     {
         var irBuilder = new IRBuilder();
-        var modules = irBuilder.EmitProgram(tree.Root);
+        var allModules = new List<LLVMModuleRef>();
 
-        var module = modules[0];
-        for (int i = 1; i < modules.Count; i++)
+        // Emit each tree
+        foreach (var tree in compilation.SyntaxTrees)
         {
-            var src = modules[i];
+            var modules = irBuilder.EmitProgram(tree.Root);
+            allModules.AddRange(modules);
+        }
+
+        if (allModules.Count == 0)
+            throw new InvalidOperationException("Compilation contains no modules to emit.");
+
+        // Link all modules together
+        var mainModule = allModules[0];
+        for (int i = 1; i < allModules.Count; i++)
+        {
+            var srcModule = allModules[i];
             unsafe
             {
-                int result = LLVM.LinkModules2(module, src);
+                int result = LLVM.LinkModules2(mainModule, srcModule);
                 if (result != 0)
                     throw new InvalidOperationException($"Failed to link module {i}.");
             }
         }
 
-        return module;
+        return mainModule;
     }
 }

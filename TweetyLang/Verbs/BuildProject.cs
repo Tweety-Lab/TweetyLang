@@ -47,14 +47,6 @@ internal class BuildProject : BaseVerb
 
                 return;
             }
-
-            LLVMModuleRef module = Emitter.Emitter.EmitModule(syntaxTree);
-
-            // PRINT IR
-            Console.WriteLine("\n" + module.PrintToString());
-
-            // Write IR to file
-            File.WriteAllText(Path.Combine(Path.GetDirectoryName(tlFile), "program.ll"), module.PrintToString());
         }
 
         TweetyLangCompilation compilation = TweetyLangCompilation.Create(Path.GetFileNameWithoutExtension(projectFile), syntaxTrees);
@@ -62,5 +54,8 @@ internal class BuildProject : BaseVerb
         IFunctionSymbol function = dict.GetDeclaredSymbol<IFunctionSymbol>(syntaxTrees[0].Root.Modules[0].Functions[0]);
 
         Console.WriteLine(function.Name);
+
+        LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation);
+        Console.WriteLine(module.PrintToString());
     }
 }
