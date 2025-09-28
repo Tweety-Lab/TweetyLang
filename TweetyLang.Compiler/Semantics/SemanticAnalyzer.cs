@@ -1,5 +1,6 @@
 ﻿using TweetyLang.AST;
 using TweetyLang.Compiler;
+using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Parser.Semantics;
 
@@ -36,11 +37,12 @@ public class SemanticAnalyzer
             rule.SetCompilation(compilation);
     }
 
-    public void Analyze(ProgramNode program)
+    public void Analyze(TweetyLangSyntaxTree tree)
     {
         foreach (var rule in rules)
         {
-            rule.AnalyzeProgram(program);
+            rule.SyntaxTree = tree;
+            rule.AnalyzeProgram(tree.Root);
             errors.AddRange(rule.Exceptions);
             warnings.AddRange(rule.Warnings);
 
@@ -49,7 +51,7 @@ public class SemanticAnalyzer
             rule.Warnings.Clear();
         }
 
-        foreach (var module in program.Modules)
+        foreach (var module in tree.Root.Modules)
             AnalyzeModule(module);
     }
 

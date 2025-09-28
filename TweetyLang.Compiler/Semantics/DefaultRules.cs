@@ -14,6 +14,9 @@ internal abstract class BaseSemanticRule
     /// <summary> The compilation that is currently being analyzed. </summary>
     protected TweetyLangCompilation Compilation { get; private set; } = null!;
 
+    /// <summary> The syntax tree that is currently being analyzed. </summary>
+    internal TweetyLangSyntaxTree SyntaxTree {  get; set; } = null!;
+
     /// <summary> A list of exceptions that occured during semantic analysis in this rule. </summary>
     internal List<SemanticError> Exceptions { get; } = new();
 
@@ -179,7 +182,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
 
     private void AnalyzeDeclaration(DeclarationNode decl)
     {
-        var symbolDict = Compilation.GetSymbolDictionary(decl.Tree!);
+        var symbolDict = Compilation.GetSymbolDictionary(SyntaxTree);
         var variableSymbol = symbolDict.GetDeclaredSymbol<IVariableSymbol>(decl);
 
         if (variableSymbol == null)
@@ -197,7 +200,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
 
     private void AnalyzeAssignment(AssignmentNode assign)
     {
-        var symbolDict = Compilation.GetSymbolDictionary(assign.Tree!);
+        var symbolDict = Compilation.GetSymbolDictionary(SyntaxTree);
         var variableSymbol = symbolDict
             .GetAllSymbols<IVariableSymbol>()
             .FirstOrDefault(v => v.Name == assign.Name);

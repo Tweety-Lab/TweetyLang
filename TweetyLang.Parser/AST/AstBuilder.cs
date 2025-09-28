@@ -15,8 +15,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         var program = new ProgramNode
         {
             SourceLine = context.Start.Line,
-            SourceColumn = context.Start.Column,
-            Tree = syntaxTree
+            SourceColumn = context.Start.Column
         };
 
         foreach (var decl in context.top_level_declaration())

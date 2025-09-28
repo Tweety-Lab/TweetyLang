@@ -39,7 +39,7 @@ public class TweetyLangCompilation
 
         foreach (var tree in syntaxTrees)
         {
-            analyzer.Analyze(tree.Root);
+            analyzer.Analyze(tree);
 
             // Add the analyzer errors and warnings to the compilation
             compilation.Errors.AddRange(analyzer.Errors);

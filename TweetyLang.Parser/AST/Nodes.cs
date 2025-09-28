@@ -64,9 +64,6 @@ public abstract class AstNode
     /// <summary> The parent node of this node. </summary>
     public AstNode? Parent { get; internal set; }
 
-    /// <summary> The syntax tree that contains this node. </summary>
-    public TweetyLangSyntaxTree? Tree { get; internal set; }
-
     /// <summary>
     /// Returns all ancestors (parents) of this node.
     /// </summary>
@@ -89,21 +86,13 @@ public abstract class AstNode
     /// <returns>Child node.</returns>
     public T AddChild<T>(T child) where T : AstNode
     {
-        if (child == null) return null;
+        if (child == null) return null!;
 
         child.Parent = this;
 
-        if (this.Tree != null)
-        {
-            child.Tree = this.Tree;
-        }
-        else
-        {
-            Console.WriteLine($"[DEBUG] AddChild: Parent {this.GetType().Name} has no Tree when adding {child.GetType().Name}");
-        }
-
         return child;
     }
+
 
     /// <summary>
     /// Adds multiple child nodes to this node.
@@ -118,7 +107,6 @@ public abstract class AstNode
             if (c != null)
             {
                 c.Parent = this;
-                c.Tree = this.Tree;
             }
 
             yield return c;
