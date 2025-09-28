@@ -64,8 +64,11 @@ module MyModule
 AwesomeMethod
 ```
 
+### TweetyLang.Compiler
+The compiler takes the AST from the previous parser stage and runs semantic checks on it, making sure the language rules are put into place.
+
 ### TweetyLang.Emitter
-The Emitter takes the AST from the previous parser stage and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures (including the web!).
+The Emitter takes the Compilation Object from compilation and emits [Intermediate Representation](https://en.wikipedia.org/wiki/Intermediate_representation) (IR) from it. TweetyLang uses LLVM IR, which allows for optimizations and targeting multiple hardware architectures (including the web!).
 
 ### TweetyLang (CLI)
 This is the main program that brings together all the other components to compile TweetyLang code. It provides a command-line interface for building TweetyLang projects.
