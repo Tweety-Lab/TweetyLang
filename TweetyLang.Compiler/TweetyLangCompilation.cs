@@ -1,6 +1,10 @@
-﻿namespace TweetyLang.Compiler
+﻿using TweetyLang.Parser.AST;
+
+namespace TweetyLang.Compiler;
+
+public class TweetyLangCompilation
 {
-    public class Class1
+    public static TweetyLangCompilation Create(string name, IEnumerable<TweetyLangSyntaxTree> syntaxTrees)
     {
 
     }
