@@ -13,6 +13,9 @@ public class TweetyLangCompilation
 
     private readonly Dictionary<TweetyLangSyntaxTree, SymbolDictionary> symbolDictionaries = new();
 
+    /// <summary> The name of the assembly. </summary>
+    public string AssemblyName { get; private set; } = string.Empty;
+
     /// <summary> The syntax trees in the compilation. </summary>
     public IEnumerable<TweetyLangSyntaxTree> SyntaxTrees => syntaxTrees;
 
@@ -33,6 +36,7 @@ public class TweetyLangCompilation
     public static TweetyLangCompilation Create(string assemblyName, IEnumerable<TweetyLangSyntaxTree> syntaxTrees)
     {
         TweetyLangCompilation compilation = new TweetyLangCompilation(syntaxTrees);
+        compilation.AssemblyName = assemblyName;
 
         // Run semantic checks
         SemanticAnalyzer analyzer = new SemanticAnalyzer(compilation);

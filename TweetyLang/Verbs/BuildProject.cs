@@ -49,8 +49,6 @@ internal class BuildProject : BaseVerb
         }
 
         TweetyLangCompilation compilation = TweetyLangCompilation.Create(Path.GetFileNameWithoutExtension(projectFile), syntaxTrees);
-        SymbolDictionary dict = compilation.GetSymbolDictionary(syntaxTrees[0]);
-        IFunctionSymbol function = dict.GetDeclaredSymbol<IFunctionSymbol>(syntaxTrees[0].Root.Modules[0].Functions[0]);
 
         if (compilation.Warnings.Any())
         {
