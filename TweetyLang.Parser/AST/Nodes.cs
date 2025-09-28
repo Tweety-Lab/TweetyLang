@@ -131,9 +131,6 @@ public class FunctionNode : AstNode
     /// <summary> The name of the function. </summary>
     public string Name { get; set; }
 
-    /// <summary> The fully qualified name of the function. </summary>
-    public string FullName => Parent is ModuleNode module ? $"{module.Name}::{Name}" : Name;
-
     public TypeReference ReturnType { get; set; }
     public Modifiers Modifiers { get; set; }
     public List<ParameterNode> Parameters { get; set; } = new();

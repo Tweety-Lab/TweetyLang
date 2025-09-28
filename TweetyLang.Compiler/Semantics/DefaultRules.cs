@@ -121,10 +121,10 @@ internal class FunctionBodyRule : BaseSemanticRule
     public override void AnalyzeFunction(FunctionNode func)
     {
         if (func.Body == null && !func.Modifiers.HasFlag(Modifiers.Extern))
-            Error(func, $"Non-externed function '{func.FullName}' has no body.");
+            Error(func, $"Non-externed function '{func.Name}' has no body.");
         
         if (func.Body != null && func.Modifiers.HasFlag(Modifiers.Extern))
-            Error(func, $"Externed function '{func.FullName}' has a body.");
+            Error(func, $"Externed function '{func.Name}' has a body.");
     }
 }
 
