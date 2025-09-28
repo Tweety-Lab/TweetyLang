@@ -126,14 +126,13 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             var binNode = new BinaryExpressionNode
             {
                 Operator = op,
-                Left = node,
-                Right = right,
                 SourceLine = context.Start.Line,
                 SourceColumn = context.Start.Column
             };
 
-            node = binNode.AddChild(binNode.Left).Parent == binNode ? binNode : binNode;
-            right.Parent = binNode;
+            binNode.Left = binNode.AddChild(node);
+            binNode.Right = binNode.AddChild(right);
+
             node = binNode;
         }
 

@@ -50,8 +50,7 @@ public class TweetyLangSyntaxTree
         var programContext = parser.program();
 
         // Build AST
-        tree.Root = new AstBuilder().Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
-        tree.Root.Tree = tree;
+        tree.Root = new AstBuilder(tree).Visit(programContext) as ProgramNode ?? throw new InvalidOperationException("Failed to build AST");
 
         tree.Errors = Enumerable.Empty<SyntaxError>();
 

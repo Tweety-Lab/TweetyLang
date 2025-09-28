@@ -11,6 +11,8 @@ public class TweetyLangCompilation
 {
     private readonly List<TweetyLangSyntaxTree> syntaxTrees;
 
+    private readonly Dictionary<TweetyLangSyntaxTree, SymbolDictionary> symbolDictionaries = new();
+
     /// <summary> The syntax trees in the compilation. </summary>
     public IEnumerable<TweetyLangSyntaxTree> SyntaxTrees => syntaxTrees;
 
@@ -23,6 +25,9 @@ public class TweetyLangCompilation
     private TweetyLangCompilation(IEnumerable<TweetyLangSyntaxTree> trees)
     {
         syntaxTrees = new List<TweetyLangSyntaxTree>(trees);
+
+        foreach (var tree in syntaxTrees)
+            symbolDictionaries[tree] = new SymbolDictionary(this, tree);
     }
 
     public static TweetyLangCompilation Create(string assemblyName, IEnumerable<TweetyLangSyntaxTree> syntaxTrees)
@@ -31,6 +36,7 @@ public class TweetyLangCompilation
 
         // Run semantic checks
         SemanticAnalyzer analyzer = new SemanticAnalyzer(compilation);
+
         foreach (var tree in syntaxTrees)
         {
             analyzer.Analyze(tree.Root);
@@ -43,5 +49,24 @@ public class TweetyLangCompilation
         return compilation;
     }
 
-    public SymbolDictionary GetSymbolDictionary(TweetyLangSyntaxTree tree) => new SymbolDictionary(this, tree);
+
+    /// <summary>
+    /// Returns the symbol dictionary for a specific syntax tree.
+    /// </summary>
+    public SymbolDictionary GetSymbolDictionary(TweetyLangSyntaxTree tree)
+    {
+        if (!symbolDictionaries.TryGetValue(tree, out var dict))
+            throw new InvalidOperationException("Tree is not part of this compilation.");
+
+        return dict;
+    }
+
+    /// <summary>
+    /// Returns all symbols of a given type across the entire compilation.
+    /// </summary>
+    public IEnumerable<T> GetAllSymbols<T>() where T : ISymbol
+    {
+        return symbolDictionaries.Values
+            .SelectMany(dict => dict.GetAllSymbols<T>());
+    }
 }

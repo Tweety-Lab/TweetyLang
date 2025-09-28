@@ -89,10 +89,17 @@ public abstract class AstNode
     /// <returns>Child node.</returns>
     public T AddChild<T>(T child) where T : AstNode
     {
-        if (child != null)
+        if (child == null) return null;
+
+        child.Parent = this;
+
+        if (this.Tree != null)
         {
-            child.Parent = this;
             child.Tree = this.Tree;
+        }
+        else
+        {
+            Console.WriteLine($"[DEBUG] AddChild: Parent {this.GetType().Name} has no Tree when adding {child.GetType().Name}");
         }
 
         return child;
@@ -117,18 +124,54 @@ public abstract class AstNode
             yield return c;
         }
     }
+
+    /// <summary>
+    /// Returns the direct children of this node.
+    /// </summary>
+    public virtual IEnumerable<AstNode> GetChildren() => Enumerable.Empty<AstNode>();
+
+    /// <summary>
+    /// Returns all descendants of this node.
+    /// </summary>
+    public IEnumerable<AstNode> Descendants()
+    {
+        foreach (var child in GetChildren())
+        {
+            yield return child;
+            foreach (var desc in child.Descendants())
+                yield return desc;
+        }
+    }
+
+    /// <summary>
+    /// Returns this node and all its descendants.
+    /// </summary>
+    public IEnumerable<AstNode> DescendantsAndSelf()
+    {
+        yield return this;
+        foreach (var desc in Descendants())
+            yield return desc;
+    }
 }
 
 public class ProgramNode : AstNode
 {
     public List<ImportNode> Imports { get; set; } = new();
     public List<ModuleNode> Modules { get; set; } = new();
+
+    public override IEnumerable<AstNode> GetChildren()
+    {
+        foreach (var import in Imports) yield return import;
+        foreach (var module in Modules) yield return module;
+    }
 }
 
 public class ImportNode : AstNode
 {
     /// <summary> The name of the module being imported. </summary>
     public string ModuleName { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren() => Enumerable.Empty<AstNode>();
 }
 
 public class ModuleNode : AstNode
@@ -137,6 +180,8 @@ public class ModuleNode : AstNode
     public string Name { get; set; }
 
     public List<FunctionNode> Functions { get; set; } = new();
+
+    public override IEnumerable<AstNode> GetChildren() => Functions;
 }
 
 public class FunctionNode : AstNode
@@ -148,6 +193,15 @@ public class FunctionNode : AstNode
     public Modifiers Modifiers { get; set; }
     public List<ParameterNode> Parameters { get; set; } = new();
     public List<StatementNode>? Body { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren()
+    {
+        foreach (var param in Parameters) yield return param;
+        if (Body != null)
+        {
+            foreach (var stmt in Body) yield return stmt;
+        }
+    }
 }
 
 public class ParameterNode : AstNode
@@ -165,6 +219,8 @@ public class DeclarationNode : StatementNode
 
     public TypeReference Type { get; set; }
     public ExpressionNode Expression { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren() => new[] { Expression };
 }
 
 public class AssignmentNode : StatementNode
@@ -173,6 +229,8 @@ public class AssignmentNode : StatementNode
     public string Name { get; set; }
 
     public ExpressionNode Expression { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren() => new[] { Expression };
 }
 
 public class ReturnNode : StatementNode
@@ -185,6 +243,7 @@ public abstract class ExpressionNode : AstNode { }
 public class IdentifierNode : ExpressionNode
 {
     public string Name { get; set; }
+
 }
 
 public class BooleanLiteralNode : ExpressionNode
@@ -212,12 +271,20 @@ public class BinaryExpressionNode : ExpressionNode
     public string Operator { get; set; }
     public ExpressionNode Left { get; set; }
     public ExpressionNode Right { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren()
+    {
+        yield return Left;
+        yield return Right;
+    }
 }
 
 public class FunctionCallNode : ExpressionNode
 {
     public string Name { get; set; }
     public List<ExpressionNode> Arguments { get; set; } = new();
+
+    public override IEnumerable<AstNode> GetChildren() => Arguments;
 }
 
 public class IfNode : StatementNode
@@ -225,9 +292,21 @@ public class IfNode : StatementNode
     public ExpressionNode Condition { get; set; }
     public List<StatementNode> ThenBlock { get; set; } = new();
     public List<StatementNode>? ElseBlock { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren()
+    {
+        yield return Condition;
+        foreach (var stmt in ThenBlock) yield return stmt;
+        if (ElseBlock != null)
+        {
+            foreach (var stmt in ElseBlock) yield return stmt;
+        }
+    }
 }
 
 public class ExpressionStatementNode : StatementNode
 {
     public ExpressionNode Expression { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren() => new[] { Expression };
 }

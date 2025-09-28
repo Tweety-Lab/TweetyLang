@@ -6,22 +6,24 @@ namespace TweetyLang.Parser.AST;
 
 public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 {
+    private readonly TweetyLangSyntaxTree syntaxTree;
+
+    public AstBuilder(TweetyLangSyntaxTree syntaxTree) => this.syntaxTree = syntaxTree;
+
     public override AstNode VisitProgram(TweetyLangParser.ProgramContext context)
     {
         var program = new ProgramNode
         {
             SourceLine = context.Start.Line,
-            SourceColumn = context.Start.Column
+            SourceColumn = context.Start.Column,
+            Tree = syntaxTree
         };
 
         foreach (var decl in context.top_level_declaration())
         {
             var node = Visit(decl);
             if (node is ModuleNode module)
-            {
                 program.Modules.Add(program.AddChild(module));
-                module.Functions = module.AddChildren(module.Functions).ToList();
-            }
 
             if (node is ImportNode import)
                 program.Imports.Add(program.AddChild(import));

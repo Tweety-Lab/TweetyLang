@@ -1,4 +1,6 @@
 ﻿
+using TweetyLang.AST;
+
 namespace TweetyLang.Compiler.Symbols;
 
 /// <summary>
@@ -14,14 +16,16 @@ public interface ISymbol
 
     /// <summary> Whether the symbol is marked with 'extern'. </summary>
     public bool IsExtern { get; set; }
-
-    /// <summary> The module that contains the symbol. </summary>
-    IModuleSymbol? ContainingModule { get; }
 }
 
-public interface IModuleSymbol : ISymbol, IEquatable<IModuleSymbol>
+public interface IModuleSymbol : ISymbol, IEquatable<IModuleSymbol> { }
+public interface IFunctionSymbol : ISymbol, IEquatable<IFunctionSymbol> { }
+public interface IParameterSymbol : ISymbol, IEquatable<IParameterSymbol> { }
+
+public interface IVariableSymbol : ISymbol, IEquatable<IVariableSymbol>
 {
-    public new string Name { get; }
+    /// <summary> The type of the variable. </summary>
+    public TypeReference Type { get; set; }
 }
 
 internal class ModuleSymbol : IModuleSymbol
@@ -34,8 +38,6 @@ internal class ModuleSymbol : IModuleSymbol
 
     /// <inheritdoc/>
     public bool IsExtern { get; set; }
-
-    public IModuleSymbol? ContainingModule => throw new NotImplementedException();
 
     public ModuleSymbol(string name) => Name = name;
 
@@ -54,10 +56,6 @@ internal class ModuleSymbol : IModuleSymbol
 }
 
 
-public interface IFunctionSymbol : ISymbol, IEquatable<IFunctionSymbol>
-{
-}
-
 internal class FunctionSymbol : IFunctionSymbol
 {
     /// <inheritdoc/>
@@ -69,14 +67,71 @@ internal class FunctionSymbol : IFunctionSymbol
     /// <inheritdoc/>
     public bool IsExtern { get; set; }
 
-    public IModuleSymbol? ContainingModule => throw new NotImplementedException();
-
     public FunctionSymbol(string name) => Name = name;
 
     // IEquatable
     public override bool Equals(object? obj) => Equals(obj as IFunctionSymbol);
 
     public bool Equals(IFunctionSymbol? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return Name == other.Name && IsExport == other.IsExport && IsExtern == other.IsExtern;
+    }
+
+    public override int GetHashCode() => HashCode.Combine(Name, IsExport, IsExtern);
+}
+
+
+internal class ParameterSymbol : IParameterSymbol
+{
+    /// <inheritdoc/>
+    public string Name { get; }
+
+    /// <inheritdoc/>
+    public bool IsExport { get; set; }
+
+    /// <inheritdoc/>
+    public bool IsExtern { get; set; }
+
+    public ParameterSymbol(string name) => Name = name;
+
+    // IEquatable
+    public override bool Equals(object? obj) => Equals(obj as IParameterSymbol);
+
+    public bool Equals(IParameterSymbol? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return Name == other.Name && IsExport == other.IsExport && IsExtern == other.IsExtern;
+    }
+
+    public override int GetHashCode() => HashCode.Combine(Name, IsExport, IsExtern);
+}
+
+
+internal class VariableSymbol : IVariableSymbol
+{
+    /// <inheritdoc/>
+    public string Name { get; }
+
+    /// <inheritdoc/>
+    public bool IsExport { get; set; }
+
+    /// <inheritdoc/>
+    public bool IsExtern { get; set; }
+
+    /// <inheritdoc/>
+    public TypeReference Type { get; set; }
+
+    public VariableSymbol(string name) => Name = name;
+
+    // IEquatable
+    public override bool Equals(object? obj) => Equals(obj as IVariableSymbol);
+
+    public bool Equals(IVariableSymbol? other)
     {
         if (ReferenceEquals(null, other)) return false;
         if (ReferenceEquals(this, other)) return true;

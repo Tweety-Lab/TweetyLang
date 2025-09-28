@@ -44,18 +44,26 @@ public class SymbolDictionary
     /// <returns>Symbol.</returns>
     public T? GetDeclaredSymbol<T>(AstNode node) where T : ISymbol => (T?)GetDeclaredSymbol(node);
 
-    private ISymbol? ComputeDeclaredSymbol(AstNode node)
+    public IEnumerable<T> GetAllSymbols<T>() where T : ISymbol
     {
-        switch (node)
+        foreach (var node in tree.Root.DescendantsAndSelf())
         {
-            case FunctionNode func:
-                return new FunctionSymbol(func.Name) { IsExtern = func.Modifiers.HasFlag(Modifiers.Extern), IsExport = func.Modifiers.HasFlag(Modifiers.Export) };
-
-            case ModuleNode module:
-                return new ModuleSymbol(module.Name);
-
-            default:
-                return null;
+            var symbol = GetDeclaredSymbol(node);
+            if (symbol is T typedSymbol)
+                yield return typedSymbol;
         }
     }
+
+    private ISymbol? ComputeDeclaredSymbol(AstNode node) => node switch
+    {
+        ModuleNode m => new ModuleSymbol(m.Name),
+        FunctionNode f => new FunctionSymbol(f.Name)
+        {
+            IsExport = f.Modifiers.HasFlag(Modifiers.Export),
+            IsExtern = f.Modifiers.HasFlag(Modifiers.Extern)
+        },
+        ParameterNode p => new ParameterSymbol(p.Name),
+        DeclarationNode v => new VariableSymbol(v.Name) { Type = v.Type },
+        _ => null
+    };
 }

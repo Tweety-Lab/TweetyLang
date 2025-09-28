@@ -142,14 +142,7 @@ internal class ImportRule : BaseSemanticRule
 {
     public override void AnalyzeProgram(ProgramNode program)
     {
-        var allModuleSymbols = Compilation.SyntaxTrees
-            .SelectMany(tree =>
-            {
-                var dict = Compilation.GetSymbolDictionary(tree);
-                return tree.Root.Modules
-                    .Select(m => dict.GetDeclaredSymbol<IModuleSymbol>(m))
-                    .Where(s => s != null)!;
-            })
+        var allModuleSymbols = Compilation.GetAllSymbols<IModuleSymbol>()
             .ToDictionary(s => s.Name, StringComparer.OrdinalIgnoreCase);
 
         var seenImports = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -158,32 +151,67 @@ internal class ImportRule : BaseSemanticRule
         {
             // Duplicate import warning
             if (!seenImports.Add(import.ModuleName))
-            {
                 Warning(import, $"Duplicate import of module '{import.ModuleName}'.");
-            }
 
             // Resolve imported module via symbol table
             if (!allModuleSymbols.ContainsKey(import.ModuleName))
-            {
                 Error(import, $"Could not resolve import '{import.ModuleName}'.");
-            }
         }
     }
 }
 
 [SemanticAnalyzer]
-internal class TypeDeclarationRule : BaseSemanticRule
+internal class TypeDecAssignRule : BaseSemanticRule
 {
     public override void AnalyzeStatement(StatementNode stmt)
     {
-        if (stmt is not DeclarationNode decl)
+        switch (stmt)
+        {
+            case DeclarationNode decl:
+                AnalyzeDeclaration(decl);
+                break;
+
+            case AssignmentNode assign:
+                AnalyzeAssignment(assign);
+                break;
+        }
+    }
+
+    private void AnalyzeDeclaration(DeclarationNode decl)
+    {
+        var symbolDict = Compilation.GetSymbolDictionary(decl.Tree!);
+        var variableSymbol = symbolDict.GetDeclaredSymbol<IVariableSymbol>(decl);
+
+        if (variableSymbol == null)
+        {
+            Error(decl, $"No symbol found for variable '{decl.Name}'.");
             return;
+        }
 
-        var type = decl.Type;
-        var exprType = ResolveExpressionType(decl.Expression, type);
+        var exprType = ResolveExpressionType(decl.Expression, variableSymbol.Type);
 
-        if (exprType != type && exprType != new TypeReference("unknown"))
-            Error(decl, $"Type mismatch: Expression type '{exprType}' does not match declared type '{type}'.");
+        if (exprType != variableSymbol.Type && exprType != new TypeReference("unknown"))
+            Error(decl, $"Type mismatch: Expression type '{exprType}' does not match declared type '{variableSymbol.Type}'.");
+    }
+
+
+    private void AnalyzeAssignment(AssignmentNode assign)
+    {
+        var symbolDict = Compilation.GetSymbolDictionary(assign.Tree!);
+        var variableSymbol = symbolDict
+            .GetAllSymbols<IVariableSymbol>()
+            .FirstOrDefault(v => v.Name == assign.Name);
+
+        if (variableSymbol == null)
+        {
+            Error(assign, $"Undeclared variable '{assign.Name}' cannot be assigned.");
+            return;
+        }
+
+        var exprType = ResolveExpressionType(assign.Expression, variableSymbol.Type);
+
+        if (exprType != variableSymbol.Type && exprType != new TypeReference("unknown"))
+            Error(assign, $"Type mismatch: Cannot assign expression of type '{exprType}' to variable '{variableSymbol.Name}' of type '{variableSymbol.Type}'.");
     }
 
     private TypeReference ResolveExpressionType(ExpressionNode expr, TypeReference? expectedType = null)

@@ -52,20 +52,20 @@ internal class BuildProject : BaseVerb
         SymbolDictionary dict = compilation.GetSymbolDictionary(syntaxTrees[0]);
         IFunctionSymbol function = dict.GetDeclaredSymbol<IFunctionSymbol>(syntaxTrees[0].Root.Modules[0].Functions[0]);
 
-        if (compilation.Errors.Any())
-        {
-            Console.WriteLine("\nCould not compile project:");
-            foreach (var error in compilation.Errors)
-                CompilerOutput.WriteError(error.Message, error.Line, error.Column);
-        }
-
         if (compilation.Warnings.Any())
         {
             foreach (var warning in compilation.Warnings)
                 CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
         }
 
-        Console.WriteLine(function.Name);
+        if (compilation.Errors.Any())
+        {
+            Console.WriteLine("\nCould not compile project:");
+            foreach (var error in compilation.Errors)
+                CompilerOutput.WriteError(error.Message, error.Line, error.Column);
+
+            return;
+        }
 
         LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation);
         Console.WriteLine(module.PrintToString());
