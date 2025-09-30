@@ -143,6 +143,11 @@ public class SemanticAnalyzer
                 AnalyzeExpression(bin.Right);
                 break;
 
+            case ObjectInstantiationNode instantiation:
+                foreach (var arg in instantiation.Arguments)
+                    AnalyzeExpression(arg);
+                break;
+
             case FunctionCallNode call:
                 foreach (var arg in call.Arguments)
                     AnalyzeExpression(arg);

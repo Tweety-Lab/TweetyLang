@@ -311,6 +311,16 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBoolean_literal([NotNull] TweetyLangParser.Boolean_literalContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="TweetyLangParser.object_instantiation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObject_instantiation([NotNull] TweetyLangParser.Object_instantiationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TweetyLangParser.object_instantiation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObject_instantiation([NotNull] TweetyLangParser.Object_instantiationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.parameters"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

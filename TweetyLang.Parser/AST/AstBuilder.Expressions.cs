@@ -1,4 +1,5 @@
-﻿using TweetyLang.AST;
+﻿using Antlr4.Runtime.Misc;
+using TweetyLang.AST;
 
 namespace TweetyLang.Parser.AST;
 
@@ -59,6 +60,9 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         if (context.NUMBER() != null)
             return new IntegerLiteralNode { Value = int.Parse(context.NUMBER().GetText()) };
 
+        if (context.object_instantiation() != null)
+            return Visit(context.object_instantiation());
+
         if (context.function_call() != null)
             return Visit(context.function_call());
 
@@ -90,6 +94,28 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
         }
 
         return node;
+    }
+
+    public override AstNode VisitObject_instantiation(TweetyLangParser.Object_instantiationContext context)
+    {
+        var instantiation = new ObjectInstantiationNode
+        {
+            Name = context.identifier().GetText(),
+            SourceLine = context.Start.Line,
+            SourceColumn = context.Start.Column
+        };
+
+        if (context.arguments() != null)
+        {
+            var args = context.arguments().expression()
+                            .Select(arg => instantiation.AddChild(Visit(arg) as ExpressionNode))
+                            .Where(arg => arg != null)
+                            .Cast<ExpressionNode>();
+
+            instantiation.Arguments.AddRange(args);
+        }
+
+        return instantiation;
     }
 
     public override AstNode VisitFunction_call(TweetyLangParser.Function_callContext context)

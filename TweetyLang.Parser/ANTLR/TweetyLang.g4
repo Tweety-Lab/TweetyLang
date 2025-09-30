@@ -123,6 +123,7 @@ factor
     : NUMBER
     | identifier
     | function_call
+    | object_instantiation
     | boolean_literal
     | CHAR_LITERAL
     | STRING_LITERAL
@@ -132,6 +133,10 @@ factor
 boolean_literal
     : 'true'
     | 'false'
+    ;
+
+object_instantiation
+    : 'new' identifier '(' arguments? ')'
     ;
 
 // Types

@@ -16,7 +16,12 @@ internal class IRBuilder
     /// <summary>
     /// Store function pointer and its return type.
     /// </summary>
-    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef FunctionType)> Funcs { get; set; } = new(); // This is stupid but until #229 gets fixed we have to do it... maybe? Prayers.
+    public Dictionary<string, (LLVMValueRef Function, LLVMTypeRef FunctionType)> Funcs { get; set; } = new();
+
+    /// <summary>
+    /// Store struct types.
+    /// </summary>
+    public Dictionary<string, LLVMTypeRef> Structs { get; set; } = new();
 
     /// <summary>
     /// The LLVM builder.
@@ -99,6 +104,8 @@ internal class IRBuilder
                     "/" => LLVMBuilder.BuildSDiv(left, right, "divtmp"),
                     _ => throw new NotImplementedException($"Unknown operator {bin.Operator}")
                 };
+            case ObjectInstantiationNode inst:
+                return LLVMBuilder.BuildAlloca(Structs[inst.Name], inst.Name);
             case FunctionCallNode call:
                 if (!Funcs.TryGetValue(call.Name, out var fnData))
                     throw new InvalidOperationException($"Unknown function {call.Name}");
@@ -130,11 +137,11 @@ internal class IRBuilder
 
     public void EmitModule(LLVMModuleRef module, ModuleNode moduleNode)
     {
-        foreach (var fn in moduleNode.Functions)
-            EmitFunction(module, fn);
-
         foreach (var structDef in moduleNode.Structs)
             EmitStruct(module, structDef);
+
+        foreach (var fn in moduleNode.Functions)
+            EmitFunction(module, fn);
     }
 
     private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
@@ -189,6 +196,8 @@ internal class IRBuilder
     {
         var structType = context.CreateNamedStruct(structNode.Name);
         structType.StructSetBody(structNode.Fields.Select(f => Mapping.MapType(f.Type)).ToArray(), false);
+
+        Structs[structNode.Name] = structType;
     }
 
     private void EmitStatement(StatementNode stmt)

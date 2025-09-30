@@ -294,7 +294,19 @@ public class BinaryExpressionNode : ExpressionNode
 
 public class FunctionCallNode : ExpressionNode
 {
+    /// <summary> The name of the function being called. </summary>
     public string Name { get; set; }
+
+    public List<ExpressionNode> Arguments { get; set; } = new();
+
+    public override IEnumerable<AstNode> GetChildren() => Arguments;
+}
+
+public class ObjectInstantiationNode : ExpressionNode
+{
+    /// <summary> The name of the object being instantiated. </summary>
+    public string Name { get; set; }
+
     public List<ExpressionNode> Arguments { get; set; } = new();
 
     public override IEnumerable<AstNode> GetChildren() => Arguments;

@@ -200,6 +200,12 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBoolean_literal([NotNull] TweetyLangParser.Boolean_literalContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.object_instantiation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObject_instantiation([NotNull] TweetyLangParser.Object_instantiationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.parameters"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
