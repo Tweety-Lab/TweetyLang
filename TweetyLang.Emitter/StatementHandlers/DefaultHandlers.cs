@@ -14,11 +14,11 @@ internal abstract class BaseStatementHandler
 [StatementHandler]
 internal class DeclarationHandler : BaseStatementHandler
 {
-    public override bool CanHandle(StatementNode statement) => statement is DeclarationNode;
+    public override bool CanHandle(StatementNode statement) => statement is LocalDeclarationNode;
 
     public override void Handle(StatementNode statement, IRBuilder builder)
     {
-        if (statement is not DeclarationNode decl)
+        if (statement is not LocalDeclarationNode decl)
             return;
 
         // Allocate space for local variable

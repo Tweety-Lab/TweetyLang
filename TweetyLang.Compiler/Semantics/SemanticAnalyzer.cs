@@ -105,7 +105,7 @@ public class SemanticAnalyzer
         // Analyze expressions inside statements
         switch (stmt)
         {
-            case DeclarationNode decl:
+            case LocalDeclarationNode decl:
                 AnalyzeExpression(decl.Expression);
                 break;
 

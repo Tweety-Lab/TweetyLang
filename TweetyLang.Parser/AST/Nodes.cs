@@ -168,8 +168,33 @@ public class ModuleNode : AstNode
     public string Name { get; set; }
 
     public List<FunctionNode> Functions { get; set; } = new();
+    public List<StructNode> Structs { get; set; } = new();
 
     public override IEnumerable<AstNode> GetChildren() => Functions;
+}
+
+public class StructNode : AstNode
+{
+    /// <summary> The name of the struct. </summary>
+    public string Name { get; set; }
+
+    public Modifiers Modifiers { get; set; }
+
+    public List<FieldDeclarationNode> Members { get; set; } = new();
+    public List<FunctionNode> Functions { get; set; } = new();
+
+
+}
+
+public class FieldDeclarationNode : AstNode
+{
+    /// <summary> The name of the field. </summary>
+    public string Name { get; set; }
+
+    public TypeReference Type { get; set; }
+    public ExpressionNode? Expression { get; set; }
+
+    public override IEnumerable<AstNode> GetChildren() => new[] { Expression };
 }
 
 public class FunctionNode : AstNode
@@ -200,7 +225,7 @@ public class ParameterNode : AstNode
 
 public abstract class StatementNode : AstNode { }
 
-public class DeclarationNode : StatementNode
+public class LocalDeclarationNode : StatementNode
 {
     /// <summary> The name of the variable being declared. </summary>
     public string Name { get; set; }

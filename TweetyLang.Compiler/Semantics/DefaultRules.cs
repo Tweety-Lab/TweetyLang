@@ -170,7 +170,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
     {
         switch (stmt)
         {
-            case DeclarationNode decl:
+            case LocalDeclarationNode decl:
                 AnalyzeDeclaration(decl);
                 break;
 
@@ -180,7 +180,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
         }
     }
 
-    private void AnalyzeDeclaration(DeclarationNode decl)
+    private void AnalyzeDeclaration(LocalDeclarationNode decl)
     {
         var symbolDict = Compilation.GetSymbolDictionary(SyntaxTree);
         var variableSymbol = symbolDict.GetDeclaredSymbol<IVariableSymbol>(decl);

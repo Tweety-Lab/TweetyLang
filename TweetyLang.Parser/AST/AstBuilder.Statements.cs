@@ -15,7 +15,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
     public override AstNode VisitDeclaration(TweetyLangParser.DeclarationContext context)
     {
-        var declNode = new DeclarationNode
+        var declNode = new LocalDeclarationNode
         {
             Name = context.identifier().GetText(),
             Type = BuildTypeReference(context.type())

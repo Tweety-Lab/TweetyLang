@@ -42,8 +42,13 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         foreach (var decl in context.module_block().definition())
         {
-            if (Visit(decl) is FunctionNode fn)
+            AstNode node = Visit(decl);
+
+            if (node is FunctionNode fn)
                 module.Functions.Add(module.AddChild(fn));
+
+            if (node is StructNode str)
+                module.Structs.Add(module.AddChild(str));
         }
 
         return module;
