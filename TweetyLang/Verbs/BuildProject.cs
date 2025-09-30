@@ -68,7 +68,7 @@ internal class BuildProject : BaseVerb
         LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation, Enumerable.Empty<LLVMModuleRef>());
 
         // Write to .obj
-        Linker.Linker.ModuleToObjectFile(module, Path.Combine(Directory.GetCurrentDirectory(), Path.ChangeExtension(projectFile, ".obj")), "x86_64-pc-windows-msvc");
+        Linker.Linker.ModuleToObjectFile(module, Path.Combine(Directory.GetCurrentDirectory(), Path.ChangeExtension(projectFile, ".o")), LLVMTargetRef.DefaultTriple);
 
         return module;
     }
