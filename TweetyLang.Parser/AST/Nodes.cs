@@ -180,7 +180,7 @@ public class StructNode : AstNode
 
     public Modifiers Modifiers { get; set; }
 
-    public List<FieldDeclarationNode> Members { get; set; } = new();
+    public List<FieldDeclarationNode> Fields { get; set; } = new();
     public List<FunctionNode> Functions { get; set; } = new();
 
 

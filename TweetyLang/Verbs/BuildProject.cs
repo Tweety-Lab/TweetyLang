@@ -11,7 +11,8 @@ internal class BuildProject : BaseVerb
 {
     public override void Run()
     {
-        BuildProjectFromDir(Directory.GetCurrentDirectory());
+        var module = BuildProjectFromDir(Directory.GetCurrentDirectory());
+        Console.WriteLine(module.PrintToString());
     }
 
     public static LLVMModuleRef BuildProjectFromDir(string projectDir)

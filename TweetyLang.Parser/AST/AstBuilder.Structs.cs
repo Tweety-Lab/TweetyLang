@@ -47,7 +47,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                     if (fdCtx.expression() != null)
                         field.Expression = Visit(fdCtx.expression()) as ExpressionNode;
 
-                    structNode.Members.Add(structNode.AddChild(field));
+                    structNode.Fields.Add(structNode.AddChild(field));
                     break;
             }
         }

@@ -132,6 +132,9 @@ internal class IRBuilder
     {
         foreach (var fn in moduleNode.Functions)
             EmitFunction(module, fn);
+
+        foreach (var structDef in moduleNode.Structs)
+            EmitStruct(module, structDef);
     }
 
     private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
@@ -180,6 +183,12 @@ internal class IRBuilder
         // Return
         if (fn.ReturnType == TypeReference.Void)
             LLVMBuilder.BuildRetVoid();
+    }
+
+    private void EmitStruct(LLVMModuleRef module, StructNode structNode)
+    {
+        var structType = context.CreateNamedStruct(structNode.Name);
+        structType.StructSetBody(structNode.Fields.Select(f => Mapping.MapType(f.Type)).ToArray(), false);
     }
 
     private void EmitStatement(StatementNode stmt)
