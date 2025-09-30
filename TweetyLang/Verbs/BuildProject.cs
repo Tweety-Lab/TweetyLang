@@ -11,16 +11,7 @@ internal class BuildProject : BaseVerb
 {
     public override void Run()
     {
-        var module = BuildProjectFromDir(Directory.GetCurrentDirectory());
-
-        if (module.Handle != IntPtr.Zero)
-        {
-            Console.WriteLine(module.PrintToString());
-        }
-        else
-        {
-            Console.Error.WriteLine("Build failed.");
-        }
+        BuildProjectFromDir(Directory.GetCurrentDirectory());
     }
 
     public static LLVMModuleRef BuildProjectFromDir(string projectDir)
@@ -73,6 +64,19 @@ internal class BuildProject : BaseVerb
 
         string objDir = Path.Combine(outputDir, Path.ChangeExtension(Path.GetFileName(projectFile), ".o"));
         Linker.Linker.ModuleToObjectFile(module, objDir, LLVMTargetRef.DefaultTriple);
+
+        AssemblyType assemblyType = AssemblyType.DynamicLibrary;
+
+        // Write to an assembly depending on project type
+        if (project.OutputType == "ConsoleApp")
+            assemblyType = AssemblyType.Application;
+        else if (project.OutputType == "DynamicLibrary")
+            assemblyType = AssemblyType.DynamicLibrary;
+        else if (project.OutputType == "StaticLibrary")
+            assemblyType = AssemblyType.StaticLibrary;
+
+        string assemblyDir = Path.Combine(outputDir, Path.GetFileName(projectFile));
+        Linker.Linker.ObjectFilesToAssembly(new[] { objDir }, assemblyDir, assemblyType);
 
         return module;
     }
