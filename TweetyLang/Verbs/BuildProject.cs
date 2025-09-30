@@ -40,16 +40,6 @@ internal class BuildProject : BaseVerb
         if (currentTrees == null) return default;
         allSyntaxTrees.AddRange(currentTrees);
 
-        foreach (var tree in allSyntaxTrees)
-        {
-            // Get the name of the first struct and prnit it
-            if (tree.Root.Modules[0].Structs.Count > 0)
-            {
-                var firstStruct = tree.Root.Modules[0].Structs[0];
-                Console.WriteLine($"First struct: {firstStruct.Name}");
-            }
-        }
-
         var compilation = TweetyLangCompilation.Create(Path.GetFileNameWithoutExtension(projectFile), allSyntaxTrees);
 
         // Report warnings
