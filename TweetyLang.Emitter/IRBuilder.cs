@@ -117,24 +117,21 @@ internal class IRBuilder
         }
     }
 
-    public IReadOnlyList<LLVMModuleRef> EmitProgram(ProgramNode program)
+    [Obsolete("Use EmitModule instead (for now). See Emitter.Emitter for reference.")]
+    public LLVMModuleRef EmitProgram(ProgramNode program)
     {
-        var modules = new List<LLVMModuleRef>();
+        var module = LLVMModuleRef.CreateWithName("Program");
 
         foreach (var mod in program.Modules)
-            modules.Add(EmitModule(mod));
-
-        return modules;
-    }
-
-    private LLVMModuleRef EmitModule(ModuleNode moduleNode)
-    {
-        var module = LLVMModuleRef.CreateWithName(moduleNode.Name);
-
-        foreach (var fn in moduleNode.Functions)
-            EmitFunction(module, fn);
+            EmitModule(module, mod);
 
         return module;
+    }
+
+    public void EmitModule(LLVMModuleRef module, ModuleNode moduleNode)
+    {
+        foreach (var fn in moduleNode.Functions)
+            EmitFunction(module, fn);
     }
 
     private void EmitFunction(LLVMModuleRef module, FunctionNode fn)
