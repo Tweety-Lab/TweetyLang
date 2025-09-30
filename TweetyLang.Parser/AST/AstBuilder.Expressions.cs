@@ -1,4 +1,5 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using TweetyLang.AST;
 
 namespace TweetyLang.Parser.AST;
@@ -8,16 +9,6 @@ namespace TweetyLang.Parser.AST;
 /// </summary>
 public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 {
-    public override AstNode VisitIdentifier(TweetyLangParser.IdentifierContext context)
-    {
-        return new IdentifierNode
-        {
-            Name = context.GetText(),
-            SourceLine = context.Start.Line,
-            SourceColumn = context.Start.Column
-        };
-    }
-
     public override AstNode VisitBoolean_literal(TweetyLangParser.Boolean_literalContext context)
     {
         return new BooleanLiteralNode
@@ -51,8 +42,15 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             return new StringLiteralNode { Value = text };
         }
 
-        if (context.identifier() != null)
-            return Visit(context.identifier());
+        if (context.IDENTIFIER() != null)
+        {
+            return new IdentifierNode
+            {
+                Name = context.IDENTIFIER().GetText(),
+                SourceLine = context.Start.Line,
+                SourceColumn = context.Start.Column
+            };
+        }
 
         if (context.boolean_literal() != null)
             return Visit(context.boolean_literal());
@@ -100,7 +98,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var instantiation = new ObjectInstantiationNode
         {
-            Name = context.identifier().GetText(),
+            Name = context.IDENTIFIER().GetText(),
             SourceLine = context.Start.Line,
             SourceColumn = context.Start.Column
         };
@@ -122,7 +120,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var call = new FunctionCallNode
         {
-            Name = context.identifier().GetText(),
+            Name = context.IDENTIFIER().GetText(),
             SourceLine = context.Start.Line,
             SourceColumn = context.Start.Column
         };

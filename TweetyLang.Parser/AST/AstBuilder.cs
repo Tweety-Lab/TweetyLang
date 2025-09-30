@@ -63,7 +63,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
 
         var fn = new FunctionNode
         {
-            Name = context.identifier().GetText(),
+            Name = context.IDENTIFIER().GetText(),
             ReturnType = returnType,
             Modifiers = Modifiers.None,
             SourceLine = context.Start.Line,
@@ -87,7 +87,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             {
                 var paramNode = new ParameterNode
                 {
-                    Name = p.identifier().GetText(),
+                    Name = p.IDENTIFIER().GetText(),
                     Type = BuildTypeReference(p.type())
                 };
                 fn.Parameters.Add(fn.AddChild(paramNode));

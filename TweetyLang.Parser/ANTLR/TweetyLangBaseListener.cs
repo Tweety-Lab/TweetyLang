@@ -108,18 +108,6 @@ public partial class TweetyLangBaseListener : ITweetyLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitImport_statement([NotNull] TweetyLangParser.Import_statementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.identifier"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIdentifier([NotNull] TweetyLangParser.IdentifierContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.identifier"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIdentifier([NotNull] TweetyLangParser.IdentifierContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.struct_definition"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -276,18 +264,6 @@ public partial class TweetyLangBaseListener : ITweetyLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitElse_block([NotNull] TweetyLangParser.Else_blockContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssignment([NotNull] TweetyLangParser.AssignmentContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssignment([NotNull] TweetyLangParser.AssignmentContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.declaration"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -299,6 +275,18 @@ public partial class TweetyLangBaseListener : ITweetyLangListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDeclaration([NotNull] TweetyLangParser.DeclarationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment([NotNull] TweetyLangParser.AssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment([NotNull] TweetyLangParser.AssignmentContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.return_statement"/>.
 	/// <para>The default implementation does nothing.</para>

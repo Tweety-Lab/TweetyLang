@@ -19,7 +19,7 @@ module_definition
     ;
 
 module_name
-    : identifier ('::' identifier)*
+    : IDENTIFIER ('::' IDENTIFIER)*
     ;
 
 module_block
@@ -30,14 +30,9 @@ import_statement
     : 'import' module_name ';'
     ;
 
-// Identifiers
-identifier
-    : CHARACTER (CHARACTER | NUMBER | '_')*
-    ;
-
 // Structs
 struct_definition
-    : modifier* 'struct' identifier object_block
+    : modifier* 'struct' IDENTIFIER object_block
     ;
 
 object_block
@@ -45,16 +40,16 @@ object_block
     ;
 
 field_declaration
-    : type identifier ('=' expression)? ';'
+    : type IDENTIFIER ('=' expression)? ';'
     ;
 
 // Functions
 function_definition
-    : modifier* (type | 'void') identifier '(' parameters? ')' (statement_block | ';')
+    : modifier* (type | 'void') IDENTIFIER '(' parameters? ')' (statement_block | ';')
     ;
 
 function_call
-    : identifier '(' arguments? ')'
+    : IDENTIFIER '(' arguments? ')'
     ;
 
 arguments
@@ -94,12 +89,12 @@ else_block
     : 'else' statement_block
     ;
 
-assignment
-    : identifier '=' expression
+declaration
+    : type IDENTIFIER '=' expression
     ;
 
-declaration
-    : type identifier '=' expression
+assignment
+    : IDENTIFIER '=' expression
     ;
 
 return_statement
@@ -121,7 +116,7 @@ term
 
 factor
     : NUMBER
-    | identifier
+    | IDENTIFIER
     | function_call
     | object_instantiation
     | boolean_literal
@@ -136,7 +131,7 @@ boolean_literal
     ;
 
 object_instantiation
-    : 'new' identifier '(' arguments? ')'
+    : 'new' IDENTIFIER '(' arguments? ')'
     ;
 
 // Types
@@ -145,7 +140,7 @@ parameters
     ;
 
 parameter
-    : type identifier
+    : type IDENTIFIER
     ;
 
 type
@@ -160,6 +155,7 @@ raw_type
     : 'i32'
     | 'bool'
     | 'char'
+    | IDENTIFIER
     ;
 
 // Common
@@ -185,6 +181,10 @@ ESCAPE_SEQUENCE
     : '\\' .  // matches a backslash followed by any single character
     ;
 
+IDENTIFIER
+    : [a-zA-Z] [a-zA-Z0-9_]*
+    ;
+
 CHARACTER
     : [a-zA-Z]
     ;
@@ -193,6 +193,10 @@ NUMBER : [0-9]+ ;
 
 WS
     : [ \t\r\n]+ -> skip
+    ;
+
+MANDATORY_WS
+    : [ \t]+
     ;
 
 COMMENT

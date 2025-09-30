@@ -91,16 +91,6 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitImport_statement([NotNull] TweetyLangParser.Import_statementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.identifier"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterIdentifier([NotNull] TweetyLangParser.IdentifierContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.identifier"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitIdentifier([NotNull] TweetyLangParser.IdentifierContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.struct_definition"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -231,16 +221,6 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitElse_block([NotNull] TweetyLangParser.Else_blockContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssignment([NotNull] TweetyLangParser.AssignmentContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssignment([NotNull] TweetyLangParser.AssignmentContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.declaration"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -250,6 +230,16 @@ public interface ITweetyLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDeclaration([NotNull] TweetyLangParser.DeclarationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignment([NotNull] TweetyLangParser.AssignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="TweetyLangParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignment([NotNull] TweetyLangParser.AssignmentContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="TweetyLangParser.return_statement"/>.
 	/// </summary>

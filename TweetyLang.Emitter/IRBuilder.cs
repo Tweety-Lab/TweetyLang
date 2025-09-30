@@ -149,8 +149,8 @@ internal class IRBuilder
         currentModule = module;
         FuncLocals.Clear();
 
-        var retType = Mapping.MapType(fn.ReturnType);
-        var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type)).ToArray();
+        var retType = Mapping.MapType(fn.ReturnType, this);
+        var paramsType = fn.Parameters.Select(p => Mapping.MapType(p.Type, this)).ToArray();
         var fnType = LLVMTypeRef.CreateFunction(retType, paramsType, false);
         var function = module.AddFunction(fn.Name, fnType);
 
@@ -177,10 +177,10 @@ internal class IRBuilder
             var llvmParam = function.GetParam((uint)i);
             llvmParam.Name = param.Name;
 
-            var alloca = LLVMBuilder.BuildAlloca(Mapping.MapType(param.Type), param.Name);
+            var alloca = LLVMBuilder.BuildAlloca(Mapping.MapType(param.Type, this), param.Name);
             LLVMBuilder.BuildStore(llvmParam, alloca);
 
-            FuncLocals[param.Name] = (alloca, Mapping.MapType(param.Type));
+            FuncLocals[param.Name] = (alloca, Mapping.MapType(param.Type, this));
         }
 
         // Emit statements
@@ -195,7 +195,7 @@ internal class IRBuilder
     private void EmitStruct(LLVMModuleRef module, StructNode structNode)
     {
         var structType = context.CreateNamedStruct(structNode.Name);
-        structType.StructSetBody(structNode.Fields.Select(f => Mapping.MapType(f.Type)).ToArray(), false);
+        structType.StructSetBody(structNode.Fields.Select(f => Mapping.MapType(f.Type, this)).ToArray(), false);
 
         Structs[structNode.Name] = structType;
     }

@@ -22,7 +22,7 @@ internal class DeclarationHandler : BaseStatementHandler
             return;
 
         // Allocate space for local variable
-        var varType = Mapping.MapType(decl.Type);
+        var varType = Mapping.MapType(decl.Type, builder);
         var alloca = builder.LLVMBuilder.BuildAlloca(varType, decl.Name);
 
         // Evaluate initializer expression

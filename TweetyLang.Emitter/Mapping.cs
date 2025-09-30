@@ -14,18 +14,19 @@ internal static class Mapping
     /// <param name="typeRef">TweetyLang type.</param>
     /// <returns>LLVM type.</returns>
     /// <exception cref="System.NotSupportedException">Thrown when an unsupported type is encountered.</exception>
-    public static LLVMTypeRef MapType(TypeReference typeRef)
+    public static LLVMTypeRef MapType(TypeReference typeRef, IRBuilder builder)
     {
         LLVMTypeRef type = typeRef.BaseType switch
         {
             "i32" => LLVMTypeRef.Int32,
             "bool" => LLVMTypeRef.Int1,
-            "void" => LLVMTypeRef.Void,
             "char" => LLVMTypeRef.Int8,
-            _ => throw new System.NotSupportedException($"Unknown base type {typeRef.BaseType}")
+            "void" => throw new InvalidOperationException("Cannot allocate 'void'"),
+            _ => builder.Structs.TryGetValue(typeRef.BaseType, out var structType)
+                    ? structType
+                    : throw new NotSupportedException($"Unsupported type: {typeRef.BaseType}")
         };
 
-        // Wrap in pointers according to PointerLevel
         for (int i = 0; i < typeRef.PointerLevel; i++)
             type = LLVMTypeRef.CreatePointer(type, 0);
 

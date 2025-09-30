@@ -8,7 +8,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
     {
         var structNode = new StructNode
         {
-            Name = context.identifier().GetText(),
+            Name = context.IDENTIFIER().GetText(),
             SourceLine = context.Start.Line,
             SourceColumn = context.Start.Column
         };
@@ -38,7 +38,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
                 case TweetyLangParser.Field_declarationContext fdCtx:
                     var field = new FieldDeclarationNode
                     {
-                        Name = fdCtx.identifier().GetText(),
+                        Name = fdCtx.IDENTIFIER().GetText(),
                         Type = BuildTypeReference(fdCtx.type()),
                         SourceLine = fdCtx.Start.Line,
                         SourceColumn = fdCtx.Start.Column
