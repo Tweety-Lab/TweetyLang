@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using LLVMSharp.Interop;
 using TweetyLang.Compiler;
-using TweetyLang.Compiler.Symbols;
+using TweetyLang.Linker;
 using TweetyLang.Parser.AST;
 
 namespace TweetyLang.Verbs;
@@ -16,7 +16,6 @@ internal class BuildProject : BaseVerb
         if (module.Handle != IntPtr.Zero)
         {
             Console.WriteLine(module.PrintToString());
-            File.WriteAllText("program.ll", module.PrintToString());
         }
         else
         {
@@ -66,7 +65,12 @@ internal class BuildProject : BaseVerb
             return default;
         }
 
-        return Emitter.Emitter.EmitModule(compilation, Enumerable.Empty<LLVMModuleRef>());
+        LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation, Enumerable.Empty<LLVMModuleRef>());
+
+        // Write to .obj
+        Linker.Linker.ModuleToObjectFile(module, Path.Combine(Directory.GetCurrentDirectory(), Path.ChangeExtension(projectFile, ".obj")), "x86_64-pc-windows-msvc");
+
+        return module;
     }
 
     /// <summary>

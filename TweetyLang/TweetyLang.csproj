@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TweetyLang.Compiler\TweetyLang.Compiler.csproj" />
     <ProjectReference Include="..\TweetyLang.Emitter\TweetyLang.Emitter.csproj" />
+    <ProjectReference Include="..\TweetyLang.Linker\TweetyLang.Linker.csproj" />
     <ProjectReference Include="..\TweetyLang.Parser\TweetyLang.Parser.csproj" />
   </ItemGroup>
 
