@@ -11,64 +11,90 @@ internal class BuildProject : BaseVerb
 {
     public override void Run()
     {
-        // Find the first .toml file in the current directory
-        var projectFile = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.toml").FirstOrDefault();
+        var module = BuildProjectFromDir(Directory.GetCurrentDirectory());
 
+        if (module.Handle != IntPtr.Zero)
+        {
+            Console.WriteLine(module.PrintToString());
+            File.WriteAllText("program.ll", module.PrintToString());
+        }
+        else
+        {
+            Console.Error.WriteLine("Build failed.");
+        }
+    }
+
+    public static LLVMModuleRef BuildProjectFromDir(string projectDir)
+    {
+        var projectFile = Directory.GetFiles(projectDir, "*.toml").FirstOrDefault();
         if (projectFile == null)
         {
-            Console.Error.WriteLine("No project file found in the current directory.");
-            return;
+            Console.Error.WriteLine($"No project file found in {projectDir}!");
+            return default;
         }
 
         var project = Serialization.LoadProject(projectFile);
 
-        // Recursively find all .tl files in the current directory
-        var tlFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.tl", SearchOption.AllDirectories);
-
-        List<TweetyLangSyntaxTree> syntaxTrees = new List<TweetyLangSyntaxTree>();
-
-        foreach (var tlFile in tlFiles)
+        // Collect all syntax trees from dependencies first
+        var allSyntaxTrees = new List<TweetyLangSyntaxTree>();
+        foreach (var dependency in project.Dependencies ?? new())
         {
-            Console.WriteLine($"Compiling {Path.GetFileName(tlFile)}...");
-
-            // Compile
-            var tl = File.ReadAllText(tlFile);
-
-            TweetyLangSyntaxTree syntaxTree = TweetyLangSyntaxTree.ParseText(tl);
-            syntaxTrees.Add(syntaxTree);
-
-            // Handle Syntax Errors
-            if (syntaxTree.Errors.Any())
-            {
-                Console.WriteLine($"\nSyntax errors in {Path.GetFileName(tlFile)}:");
-                foreach (var error in syntaxTree.Errors)
-                    CompilerOutput.WriteError(error.Message, error.Line, error.Column);
-
-                return; // Stop compilation on syntax errors
-            }
+            var depPath = Path.GetFullPath(Path.Combine(projectDir, dependency.Value.Path));
+            var depTrees = CollectSyntaxTreesFromDir(depPath);
+            if (depTrees == null) return default; // stop if dependency has errors
+            allSyntaxTrees.AddRange(depTrees);
         }
 
-        TweetyLangCompilation compilation = TweetyLangCompilation.Create(Path.GetFileNameWithoutExtension(projectFile), syntaxTrees);
+        // Collect syntax trees from the current project
+        var currentTrees = CollectSyntaxTreesFromDir(projectDir);
+        if (currentTrees == null) return default;
+        allSyntaxTrees.AddRange(currentTrees);
 
-        if (compilation.Warnings.Any())
-        {
-            foreach (var warning in compilation.Warnings)
-                CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
-        }
+        var compilation = TweetyLangCompilation.Create(Path.GetFileNameWithoutExtension(projectFile), allSyntaxTrees);
 
+        // Report warnings
+        foreach (var warning in compilation.Warnings)
+            CompilerOutput.WriteWarning(warning.Message, warning.Line, warning.Column);
+
+        // Report errors
         if (compilation.Errors.Any())
         {
             Console.WriteLine("\nCould not compile project:");
             foreach (var error in compilation.Errors)
                 CompilerOutput.WriteError(error.Message, error.Line, error.Column);
 
-            return;
+            return default;
         }
 
-        LLVMModuleRef module = Emitter.Emitter.EmitModule(compilation);
-        Console.WriteLine(module.PrintToString());
+        return Emitter.Emitter.EmitModule(compilation, Enumerable.Empty<LLVMModuleRef>());
+    }
 
-        // Write it to program.ll
-        File.WriteAllText("program.ll", module.PrintToString());
+    /// <summary>
+    /// Parses all .tl files in a directory into syntax trees. Returns null if there are syntax errors.
+    /// </summary>
+    private static List<TweetyLangSyntaxTree>? CollectSyntaxTreesFromDir(string dir)
+    {
+        var syntaxTrees = new List<TweetyLangSyntaxTree>();
+        var tlFiles = Directory.GetFiles(dir, "*.tl", SearchOption.AllDirectories);
+
+        foreach (var tlFile in tlFiles)
+        {
+            Console.WriteLine($"Parsing {Path.GetFileName(tlFile)}...");
+            var source = File.ReadAllText(tlFile);
+            var tree = TweetyLangSyntaxTree.ParseText(source);
+
+            if (tree.Errors.Any())
+            {
+                Console.WriteLine($"\nSyntax errors in {Path.GetFileName(tlFile)}:");
+                foreach (var error in tree.Errors)
+                    CompilerOutput.WriteError(error.Message, error.Line, error.Column);
+
+                return null;
+            }
+
+            syntaxTrees.Add(tree);
+        }
+
+        return syntaxTrees;
     }
 }

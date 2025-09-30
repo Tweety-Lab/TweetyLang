@@ -11,7 +11,7 @@ public static class Emitter
     /// </summary>
     /// <param name="compilation">Compilation.</param>
     /// <returns>Linked LLVM module.</returns>
-    public static LLVMModuleRef EmitModule(TweetyLangCompilation compilation)
+    public static LLVMModuleRef EmitModule(TweetyLangCompilation compilation, IEnumerable<LLVMModuleRef>? dependencies = null)
     {
         var irBuilder = new IRBuilder();
 
@@ -24,6 +24,18 @@ public static class Emitter
 
             foreach (var mod in program.Modules)
                 irBuilder.EmitModule(mainModule, mod);
+        }
+
+
+        // Link all dependencies
+        foreach (var dep in dependencies ?? Enumerable.Empty<LLVMModuleRef>())
+        {
+            unsafe
+            {
+                int result = LLVM.LinkModules2(mainModule, dep);
+                if (result != 0)
+                    throw new InvalidOperationException("Failed to link dependency module.");
+            }
         }
 
         return mainModule;
