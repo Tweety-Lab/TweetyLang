@@ -56,11 +56,11 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitModule_name([NotNull] TweetyLangParser.Module_nameContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="TweetyLangParser.module_body"/>.
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.module_block"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitModule_body([NotNull] TweetyLangParser.Module_bodyContext context);
+	Result VisitModule_block([NotNull] TweetyLangParser.Module_blockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.import_statement"/>.
 	/// </summary>
@@ -73,6 +73,24 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIdentifier([NotNull] TweetyLangParser.IdentifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.struct_definition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStruct_definition([NotNull] TweetyLangParser.Struct_definitionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.object_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObject_block([NotNull] TweetyLangParser.Object_blockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.field_declaration"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitField_declaration([NotNull] TweetyLangParser.Field_declarationContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.function_definition"/>.
 	/// </summary>
@@ -91,6 +109,12 @@ public interface ITweetyLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArguments([NotNull] TweetyLangParser.ArgumentsContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="TweetyLangParser.definition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDefinition([NotNull] TweetyLangParser.DefinitionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="TweetyLangParser.statement_block"/>.
 	/// </summary>

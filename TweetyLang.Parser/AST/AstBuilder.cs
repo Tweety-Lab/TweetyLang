@@ -40,7 +40,7 @@ public partial class AstBuilder : TweetyLangBaseVisitor<AstNode>
             SourceColumn = context.Start.Column
         };
 
-        foreach (var decl in context.module_body().top_level_declaration())
+        foreach (var decl in context.module_block().definition())
         {
             if (Visit(decl) is FunctionNode fn)
                 module.Functions.Add(module.AddChild(fn));

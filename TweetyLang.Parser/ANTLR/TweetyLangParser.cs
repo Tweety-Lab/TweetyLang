@@ -39,22 +39,25 @@ public partial class TweetyLangParser : Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
-		T__24=25, T__25=26, CHAR_LITERAL=27, STRING_LITERAL=28, ESCAPE_SEQUENCE=29, 
-		CHARACTER=30, NUMBER=31, WS=32, COMMENT=33;
+		T__24=25, T__25=26, T__26=27, CHAR_LITERAL=28, STRING_LITERAL=29, ESCAPE_SEQUENCE=30, 
+		CHARACTER=31, NUMBER=32, WS=33, COMMENT=34;
 	public const int
 		RULE_program = 0, RULE_top_level_declaration = 1, RULE_module_definition = 2, 
-		RULE_module_name = 3, RULE_module_body = 4, RULE_import_statement = 5, 
-		RULE_identifier = 6, RULE_function_definition = 7, RULE_function_call = 8, 
-		RULE_arguments = 9, RULE_statement_block = 10, RULE_statement = 11, RULE_raw_statement = 12, 
-		RULE_compound_statement = 13, RULE_if_statement = 14, RULE_else_block = 15, 
-		RULE_assignment = 16, RULE_declaration = 17, RULE_return_statement = 18, 
-		RULE_expression_statement = 19, RULE_expression = 20, RULE_term = 21, 
-		RULE_factor = 22, RULE_boolean_literal = 23, RULE_parameters = 24, RULE_parameter = 25, 
-		RULE_type = 26, RULE_pointer_suffix = 27, RULE_raw_type = 28, RULE_modifier = 29;
+		RULE_module_name = 3, RULE_module_block = 4, RULE_import_statement = 5, 
+		RULE_identifier = 6, RULE_struct_definition = 7, RULE_object_block = 8, 
+		RULE_field_declaration = 9, RULE_function_definition = 10, RULE_function_call = 11, 
+		RULE_arguments = 12, RULE_definition = 13, RULE_statement_block = 14, 
+		RULE_statement = 15, RULE_raw_statement = 16, RULE_compound_statement = 17, 
+		RULE_if_statement = 18, RULE_else_block = 19, RULE_assignment = 20, RULE_declaration = 21, 
+		RULE_return_statement = 22, RULE_expression_statement = 23, RULE_expression = 24, 
+		RULE_term = 25, RULE_factor = 26, RULE_boolean_literal = 27, RULE_parameters = 28, 
+		RULE_parameter = 29, RULE_type = 30, RULE_pointer_suffix = 31, RULE_raw_type = 32, 
+		RULE_modifier = 33;
 	public static readonly string[] ruleNames = {
 		"program", "top_level_declaration", "module_definition", "module_name", 
-		"module_body", "import_statement", "identifier", "function_definition", 
-		"function_call", "arguments", "statement_block", "statement", "raw_statement", 
+		"module_block", "import_statement", "identifier", "struct_definition", 
+		"object_block", "field_declaration", "function_definition", "function_call", 
+		"arguments", "definition", "statement_block", "statement", "raw_statement", 
 		"compound_statement", "if_statement", "else_block", "assignment", "declaration", 
 		"return_statement", "expression_statement", "expression", "term", "factor", 
 		"boolean_literal", "parameters", "parameter", "type", "pointer_suffix", 
@@ -62,15 +65,15 @@ public partial class TweetyLangParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'module'", "'::'", "'{'", "'}'", "'import'", "';'", "'_'", "'void'", 
-		"'('", "')'", "','", "'if'", "'else'", "'='", "'return'", "'+'", "'-'", 
-		"'*'", "'/'", "'true'", "'false'", "'i32'", "'bool'", "'char'", "'export'", 
-		"'extern'"
+		null, "'module'", "'::'", "'{'", "'}'", "'import'", "';'", "'_'", "'struct'", 
+		"'='", "'void'", "'('", "')'", "','", "'if'", "'else'", "'return'", "'+'", 
+		"'-'", "'*'", "'/'", "'true'", "'false'", "'i32'", "'bool'", "'char'", 
+		"'export'", "'extern'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, "CHAR_LITERAL", "STRING_LITERAL", "ESCAPE_SEQUENCE", 
+		null, null, null, null, "CHAR_LITERAL", "STRING_LITERAL", "ESCAPE_SEQUENCE", 
 		"CHARACTER", "NUMBER", "WS", "COMMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
@@ -144,21 +147,21 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 63;
+			State = 71;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 130023714L) != 0)) {
+			while (_la==T__0 || _la==T__4) {
 				{
 				{
-				State = 60;
+				State = 68;
 				top_level_declaration();
 				}
 				}
-				State = 65;
+				State = 73;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 66;
+			State = 74;
 			Match(Eof);
 			}
 		}
@@ -179,9 +182,6 @@ public partial class TweetyLangParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public Import_statementContext import_statement() {
 			return GetRuleContext<Import_statementContext>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public Function_definitionContext function_definition() {
-			return GetRuleContext<Function_definitionContext>(0);
 		}
 		public Top_level_declarationContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -211,33 +211,21 @@ public partial class TweetyLangParser : Parser {
 		Top_level_declarationContext _localctx = new Top_level_declarationContext(Context, State);
 		EnterRule(_localctx, 2, RULE_top_level_declaration);
 		try {
-			State = 71;
+			State = 78;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__0:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 68;
+				State = 76;
 				module_definition();
 				}
 				break;
 			case T__4:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 69;
+				State = 77;
 				import_statement();
-				}
-				break;
-			case T__7:
-			case T__21:
-			case T__22:
-			case T__23:
-			case T__24:
-			case T__25:
-				EnterOuterAlt(_localctx, 3);
-				{
-				State = 70;
-				function_definition();
 				}
 				break;
 			default:
@@ -259,8 +247,8 @@ public partial class TweetyLangParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public Module_nameContext module_name() {
 			return GetRuleContext<Module_nameContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public Module_bodyContext module_body() {
-			return GetRuleContext<Module_bodyContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public Module_blockContext module_block() {
+			return GetRuleContext<Module_blockContext>(0);
 		}
 		public Module_definitionContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -292,12 +280,12 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 73;
+			State = 80;
 			Match(T__0);
-			State = 74;
+			State = 81;
 			module_name();
-			State = 75;
-			module_body();
+			State = 82;
+			module_block();
 			}
 		}
 		catch (RecognitionException re) {
@@ -349,21 +337,21 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 77;
+			State = 84;
 			identifier();
-			State = 82;
+			State = 89;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__1) {
 				{
 				{
-				State = 78;
+				State = 85;
 				Match(T__1);
-				State = 79;
+				State = 86;
 				identifier();
 				}
 				}
-				State = 84;
+				State = 91;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -380,61 +368,61 @@ public partial class TweetyLangParser : Parser {
 		return _localctx;
 	}
 
-	public partial class Module_bodyContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public Top_level_declarationContext[] top_level_declaration() {
-			return GetRuleContexts<Top_level_declarationContext>();
+	public partial class Module_blockContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public DefinitionContext[] definition() {
+			return GetRuleContexts<DefinitionContext>();
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public Top_level_declarationContext top_level_declaration(int i) {
-			return GetRuleContext<Top_level_declarationContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public DefinitionContext definition(int i) {
+			return GetRuleContext<DefinitionContext>(i);
 		}
-		public Module_bodyContext(ParserRuleContext parent, int invokingState)
+		public Module_blockContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_module_body; } }
+		public override int RuleIndex { get { return RULE_module_block; } }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ITweetyLangListener typedListener = listener as ITweetyLangListener;
-			if (typedListener != null) typedListener.EnterModule_body(this);
+			if (typedListener != null) typedListener.EnterModule_block(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ITweetyLangListener typedListener = listener as ITweetyLangListener;
-			if (typedListener != null) typedListener.ExitModule_body(this);
+			if (typedListener != null) typedListener.ExitModule_block(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitModule_body(this);
+			if (typedVisitor != null) return typedVisitor.VisitModule_block(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
 
 	[RuleVersion(0)]
-	public Module_bodyContext module_body() {
-		Module_bodyContext _localctx = new Module_bodyContext(Context, State);
-		EnterRule(_localctx, 8, RULE_module_body);
+	public Module_blockContext module_block() {
+		Module_blockContext _localctx = new Module_blockContext(Context, State);
+		EnterRule(_localctx, 8, RULE_module_block);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 85;
+			State = 92;
 			Match(T__2);
-			State = 89;
+			State = 96;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 130023714L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 260048128L) != 0)) {
 				{
 				{
-				State = 86;
-				top_level_declaration();
+				State = 93;
+				definition();
 				}
 				}
-				State = 91;
+				State = 98;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 92;
+			State = 99;
 			Match(T__3);
 			}
 		}
@@ -483,11 +471,11 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 94;
+			State = 101;
 			Match(T__4);
-			State = 95;
+			State = 102;
 			module_name();
-			State = 96;
+			State = 103;
 			Match(T__5);
 			}
 		}
@@ -542,17 +530,17 @@ public partial class TweetyLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 98;
+			State = 105;
 			Match(CHARACTER);
-			State = 102;
+			State = 109;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 3221225600L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 6442451072L) != 0)) {
 				{
 				{
-				State = 99;
+				State = 106;
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 3221225600L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 6442451072L) != 0)) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -561,10 +549,246 @@ public partial class TweetyLangParser : Parser {
 				}
 				}
 				}
-				State = 104;
+				State = 111;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Struct_definitionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Object_blockContext object_block() {
+			return GetRuleContext<Object_blockContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ModifierContext[] modifier() {
+			return GetRuleContexts<ModifierContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ModifierContext modifier(int i) {
+			return GetRuleContext<ModifierContext>(i);
+		}
+		public Struct_definitionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_struct_definition; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.EnterStruct_definition(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.ExitStruct_definition(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitStruct_definition(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Struct_definitionContext struct_definition() {
+		Struct_definitionContext _localctx = new Struct_definitionContext(Context, State);
+		EnterRule(_localctx, 14, RULE_struct_definition);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 115;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==T__25 || _la==T__26) {
+				{
+				{
+				State = 112;
+				modifier();
+				}
+				}
+				State = 117;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 118;
+			Match(T__7);
+			State = 119;
+			identifier();
+			State = 120;
+			object_block();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Object_blockContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Function_definitionContext[] function_definition() {
+			return GetRuleContexts<Function_definitionContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Function_definitionContext function_definition(int i) {
+			return GetRuleContext<Function_definitionContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Field_declarationContext[] field_declaration() {
+			return GetRuleContexts<Field_declarationContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Field_declarationContext field_declaration(int i) {
+			return GetRuleContext<Field_declarationContext>(i);
+		}
+		public Object_blockContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_object_block; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.EnterObject_block(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.ExitObject_block(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitObject_block(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Object_blockContext object_block() {
+		Object_blockContext _localctx = new Object_blockContext(Context, State);
+		EnterRule(_localctx, 16, RULE_object_block);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 122;
+			Match(T__2);
+			State = 127;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 260047872L) != 0)) {
+				{
+				State = 125;
+				ErrorHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+				case 1:
+					{
+					State = 123;
+					function_definition();
+					}
+					break;
+				case 2:
+					{
+					State = 124;
+					field_declaration();
+					}
+					break;
+				}
+				}
+				State = 129;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 130;
+			Match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Field_declarationContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type() {
+			return GetRuleContext<TypeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public IdentifierContext identifier() {
+			return GetRuleContext<IdentifierContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		public Field_declarationContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_field_declaration; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.EnterField_declaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.ExitField_declaration(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitField_declaration(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Field_declarationContext field_declaration() {
+		Field_declarationContext _localctx = new Field_declarationContext(Context, State);
+		EnterRule(_localctx, 18, RULE_field_declaration);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 132;
+			type();
+			State = 133;
+			identifier();
+			State = 136;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			if (_la==T__8) {
+				{
+				State = 134;
+				Match(T__8);
+				State = 135;
+				expression();
+				}
+			}
+
+			State = 138;
+			Match(T__5);
 			}
 		}
 		catch (RecognitionException re) {
@@ -623,73 +847,73 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Function_definitionContext function_definition() {
 		Function_definitionContext _localctx = new Function_definitionContext(Context, State);
-		EnterRule(_localctx, 14, RULE_function_definition);
+		EnterRule(_localctx, 20, RULE_function_definition);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 108;
+			State = 143;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__24 || _la==T__25) {
+			while (_la==T__25 || _la==T__26) {
 				{
 				{
-				State = 105;
+				State = 140;
 				modifier();
 				}
 				}
-				State = 110;
+				State = 145;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 113;
+			State = 148;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
-			case T__21:
 			case T__22:
 			case T__23:
+			case T__24:
 				{
-				State = 111;
+				State = 146;
 				type();
 				}
 				break;
-			case T__7:
+			case T__9:
 				{
-				State = 112;
-				Match(T__7);
+				State = 147;
+				Match(T__9);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			State = 115;
+			State = 150;
 			identifier();
-			State = 116;
-			Match(T__8);
-			State = 118;
+			State = 151;
+			Match(T__10);
+			State = 153;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 29360128L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 58720256L) != 0)) {
 				{
-				State = 117;
+				State = 152;
 				parameters();
 				}
 			}
 
-			State = 120;
-			Match(T__9);
-			State = 123;
+			State = 155;
+			Match(T__11);
+			State = 158;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__2:
 				{
-				State = 121;
+				State = 156;
 				statement_block();
 				}
 				break;
 			case T__5:
 				{
-				State = 122;
+				State = 157;
 				Match(T__5);
 				}
 				break;
@@ -742,27 +966,27 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Function_callContext function_call() {
 		Function_callContext _localctx = new Function_callContext(Context, State);
-		EnterRule(_localctx, 16, RULE_function_call);
+		EnterRule(_localctx, 22, RULE_function_call);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 125;
+			State = 160;
 			identifier();
-			State = 126;
-			Match(T__8);
-			State = 128;
+			State = 161;
+			Match(T__10);
+			State = 163;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 3627024896L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 7254050816L) != 0)) {
 				{
-				State = 127;
+				State = 162;
 				arguments();
 				}
 			}
 
-			State = 130;
-			Match(T__9);
+			State = 165;
+			Match(T__11);
 			}
 		}
 		catch (RecognitionException re) {
@@ -809,29 +1033,94 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public ArgumentsContext arguments() {
 		ArgumentsContext _localctx = new ArgumentsContext(Context, State);
-		EnterRule(_localctx, 18, RULE_arguments);
+		EnterRule(_localctx, 24, RULE_arguments);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 132;
+			State = 167;
 			expression();
-			State = 137;
+			State = 172;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__10) {
+			while (_la==T__12) {
 				{
 				{
-				State = 133;
-				Match(T__10);
-				State = 134;
+				State = 168;
+				Match(T__12);
+				State = 169;
 				expression();
 				}
 				}
-				State = 139;
+				State = 174;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class DefinitionContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Struct_definitionContext struct_definition() {
+			return GetRuleContext<Struct_definitionContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public Function_definitionContext function_definition() {
+			return GetRuleContext<Function_definitionContext>(0);
+		}
+		public DefinitionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_definition; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.EnterDefinition(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ITweetyLangListener typedListener = listener as ITweetyLangListener;
+			if (typedListener != null) typedListener.ExitDefinition(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ITweetyLangVisitor<TResult> typedVisitor = visitor as ITweetyLangVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDefinition(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public DefinitionContext definition() {
+		DefinitionContext _localctx = new DefinitionContext(Context, State);
+		EnterRule(_localctx, 26, RULE_definition);
+		try {
+			State = 177;
+			ErrorHandler.Sync(this);
+			switch ( Interpreter.AdaptivePredict(TokenStream,15,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 175;
+				struct_definition();
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 176;
+				function_definition();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -884,40 +1173,40 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Statement_blockContext statement_block() {
 		Statement_blockContext _localctx = new Statement_blockContext(Context, State);
-		EnterRule(_localctx, 20, RULE_statement_block);
+		EnterRule(_localctx, 28, RULE_statement_block);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 140;
+			State = 179;
 			Match(T__2);
-			State = 145;
+			State = 184;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 3656421888L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 7312852992L) != 0)) {
 				{
-				State = 143;
+				State = 182;
 				ErrorHandler.Sync(this);
 				switch (TokenStream.LA(1)) {
-				case T__8:
-				case T__14:
-				case T__19:
+				case T__10:
+				case T__15:
 				case T__20:
 				case T__21:
 				case T__22:
 				case T__23:
+				case T__24:
 				case CHAR_LITERAL:
 				case STRING_LITERAL:
 				case CHARACTER:
 				case NUMBER:
 					{
-					State = 141;
+					State = 180;
 					statement();
 					}
 					break;
-				case T__11:
+				case T__13:
 					{
-					State = 142;
+					State = 181;
 					compound_statement();
 					}
 					break;
@@ -925,11 +1214,11 @@ public partial class TweetyLangParser : Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				State = 147;
+				State = 186;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 148;
+			State = 187;
 			Match(T__3);
 			}
 		}
@@ -974,13 +1263,13 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public StatementContext statement() {
 		StatementContext _localctx = new StatementContext(Context, State);
-		EnterRule(_localctx, 22, RULE_statement);
+		EnterRule(_localctx, 30, RULE_statement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 150;
+			State = 189;
 			raw_statement();
-			State = 151;
+			State = 190;
 			Match(T__5);
 			}
 		}
@@ -1034,36 +1323,36 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Raw_statementContext raw_statement() {
 		Raw_statementContext _localctx = new Raw_statementContext(Context, State);
-		EnterRule(_localctx, 24, RULE_raw_statement);
+		EnterRule(_localctx, 32, RULE_raw_statement);
 		try {
-			State = 157;
+			State = 196;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,13,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,18,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 153;
+				State = 192;
 				return_statement();
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 154;
+				State = 193;
 				assignment();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 155;
+				State = 194;
 				declaration();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 156;
+				State = 195;
 				expression_statement();
 				}
 				break;
@@ -1110,11 +1399,11 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Compound_statementContext compound_statement() {
 		Compound_statementContext _localctx = new Compound_statementContext(Context, State);
-		EnterRule(_localctx, 26, RULE_compound_statement);
+		EnterRule(_localctx, 34, RULE_compound_statement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 159;
+			State = 198;
 			if_statement();
 			}
 		}
@@ -1165,27 +1454,27 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public If_statementContext if_statement() {
 		If_statementContext _localctx = new If_statementContext(Context, State);
-		EnterRule(_localctx, 28, RULE_if_statement);
+		EnterRule(_localctx, 36, RULE_if_statement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 161;
-			Match(T__11);
-			State = 162;
-			Match(T__8);
-			State = 163;
+			State = 200;
+			Match(T__13);
+			State = 201;
+			Match(T__10);
+			State = 202;
 			expression();
-			State = 164;
-			Match(T__9);
-			State = 165;
+			State = 203;
+			Match(T__11);
+			State = 204;
 			statement_block();
-			State = 167;
+			State = 206;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if (_la==T__12) {
+			if (_la==T__14) {
 				{
-				State = 166;
+				State = 205;
 				else_block();
 				}
 			}
@@ -1233,13 +1522,13 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Else_blockContext else_block() {
 		Else_blockContext _localctx = new Else_blockContext(Context, State);
-		EnterRule(_localctx, 30, RULE_else_block);
+		EnterRule(_localctx, 38, RULE_else_block);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 169;
-			Match(T__12);
-			State = 170;
+			State = 208;
+			Match(T__14);
+			State = 209;
 			statement_block();
 			}
 		}
@@ -1287,15 +1576,15 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public AssignmentContext assignment() {
 		AssignmentContext _localctx = new AssignmentContext(Context, State);
-		EnterRule(_localctx, 32, RULE_assignment);
+		EnterRule(_localctx, 40, RULE_assignment);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 172;
+			State = 211;
 			identifier();
-			State = 173;
-			Match(T__13);
-			State = 174;
+			State = 212;
+			Match(T__8);
+			State = 213;
 			expression();
 			}
 		}
@@ -1346,17 +1635,17 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public DeclarationContext declaration() {
 		DeclarationContext _localctx = new DeclarationContext(Context, State);
-		EnterRule(_localctx, 34, RULE_declaration);
+		EnterRule(_localctx, 42, RULE_declaration);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 176;
+			State = 215;
 			type();
-			State = 177;
+			State = 216;
 			identifier();
-			State = 178;
-			Match(T__13);
-			State = 179;
+			State = 217;
+			Match(T__8);
+			State = 218;
 			expression();
 			}
 		}
@@ -1401,19 +1690,19 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Return_statementContext return_statement() {
 		Return_statementContext _localctx = new Return_statementContext(Context, State);
-		EnterRule(_localctx, 36, RULE_return_statement);
+		EnterRule(_localctx, 44, RULE_return_statement);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 181;
-			Match(T__14);
-			State = 183;
+			State = 220;
+			Match(T__15);
+			State = 222;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 3627024896L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 7254050816L) != 0)) {
 				{
-				State = 182;
+				State = 221;
 				expression();
 				}
 			}
@@ -1461,11 +1750,11 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Expression_statementContext expression_statement() {
 		Expression_statementContext _localctx = new Expression_statementContext(Context, State);
-		EnterRule(_localctx, 38, RULE_expression_statement);
+		EnterRule(_localctx, 46, RULE_expression_statement);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 185;
+			State = 224;
 			expression();
 			}
 		}
@@ -1513,33 +1802,33 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public ExpressionContext expression() {
 		ExpressionContext _localctx = new ExpressionContext(Context, State);
-		EnterRule(_localctx, 40, RULE_expression);
+		EnterRule(_localctx, 48, RULE_expression);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 187;
+			State = 226;
 			term();
-			State = 192;
+			State = 231;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__15 || _la==T__16) {
+			while (_la==T__16 || _la==T__17) {
 				{
 				{
-				State = 188;
+				State = 227;
 				_la = TokenStream.LA(1);
-				if ( !(_la==T__15 || _la==T__16) ) {
+				if ( !(_la==T__16 || _la==T__17) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
 				    Consume();
 				}
-				State = 189;
+				State = 228;
 				term();
 				}
 				}
-				State = 194;
+				State = 233;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1589,33 +1878,33 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public TermContext term() {
 		TermContext _localctx = new TermContext(Context, State);
-		EnterRule(_localctx, 42, RULE_term);
+		EnterRule(_localctx, 50, RULE_term);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 195;
+			State = 234;
 			factor();
-			State = 200;
+			State = 239;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__17 || _la==T__18) {
+			while (_la==T__18 || _la==T__19) {
 				{
 				{
-				State = 196;
+				State = 235;
 				_la = TokenStream.LA(1);
-				if ( !(_la==T__17 || _la==T__18) ) {
+				if ( !(_la==T__18 || _la==T__19) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
 					ErrorHandler.ReportMatch(this);
 				    Consume();
 				}
-				State = 197;
+				State = 236;
 				factor();
 				}
 				}
-				State = 202;
+				State = 241;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1674,62 +1963,62 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public FactorContext factor() {
 		FactorContext _localctx = new FactorContext(Context, State);
-		EnterRule(_localctx, 44, RULE_factor);
+		EnterRule(_localctx, 52, RULE_factor);
 		try {
-			State = 213;
+			State = 252;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,18,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,23,Context) ) {
 			case 1:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 203;
+				State = 242;
 				Match(NUMBER);
 				}
 				break;
 			case 2:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 204;
+				State = 243;
 				identifier();
 				}
 				break;
 			case 3:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 205;
+				State = 244;
 				function_call();
 				}
 				break;
 			case 4:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 206;
+				State = 245;
 				boolean_literal();
 				}
 				break;
 			case 5:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 207;
+				State = 246;
 				Match(CHAR_LITERAL);
 				}
 				break;
 			case 6:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 208;
+				State = 247;
 				Match(STRING_LITERAL);
 				}
 				break;
 			case 7:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 209;
-				Match(T__8);
-				State = 210;
+				State = 248;
+				Match(T__10);
+				State = 249;
 				expression();
-				State = 211;
-				Match(T__9);
+				State = 250;
+				Match(T__11);
 				}
 				break;
 			}
@@ -1772,14 +2061,14 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Boolean_literalContext boolean_literal() {
 		Boolean_literalContext _localctx = new Boolean_literalContext(Context, State);
-		EnterRule(_localctx, 46, RULE_boolean_literal);
+		EnterRule(_localctx, 54, RULE_boolean_literal);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 215;
+			State = 254;
 			_la = TokenStream.LA(1);
-			if ( !(_la==T__19 || _la==T__20) ) {
+			if ( !(_la==T__20 || _la==T__21) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -1832,26 +2121,26 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public ParametersContext parameters() {
 		ParametersContext _localctx = new ParametersContext(Context, State);
-		EnterRule(_localctx, 48, RULE_parameters);
+		EnterRule(_localctx, 56, RULE_parameters);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 217;
+			State = 256;
 			parameter();
-			State = 222;
+			State = 261;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__10) {
+			while (_la==T__12) {
 				{
 				{
-				State = 218;
-				Match(T__10);
-				State = 219;
+				State = 257;
+				Match(T__12);
+				State = 258;
 				parameter();
 				}
 				}
-				State = 224;
+				State = 263;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1901,13 +2190,13 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public ParameterContext parameter() {
 		ParameterContext _localctx = new ParameterContext(Context, State);
-		EnterRule(_localctx, 50, RULE_parameter);
+		EnterRule(_localctx, 58, RULE_parameter);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 225;
+			State = 264;
 			type();
-			State = 226;
+			State = 265;
 			identifier();
 			}
 		}
@@ -1955,13 +2244,13 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public TypeContext type() {
 		TypeContext _localctx = new TypeContext(Context, State);
-		EnterRule(_localctx, 52, RULE_type);
+		EnterRule(_localctx, 60, RULE_type);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 228;
+			State = 267;
 			raw_type();
-			State = 229;
+			State = 268;
 			pointer_suffix();
 			}
 		}
@@ -2003,22 +2292,22 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Pointer_suffixContext pointer_suffix() {
 		Pointer_suffixContext _localctx = new Pointer_suffixContext(Context, State);
-		EnterRule(_localctx, 54, RULE_pointer_suffix);
+		EnterRule(_localctx, 62, RULE_pointer_suffix);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 234;
+			State = 273;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==T__17) {
+			while (_la==T__18) {
 				{
 				{
-				State = 231;
-				Match(T__17);
+				State = 270;
+				Match(T__18);
 				}
 				}
-				State = 236;
+				State = 275;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -2062,14 +2351,14 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public Raw_typeContext raw_type() {
 		Raw_typeContext _localctx = new Raw_typeContext(Context, State);
-		EnterRule(_localctx, 56, RULE_raw_type);
+		EnterRule(_localctx, 64, RULE_raw_type);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 237;
+			State = 276;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 29360128L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 58720256L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -2116,14 +2405,14 @@ public partial class TweetyLangParser : Parser {
 	[RuleVersion(0)]
 	public ModifierContext modifier() {
 		ModifierContext _localctx = new ModifierContext(Context, State);
-		EnterRule(_localctx, 58, RULE_modifier);
+		EnterRule(_localctx, 66, RULE_modifier);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 239;
+			State = 278;
 			_la = TokenStream.LA(1);
-			if ( !(_la==T__24 || _la==T__25) ) {
+			if ( !(_la==T__25 || _la==T__26) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -2144,81 +2433,94 @@ public partial class TweetyLangParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,33,242,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,34,281,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
 		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
 		2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,7,27,2,28,7,28,
-		2,29,7,29,1,0,5,0,62,8,0,10,0,12,0,65,9,0,1,0,1,0,1,1,1,1,1,1,3,1,72,8,
-		1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,81,8,3,10,3,12,3,84,9,3,1,4,1,4,5,4,
-		88,8,4,10,4,12,4,91,9,4,1,4,1,4,1,5,1,5,1,5,1,5,1,6,1,6,5,6,101,8,6,10,
-		6,12,6,104,9,6,1,7,5,7,107,8,7,10,7,12,7,110,9,7,1,7,1,7,3,7,114,8,7,1,
-		7,1,7,1,7,3,7,119,8,7,1,7,1,7,1,7,3,7,124,8,7,1,8,1,8,1,8,3,8,129,8,8,
-		1,8,1,8,1,9,1,9,1,9,5,9,136,8,9,10,9,12,9,139,9,9,1,10,1,10,1,10,5,10,
-		144,8,10,10,10,12,10,147,9,10,1,10,1,10,1,11,1,11,1,11,1,12,1,12,1,12,
-		1,12,3,12,158,8,12,1,13,1,13,1,14,1,14,1,14,1,14,1,14,1,14,3,14,168,8,
-		14,1,15,1,15,1,15,1,16,1,16,1,16,1,16,1,17,1,17,1,17,1,17,1,17,1,18,1,
-		18,3,18,184,8,18,1,19,1,19,1,20,1,20,1,20,5,20,191,8,20,10,20,12,20,194,
-		9,20,1,21,1,21,1,21,5,21,199,8,21,10,21,12,21,202,9,21,1,22,1,22,1,22,
-		1,22,1,22,1,22,1,22,1,22,1,22,1,22,3,22,214,8,22,1,23,1,23,1,24,1,24,1,
-		24,5,24,221,8,24,10,24,12,24,224,9,24,1,25,1,25,1,25,1,26,1,26,1,26,1,
-		27,5,27,233,8,27,10,27,12,27,236,9,27,1,28,1,28,1,29,1,29,1,29,0,0,30,
-		0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,
-		50,52,54,56,58,0,6,2,0,7,7,30,31,1,0,16,17,1,0,18,19,1,0,20,21,1,0,22,
-		24,1,0,25,26,240,0,63,1,0,0,0,2,71,1,0,0,0,4,73,1,0,0,0,6,77,1,0,0,0,8,
-		85,1,0,0,0,10,94,1,0,0,0,12,98,1,0,0,0,14,108,1,0,0,0,16,125,1,0,0,0,18,
-		132,1,0,0,0,20,140,1,0,0,0,22,150,1,0,0,0,24,157,1,0,0,0,26,159,1,0,0,
-		0,28,161,1,0,0,0,30,169,1,0,0,0,32,172,1,0,0,0,34,176,1,0,0,0,36,181,1,
-		0,0,0,38,185,1,0,0,0,40,187,1,0,0,0,42,195,1,0,0,0,44,213,1,0,0,0,46,215,
-		1,0,0,0,48,217,1,0,0,0,50,225,1,0,0,0,52,228,1,0,0,0,54,234,1,0,0,0,56,
-		237,1,0,0,0,58,239,1,0,0,0,60,62,3,2,1,0,61,60,1,0,0,0,62,65,1,0,0,0,63,
-		61,1,0,0,0,63,64,1,0,0,0,64,66,1,0,0,0,65,63,1,0,0,0,66,67,5,0,0,1,67,
-		1,1,0,0,0,68,72,3,4,2,0,69,72,3,10,5,0,70,72,3,14,7,0,71,68,1,0,0,0,71,
-		69,1,0,0,0,71,70,1,0,0,0,72,3,1,0,0,0,73,74,5,1,0,0,74,75,3,6,3,0,75,76,
-		3,8,4,0,76,5,1,0,0,0,77,82,3,12,6,0,78,79,5,2,0,0,79,81,3,12,6,0,80,78,
-		1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,7,1,0,0,0,84,82,1,
-		0,0,0,85,89,5,3,0,0,86,88,3,2,1,0,87,86,1,0,0,0,88,91,1,0,0,0,89,87,1,
-		0,0,0,89,90,1,0,0,0,90,92,1,0,0,0,91,89,1,0,0,0,92,93,5,4,0,0,93,9,1,0,
-		0,0,94,95,5,5,0,0,95,96,3,6,3,0,96,97,5,6,0,0,97,11,1,0,0,0,98,102,5,30,
-		0,0,99,101,7,0,0,0,100,99,1,0,0,0,101,104,1,0,0,0,102,100,1,0,0,0,102,
-		103,1,0,0,0,103,13,1,0,0,0,104,102,1,0,0,0,105,107,3,58,29,0,106,105,1,
-		0,0,0,107,110,1,0,0,0,108,106,1,0,0,0,108,109,1,0,0,0,109,113,1,0,0,0,
-		110,108,1,0,0,0,111,114,3,52,26,0,112,114,5,8,0,0,113,111,1,0,0,0,113,
-		112,1,0,0,0,114,115,1,0,0,0,115,116,3,12,6,0,116,118,5,9,0,0,117,119,3,
-		48,24,0,118,117,1,0,0,0,118,119,1,0,0,0,119,120,1,0,0,0,120,123,5,10,0,
-		0,121,124,3,20,10,0,122,124,5,6,0,0,123,121,1,0,0,0,123,122,1,0,0,0,124,
-		15,1,0,0,0,125,126,3,12,6,0,126,128,5,9,0,0,127,129,3,18,9,0,128,127,1,
-		0,0,0,128,129,1,0,0,0,129,130,1,0,0,0,130,131,5,10,0,0,131,17,1,0,0,0,
-		132,137,3,40,20,0,133,134,5,11,0,0,134,136,3,40,20,0,135,133,1,0,0,0,136,
-		139,1,0,0,0,137,135,1,0,0,0,137,138,1,0,0,0,138,19,1,0,0,0,139,137,1,0,
-		0,0,140,145,5,3,0,0,141,144,3,22,11,0,142,144,3,26,13,0,143,141,1,0,0,
-		0,143,142,1,0,0,0,144,147,1,0,0,0,145,143,1,0,0,0,145,146,1,0,0,0,146,
-		148,1,0,0,0,147,145,1,0,0,0,148,149,5,4,0,0,149,21,1,0,0,0,150,151,3,24,
-		12,0,151,152,5,6,0,0,152,23,1,0,0,0,153,158,3,36,18,0,154,158,3,32,16,
-		0,155,158,3,34,17,0,156,158,3,38,19,0,157,153,1,0,0,0,157,154,1,0,0,0,
-		157,155,1,0,0,0,157,156,1,0,0,0,158,25,1,0,0,0,159,160,3,28,14,0,160,27,
-		1,0,0,0,161,162,5,12,0,0,162,163,5,9,0,0,163,164,3,40,20,0,164,165,5,10,
-		0,0,165,167,3,20,10,0,166,168,3,30,15,0,167,166,1,0,0,0,167,168,1,0,0,
-		0,168,29,1,0,0,0,169,170,5,13,0,0,170,171,3,20,10,0,171,31,1,0,0,0,172,
-		173,3,12,6,0,173,174,5,14,0,0,174,175,3,40,20,0,175,33,1,0,0,0,176,177,
-		3,52,26,0,177,178,3,12,6,0,178,179,5,14,0,0,179,180,3,40,20,0,180,35,1,
-		0,0,0,181,183,5,15,0,0,182,184,3,40,20,0,183,182,1,0,0,0,183,184,1,0,0,
-		0,184,37,1,0,0,0,185,186,3,40,20,0,186,39,1,0,0,0,187,192,3,42,21,0,188,
-		189,7,1,0,0,189,191,3,42,21,0,190,188,1,0,0,0,191,194,1,0,0,0,192,190,
-		1,0,0,0,192,193,1,0,0,0,193,41,1,0,0,0,194,192,1,0,0,0,195,200,3,44,22,
-		0,196,197,7,2,0,0,197,199,3,44,22,0,198,196,1,0,0,0,199,202,1,0,0,0,200,
-		198,1,0,0,0,200,201,1,0,0,0,201,43,1,0,0,0,202,200,1,0,0,0,203,214,5,31,
-		0,0,204,214,3,12,6,0,205,214,3,16,8,0,206,214,3,46,23,0,207,214,5,27,0,
-		0,208,214,5,28,0,0,209,210,5,9,0,0,210,211,3,40,20,0,211,212,5,10,0,0,
-		212,214,1,0,0,0,213,203,1,0,0,0,213,204,1,0,0,0,213,205,1,0,0,0,213,206,
-		1,0,0,0,213,207,1,0,0,0,213,208,1,0,0,0,213,209,1,0,0,0,214,45,1,0,0,0,
-		215,216,7,3,0,0,216,47,1,0,0,0,217,222,3,50,25,0,218,219,5,11,0,0,219,
-		221,3,50,25,0,220,218,1,0,0,0,221,224,1,0,0,0,222,220,1,0,0,0,222,223,
-		1,0,0,0,223,49,1,0,0,0,224,222,1,0,0,0,225,226,3,52,26,0,226,227,3,12,
-		6,0,227,51,1,0,0,0,228,229,3,56,28,0,229,230,3,54,27,0,230,53,1,0,0,0,
-		231,233,5,18,0,0,232,231,1,0,0,0,233,236,1,0,0,0,234,232,1,0,0,0,234,235,
-		1,0,0,0,235,55,1,0,0,0,236,234,1,0,0,0,237,238,7,4,0,0,238,57,1,0,0,0,
-		239,240,7,5,0,0,240,59,1,0,0,0,21,63,71,82,89,102,108,113,118,123,128,
-		137,143,145,157,167,183,192,200,213,222,234
+		2,29,7,29,2,30,7,30,2,31,7,31,2,32,7,32,2,33,7,33,1,0,5,0,70,8,0,10,0,
+		12,0,73,9,0,1,0,1,0,1,1,1,1,3,1,79,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,
+		88,8,3,10,3,12,3,91,9,3,1,4,1,4,5,4,95,8,4,10,4,12,4,98,9,4,1,4,1,4,1,
+		5,1,5,1,5,1,5,1,6,1,6,5,6,108,8,6,10,6,12,6,111,9,6,1,7,5,7,114,8,7,10,
+		7,12,7,117,9,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,5,8,126,8,8,10,8,12,8,129,9,
+		8,1,8,1,8,1,9,1,9,1,9,1,9,3,9,137,8,9,1,9,1,9,1,10,5,10,142,8,10,10,10,
+		12,10,145,9,10,1,10,1,10,3,10,149,8,10,1,10,1,10,1,10,3,10,154,8,10,1,
+		10,1,10,1,10,3,10,159,8,10,1,11,1,11,1,11,3,11,164,8,11,1,11,1,11,1,12,
+		1,12,1,12,5,12,171,8,12,10,12,12,12,174,9,12,1,13,1,13,3,13,178,8,13,1,
+		14,1,14,1,14,5,14,183,8,14,10,14,12,14,186,9,14,1,14,1,14,1,15,1,15,1,
+		15,1,16,1,16,1,16,1,16,3,16,197,8,16,1,17,1,17,1,18,1,18,1,18,1,18,1,18,
+		1,18,3,18,207,8,18,1,19,1,19,1,19,1,20,1,20,1,20,1,20,1,21,1,21,1,21,1,
+		21,1,21,1,22,1,22,3,22,223,8,22,1,23,1,23,1,24,1,24,1,24,5,24,230,8,24,
+		10,24,12,24,233,9,24,1,25,1,25,1,25,5,25,238,8,25,10,25,12,25,241,9,25,
+		1,26,1,26,1,26,1,26,1,26,1,26,1,26,1,26,1,26,1,26,3,26,253,8,26,1,27,1,
+		27,1,28,1,28,1,28,5,28,260,8,28,10,28,12,28,263,9,28,1,29,1,29,1,29,1,
+		30,1,30,1,30,1,31,5,31,272,8,31,10,31,12,31,275,9,31,1,32,1,32,1,33,1,
+		33,1,33,0,0,34,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,
+		40,42,44,46,48,50,52,54,56,58,60,62,64,66,0,6,2,0,7,7,31,32,1,0,17,18,
+		1,0,19,20,1,0,21,22,1,0,23,25,1,0,26,27,279,0,71,1,0,0,0,2,78,1,0,0,0,
+		4,80,1,0,0,0,6,84,1,0,0,0,8,92,1,0,0,0,10,101,1,0,0,0,12,105,1,0,0,0,14,
+		115,1,0,0,0,16,122,1,0,0,0,18,132,1,0,0,0,20,143,1,0,0,0,22,160,1,0,0,
+		0,24,167,1,0,0,0,26,177,1,0,0,0,28,179,1,0,0,0,30,189,1,0,0,0,32,196,1,
+		0,0,0,34,198,1,0,0,0,36,200,1,0,0,0,38,208,1,0,0,0,40,211,1,0,0,0,42,215,
+		1,0,0,0,44,220,1,0,0,0,46,224,1,0,0,0,48,226,1,0,0,0,50,234,1,0,0,0,52,
+		252,1,0,0,0,54,254,1,0,0,0,56,256,1,0,0,0,58,264,1,0,0,0,60,267,1,0,0,
+		0,62,273,1,0,0,0,64,276,1,0,0,0,66,278,1,0,0,0,68,70,3,2,1,0,69,68,1,0,
+		0,0,70,73,1,0,0,0,71,69,1,0,0,0,71,72,1,0,0,0,72,74,1,0,0,0,73,71,1,0,
+		0,0,74,75,5,0,0,1,75,1,1,0,0,0,76,79,3,4,2,0,77,79,3,10,5,0,78,76,1,0,
+		0,0,78,77,1,0,0,0,79,3,1,0,0,0,80,81,5,1,0,0,81,82,3,6,3,0,82,83,3,8,4,
+		0,83,5,1,0,0,0,84,89,3,12,6,0,85,86,5,2,0,0,86,88,3,12,6,0,87,85,1,0,0,
+		0,88,91,1,0,0,0,89,87,1,0,0,0,89,90,1,0,0,0,90,7,1,0,0,0,91,89,1,0,0,0,
+		92,96,5,3,0,0,93,95,3,26,13,0,94,93,1,0,0,0,95,98,1,0,0,0,96,94,1,0,0,
+		0,96,97,1,0,0,0,97,99,1,0,0,0,98,96,1,0,0,0,99,100,5,4,0,0,100,9,1,0,0,
+		0,101,102,5,5,0,0,102,103,3,6,3,0,103,104,5,6,0,0,104,11,1,0,0,0,105,109,
+		5,31,0,0,106,108,7,0,0,0,107,106,1,0,0,0,108,111,1,0,0,0,109,107,1,0,0,
+		0,109,110,1,0,0,0,110,13,1,0,0,0,111,109,1,0,0,0,112,114,3,66,33,0,113,
+		112,1,0,0,0,114,117,1,0,0,0,115,113,1,0,0,0,115,116,1,0,0,0,116,118,1,
+		0,0,0,117,115,1,0,0,0,118,119,5,8,0,0,119,120,3,12,6,0,120,121,3,16,8,
+		0,121,15,1,0,0,0,122,127,5,3,0,0,123,126,3,20,10,0,124,126,3,18,9,0,125,
+		123,1,0,0,0,125,124,1,0,0,0,126,129,1,0,0,0,127,125,1,0,0,0,127,128,1,
+		0,0,0,128,130,1,0,0,0,129,127,1,0,0,0,130,131,5,4,0,0,131,17,1,0,0,0,132,
+		133,3,60,30,0,133,136,3,12,6,0,134,135,5,9,0,0,135,137,3,48,24,0,136,134,
+		1,0,0,0,136,137,1,0,0,0,137,138,1,0,0,0,138,139,5,6,0,0,139,19,1,0,0,0,
+		140,142,3,66,33,0,141,140,1,0,0,0,142,145,1,0,0,0,143,141,1,0,0,0,143,
+		144,1,0,0,0,144,148,1,0,0,0,145,143,1,0,0,0,146,149,3,60,30,0,147,149,
+		5,10,0,0,148,146,1,0,0,0,148,147,1,0,0,0,149,150,1,0,0,0,150,151,3,12,
+		6,0,151,153,5,11,0,0,152,154,3,56,28,0,153,152,1,0,0,0,153,154,1,0,0,0,
+		154,155,1,0,0,0,155,158,5,12,0,0,156,159,3,28,14,0,157,159,5,6,0,0,158,
+		156,1,0,0,0,158,157,1,0,0,0,159,21,1,0,0,0,160,161,3,12,6,0,161,163,5,
+		11,0,0,162,164,3,24,12,0,163,162,1,0,0,0,163,164,1,0,0,0,164,165,1,0,0,
+		0,165,166,5,12,0,0,166,23,1,0,0,0,167,172,3,48,24,0,168,169,5,13,0,0,169,
+		171,3,48,24,0,170,168,1,0,0,0,171,174,1,0,0,0,172,170,1,0,0,0,172,173,
+		1,0,0,0,173,25,1,0,0,0,174,172,1,0,0,0,175,178,3,14,7,0,176,178,3,20,10,
+		0,177,175,1,0,0,0,177,176,1,0,0,0,178,27,1,0,0,0,179,184,5,3,0,0,180,183,
+		3,30,15,0,181,183,3,34,17,0,182,180,1,0,0,0,182,181,1,0,0,0,183,186,1,
+		0,0,0,184,182,1,0,0,0,184,185,1,0,0,0,185,187,1,0,0,0,186,184,1,0,0,0,
+		187,188,5,4,0,0,188,29,1,0,0,0,189,190,3,32,16,0,190,191,5,6,0,0,191,31,
+		1,0,0,0,192,197,3,44,22,0,193,197,3,40,20,0,194,197,3,42,21,0,195,197,
+		3,46,23,0,196,192,1,0,0,0,196,193,1,0,0,0,196,194,1,0,0,0,196,195,1,0,
+		0,0,197,33,1,0,0,0,198,199,3,36,18,0,199,35,1,0,0,0,200,201,5,14,0,0,201,
+		202,5,11,0,0,202,203,3,48,24,0,203,204,5,12,0,0,204,206,3,28,14,0,205,
+		207,3,38,19,0,206,205,1,0,0,0,206,207,1,0,0,0,207,37,1,0,0,0,208,209,5,
+		15,0,0,209,210,3,28,14,0,210,39,1,0,0,0,211,212,3,12,6,0,212,213,5,9,0,
+		0,213,214,3,48,24,0,214,41,1,0,0,0,215,216,3,60,30,0,216,217,3,12,6,0,
+		217,218,5,9,0,0,218,219,3,48,24,0,219,43,1,0,0,0,220,222,5,16,0,0,221,
+		223,3,48,24,0,222,221,1,0,0,0,222,223,1,0,0,0,223,45,1,0,0,0,224,225,3,
+		48,24,0,225,47,1,0,0,0,226,231,3,50,25,0,227,228,7,1,0,0,228,230,3,50,
+		25,0,229,227,1,0,0,0,230,233,1,0,0,0,231,229,1,0,0,0,231,232,1,0,0,0,232,
+		49,1,0,0,0,233,231,1,0,0,0,234,239,3,52,26,0,235,236,7,2,0,0,236,238,3,
+		52,26,0,237,235,1,0,0,0,238,241,1,0,0,0,239,237,1,0,0,0,239,240,1,0,0,
+		0,240,51,1,0,0,0,241,239,1,0,0,0,242,253,5,32,0,0,243,253,3,12,6,0,244,
+		253,3,22,11,0,245,253,3,54,27,0,246,253,5,28,0,0,247,253,5,29,0,0,248,
+		249,5,11,0,0,249,250,3,48,24,0,250,251,5,12,0,0,251,253,1,0,0,0,252,242,
+		1,0,0,0,252,243,1,0,0,0,252,244,1,0,0,0,252,245,1,0,0,0,252,246,1,0,0,
+		0,252,247,1,0,0,0,252,248,1,0,0,0,253,53,1,0,0,0,254,255,7,3,0,0,255,55,
+		1,0,0,0,256,261,3,58,29,0,257,258,5,13,0,0,258,260,3,58,29,0,259,257,1,
+		0,0,0,260,263,1,0,0,0,261,259,1,0,0,0,261,262,1,0,0,0,262,57,1,0,0,0,263,
+		261,1,0,0,0,264,265,3,60,30,0,265,266,3,12,6,0,266,59,1,0,0,0,267,268,
+		3,64,32,0,268,269,3,62,31,0,269,61,1,0,0,0,270,272,5,19,0,0,271,270,1,
+		0,0,0,272,275,1,0,0,0,273,271,1,0,0,0,273,274,1,0,0,0,274,63,1,0,0,0,275,
+		273,1,0,0,0,276,277,7,4,0,0,277,65,1,0,0,0,278,279,7,5,0,0,279,67,1,0,
+		0,0,26,71,78,89,96,109,115,125,127,136,143,148,153,158,163,172,177,182,
+		184,196,206,222,231,239,252,261,273
 	};
 
 	public static readonly ATN _ATN =

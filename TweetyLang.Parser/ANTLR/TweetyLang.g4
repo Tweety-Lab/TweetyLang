@@ -11,20 +11,19 @@ program
 top_level_declaration
     : module_definition
     | import_statement
-    | function_definition
     ;
 
 // Modules
 module_definition
-    : 'module' module_name module_body
+    : 'module' module_name module_block
     ;
 
 module_name
     : identifier ('::' identifier)*
     ;
 
-module_body
-    : '{' top_level_declaration* '}'
+module_block
+    : '{' definition* '}'
     ;
 
 import_statement
@@ -34,6 +33,19 @@ import_statement
 // Identifiers
 identifier
     : CHARACTER (CHARACTER | NUMBER | '_')*
+    ;
+
+// Structs
+struct_definition
+    : modifier* 'struct' identifier object_block
+    ;
+
+object_block
+    : '{' (function_definition | field_declaration)* '}'
+    ;
+
+field_declaration
+    : type identifier ('=' expression)? ';'
     ;
 
 // Functions
@@ -47,6 +59,11 @@ function_call
 
 arguments
     : expression (',' expression)*
+    ;
+
+definition 
+    : struct_definition
+    | function_definition
     ;
 
 // Statements
