@@ -26,10 +26,12 @@ public static class Linker
     /// <param name="targetTriple">Target triple (i.e., "x86_64-pc-windows-msvc").</param>
     public static void ModuleToObjectFile(LLVMModuleRef module, string objectOutputPath, string targetTriple)
     {
-        // TODO: We should parse targetTriple and initialize appropriate targets
-        LLVM.InitializeNativeTarget();
-        LLVM.InitializeNativeAsmPrinter();
-        LLVM.InitializeNativeAsmParser();
+        LLVM.InitializeAllTargetInfos();
+        LLVM.InitializeAllTargetMCs();
+        LLVM.InitializeAllAsmParsers();
+        LLVM.InitializeAllAsmPrinters();
+
+        LLVM.InitializeAllTargets();
 
         module.Target = targetTriple;
         LLVMTargetRef target = LLVMTargetRef.GetTargetFromTriple(targetTriple);

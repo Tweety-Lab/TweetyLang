@@ -9,13 +9,16 @@ namespace TweetyLang.Verbs;
 [Verb("build", HelpText = "Builds the project in the current directory.")]
 internal class BuildProject : BaseVerb
 {
+    [Option('t', "target", Required = false, HelpText = "The target triple to build for (i.e., x86_64-pc-windows-msvc).")]
+    public string TargetTriple { get; set; } = LLVMTargetRef.DefaultTriple;
+
     public override void Run()
     {
-        var module = BuildProjectFromDir(Directory.GetCurrentDirectory());
+        var module = BuildProjectFromDir(Directory.GetCurrentDirectory(), TargetTriple);
         Console.WriteLine(module.PrintToString());
     }
 
-    public static LLVMModuleRef BuildProjectFromDir(string projectDir)
+    public static LLVMModuleRef BuildProjectFromDir(string projectDir, string targetTriple)
     {
         var projectFile = Directory.GetFiles(projectDir, "*.toml").FirstOrDefault();
         if (projectFile == null)
@@ -64,7 +67,7 @@ internal class BuildProject : BaseVerb
         Directory.CreateDirectory(outputDir);
 
         string objDir = Path.Combine(outputDir, Path.ChangeExtension(Path.GetFileName(projectFile), ".o"));
-        Linker.Linker.ModuleToObjectFile(module, objDir, LLVMTargetRef.DefaultTriple);
+        Linker.Linker.ModuleToObjectFile(module, objDir, targetTriple);
 
         AssemblyType assemblyType = AssemblyType.DynamicLibrary;
 
