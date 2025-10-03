@@ -47,7 +47,7 @@ public static class Linker
     /// <param name="objectFiles">Object files to link.</param>
     /// <param name="outputPath">Path to write the final output.</param>
     /// <param name="type">Type of assembly to generate.</param>
-    public static void ObjectFilesToAssembly(string[] objectFiles, string outputPath, AssemblyType type)
+    public static void ObjectFilesToAssembly(string[] objectFiles, string outputPath, AssemblyType type, string targetTriple)
     {
         if (objectFiles == null || objectFiles.Length == 0)
             throw new ArgumentException("At least one object file is required.", nameof(objectFiles));
@@ -56,13 +56,15 @@ public static class Linker
             if (!File.Exists(obj))
                 throw new FileNotFoundException("Object file not found.", obj);
 
+        TargetOS targetOS = Utility.GetOSFromTriple(targetTriple);
+
         // Determine correct file extension
         string extension = type switch
         {
-            AssemblyType.Application => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".exe" : "",
-            AssemblyType.DynamicLibrary => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
-                                          RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so",
-            AssemblyType.StaticLibrary => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".lib" : ".a",
+            AssemblyType.Application => targetOS == TargetOS.Windows ? ".exe" : "",
+            AssemblyType.DynamicLibrary => targetOS == TargetOS.Windows ? ".dll" :
+                                          targetOS == TargetOS.OSX ? ".dylib" : ".so",
+            AssemblyType.StaticLibrary => targetOS == TargetOS.Windows ? ".lib" : ".a",
             _ => throw new NotSupportedException($"Unsupported assembly type: {type}")
         };
 
@@ -71,9 +73,9 @@ public static class Linker
         string linker;
         string args;
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (targetOS == TargetOS.Windows)
         {
-            string path = GetLinkerPath();
+            string path = Utility.GetWindowsLinkerPath();
             switch (type)
             {
                 case AssemblyType.Application:
@@ -144,28 +146,5 @@ public static class Linker
         }
 
         Console.WriteLine(output);
-    }
-
-    // Use Vswhere to get the path to the windows linker
-    private static string GetLinkerPath()
-    {
-        string vsWhere = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe";
-
-        var psi = new ProcessStartInfo
-        {
-            FileName = vsWhere,
-            Arguments = "-latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath",
-            RedirectStandardOutput = true,
-            UseShellExecute = false
-        };
-
-        using var process = Process.Start(psi);
-        string vsPath = process.StandardOutput.ReadLine();
-        process.WaitForExit();
-
-        string msvcVersionDir = Directory.GetDirectories(Path.Combine(vsPath, "VC", "Tools", "MSVC"))[0];
-        string linkPath = Path.Combine(msvcVersionDir, "bin", "Hostx64", "x64", "link.exe");
-
-        return linkPath;
     }
 }

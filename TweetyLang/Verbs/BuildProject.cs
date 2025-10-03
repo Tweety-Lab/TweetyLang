@@ -80,7 +80,7 @@ internal class BuildProject : BaseVerb
             assemblyType = AssemblyType.StaticLibrary;
 
         string assemblyDir = Path.Combine(outputDir, Path.GetFileName(projectFile));
-        Linker.Linker.ObjectFilesToAssembly(new[] { objDir }, assemblyDir, assemblyType);
+        Linker.Linker.ObjectFilesToAssembly(new[] { objDir }, assemblyDir, assemblyType, targetTriple);
 
         return module;
     }
