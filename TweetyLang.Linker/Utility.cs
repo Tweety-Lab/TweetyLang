@@ -7,7 +7,8 @@ internal enum TargetOS
 {
     Windows,
     OSX,
-    MacOS
+    MacOS,
+    Web
 }
 
 internal static class Utility
@@ -26,6 +27,7 @@ internal static class Utility
             string s when s.Contains("linux") => TargetOS.OSX,
             string s when s.Contains("darwin") => TargetOS.MacOS,
             string s when s.Contains("macos") => TargetOS.MacOS,
+            string s when s.Contains("wasm") => TargetOS.Web,
             _ => throw new NotSupportedException($"Unsupported target triple: {targetTriple}")
         };
     }

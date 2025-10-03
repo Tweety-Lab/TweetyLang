@@ -58,13 +58,15 @@ public static class Linker
 
         TargetOS targetOS = Utility.GetOSFromTriple(targetTriple);
 
-        // Determine correct file extension
         string extension = type switch
         {
+            _ when targetOS == TargetOS.Web => ".wasm",
+
             AssemblyType.Application => targetOS == TargetOS.Windows ? ".exe" : "",
             AssemblyType.DynamicLibrary => targetOS == TargetOS.Windows ? ".dll" :
                                           targetOS == TargetOS.OSX ? ".dylib" : ".so",
             AssemblyType.StaticLibrary => targetOS == TargetOS.Windows ? ".lib" : ".a",
+
             _ => throw new NotSupportedException($"Unsupported assembly type: {type}")
         };
 
@@ -95,6 +97,18 @@ public static class Linker
 
                 default:
                     throw new NotSupportedException($"Unsupported assembly type: {type}");
+            }
+        }
+        else if (targetOS == TargetOS.Web)
+        {
+            linker = "wasm-ld";
+            args = $"-o \"{outputPath}\" {string.Join(" ", objectFiles)}";
+
+            switch (type)
+            {
+                case AssemblyType.Application:
+                    args += " --entry main";
+                    break;
             }
         }
         else // Linux/macOS
