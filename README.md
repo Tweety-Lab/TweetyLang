@@ -6,9 +6,10 @@ TweetyLang is a native programming language designed around the philosophy of to
 ![Example of TweetyLang](https://github.com/user-attachments/assets/269a2d6a-00eb-4b90-8a7e-6aeae84cd4cf)
 
 ## Requirements
-To build TweetyLang projects, a native system linker must be available.
+To build TweetyLang projects, a native system linker for your target platform must be available.
 - **Windows:** Install Visual Studio with the Desktop development with C++ workload.
-- **Linux/macOS:** Ensure clang is installed and available in your system PATH.
+- **Linux/macOS:** Ensure `clang` is installed and available in your system PATH.
+- **Web:** Ensure `wasm-ld` is installed and available in your system PATH.
 
 ## Usage
 For help using the compiler, see the compiler breakdown [here](#tweetylang-cli).
@@ -74,5 +75,9 @@ This is the main program that brings together all the other components to compil
 #### `new`
 Creates a new template TweetyLang project.
 
+**-n**: The name of the project to be created.
+
 #### `build`
 Builds the project in the current directory.
+
+**-t**: The target triple to build for (i.e., x86_64-pc-windows-msvc).
