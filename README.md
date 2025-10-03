@@ -13,18 +13,8 @@ To build TweetyLang projects, a native system linker must be available.
 ## Usage
 For help using the compiler, see the compiler breakdown [here](#tweetylang-cli).
 
-TweetyLang is build around the concept of **modules**. A module serves to structure your code and also supports behind-the-scenes compilation processes, everything in TweetyLang exists within a module.
+Full documentation can be found in the [TweetyLang Language Specification](https://tweetylang.github.io/Specification/).
 
-**A Module looks like the following:**
-```TweetyLang
-module Program
-{
-    export i32 MyMethod() 
-    {
-        return 64;
-    }
-}
-```
 ### Debugging Errors
 The default TweetyLang compiler outputs errors in the following format:
 ```Terminal
