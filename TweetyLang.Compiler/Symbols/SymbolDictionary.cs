@@ -63,7 +63,8 @@ public class SymbolDictionary
             IsExtern = f.Modifiers.HasFlag(Modifiers.Extern)
         },
         ParameterNode p => new ParameterSymbol(p.Name),
-        LocalDeclarationNode v => new VariableSymbol(v.Name) { Type = v.Type },
+        LocalDeclarationNode v => new VariableSymbol(v.Name, v.Type),
+        StructNode s => new TypeSymbol(s.Name),
         _ => null
     };
 }

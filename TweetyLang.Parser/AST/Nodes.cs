@@ -170,7 +170,11 @@ public class ModuleNode : AstNode
     public List<FunctionNode> Functions { get; set; } = new();
     public List<StructNode> Structs { get; set; } = new();
 
-    public override IEnumerable<AstNode> GetChildren() => Functions;
+    public override IEnumerable<AstNode> GetChildren()
+    {
+        foreach (var fn in Functions) yield return fn;
+        foreach (var str in Structs) yield return str;
+    }
 }
 
 public class StructNode : AstNode

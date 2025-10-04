@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using LLVMSharp.Interop;
+using TweetyLang.AST;
 using TweetyLang.Compiler;
 using TweetyLang.Linker;
 using TweetyLang.Parser.AST;

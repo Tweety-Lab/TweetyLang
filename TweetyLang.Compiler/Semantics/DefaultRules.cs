@@ -64,6 +64,20 @@ internal class DuplicateParameterRule : BaseSemanticRule
 }
 
 [SemanticAnalyzer]
+internal class UnknownTypeRule : BaseSemanticRule
+{
+    public override void AnalyzeStatement(StatementNode stmt)
+    {
+        if (stmt is not LocalDeclarationNode localDeclaration)
+            return;
+
+        var type = Compilation.GetAllSymbols<TypeSymbol>().FirstOrDefault(t => t.Name == localDeclaration.Type.BaseType);
+        if (type == null)
+            Error(localDeclaration, $"Unknown type '{localDeclaration.Type.BaseType}'.");
+    }
+}
+
+[SemanticAnalyzer]
 internal class DuplicateFunctionRule : BaseSemanticRule
 {
     public override void AnalyzeModule(ModuleNode module)
@@ -145,7 +159,7 @@ internal class ImportRule : BaseSemanticRule
 {
     public override void AnalyzeProgram(ProgramNode program)
     {
-        var allModuleSymbols = Compilation.GetAllSymbols<IModuleSymbol>()
+        var allModuleSymbols = Compilation.GetAllSymbols<ModuleSymbol>()
             .ToDictionary(s => s.Name, StringComparer.OrdinalIgnoreCase);
 
         var seenImports = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -183,7 +197,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
     private void AnalyzeDeclaration(LocalDeclarationNode decl)
     {
         var symbolDict = Compilation.GetSymbolDictionary(SyntaxTree);
-        var variableSymbol = symbolDict.GetDeclaredSymbol<IVariableSymbol>(decl);
+        var variableSymbol = symbolDict.GetDeclaredSymbol<VariableSymbol>(decl);
 
         if (variableSymbol == null)
         {
@@ -202,7 +216,7 @@ internal class TypeDecAssignRule : BaseSemanticRule
     {
         var symbolDict = Compilation.GetSymbolDictionary(SyntaxTree);
         var variableSymbol = symbolDict
-            .GetAllSymbols<IVariableSymbol>()
+            .GetAllSymbols<VariableSymbol>()
             .FirstOrDefault(v => v.Name == assign.Name);
 
         if (variableSymbol == null)
