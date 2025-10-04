@@ -71,6 +71,9 @@ internal class UnknownTypeRule : BaseSemanticRule
         if (stmt is not LocalDeclarationNode localDeclaration)
             return;
 
+        if (localDeclaration.Type == TypeReference.I32 || localDeclaration.Type == TypeReference.Bool || localDeclaration.Type == TypeReference.Char)
+            return;
+
         var type = Compilation.GetAllSymbols<TypeSymbol>().FirstOrDefault(t => t.Name == localDeclaration.Type.BaseType);
         if (type == null)
             Error(localDeclaration, $"Unknown type '{localDeclaration.Type.BaseType}'.");
